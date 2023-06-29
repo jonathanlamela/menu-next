@@ -29,6 +29,15 @@ async function getFoodsByCategorySlug(slug: string) {
   })
 }
 
+
+export async function generateMetadata({ params }: any) {
+  const category = await getCategoryBySlug(params.slug);
+
+  return {
+    title: `Categoria ${category?.name.toLowerCase()}`,
+  }
+}
+
 export default async function Categoria({ params }: { params: { slug: string } }) {
 
   const category = await getCategoryBySlug(params.slug);

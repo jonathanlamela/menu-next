@@ -11,6 +11,9 @@ import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
 import { getCart } from "@/src/services/cartService";
 
+export const metadata = {
+  title: 'Carrello',
+}
 
 export default async function Cart() {
 
