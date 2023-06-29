@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model category {
+  id Int @id @default(autoincrement())
+  name String
+  slug String?
+  image_url String?
+  foods food[]
+}
+
+model food {
+  id Int @id @default(autoincrement())
+  name String
+  ingredients String?
+  price Decimal
+  category_id Int?
+  category category? @relation(references: [id],fields: [category_id])
+  order_details order_detail[]
+}
+
+model user {
+  id Int @id @default(autoincrement())
+  firstname String
+  lastname String
+  email String @unique
+  verified Boolean @default(false)
+  activation_token String?
+  reset_token String?
+  password_hash String
+  role String @default("customer")
+  orders order[]
+}
+
+model setting {
+  id Int @id @default(autoincrement())
+  name String @unique
+  value String
+}
+model order_state {
+  id Int @id @default(autoincrement())
+  name String
+  css_badge_class String?
+  orders order[]
+}
+
+model order {
+  id Int @id @default(autoincrement())
+  order_state_id Int?
+  order_state order_state? @relation(fields: [order_state_id],references: [id])
+  user_id Int
+  user user @relation(fields: [user_id],references: [id])
+  is_paid Boolean @default(false)
+  shipping_required Boolean @default(false)
+  shipping_costs Decimal @default(0.00)
+  shipping_address String?
+  shipping_delivery_time String?
+  notes String?
+  details order_detail[]
+  total Decimal @default(0.00)
+}
+
+model order_detail {
+  id Int @id @default(autoincrement())
+  order_id Int
+  order order @relation(fields: [order_id],references: [id],onDelete: Cascade)
+  food_id Int?
+  food food? @relation(fields: [food_id],references: [id],onDelete: SetNull)
+  quantity Int
+  unit_price Decimal
+  name String
+}

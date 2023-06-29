@@ -1,27 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Smooch&family=Smooch+Sans:wght@100&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+    .btn-primary {
+        @apply bg-red-900  hover:bg-slate-700 text-white p-2 disabled:bg-red-200 disabled:text-gray-400 flex flex-row space-x-2 px-4
+    }
+    .btn-secondary-outlined {
+        @apply border-slate-900 text-slate-900 hover:text-white hover:bg-slate-600 border p-2 disabled:text-gray-300 disabled:cursor-not-allowed
+    }
+    .btn-secondary-outlined-active {
+        @apply  bg-slate-600 text-white hover:text-white hover:bg-slate-600 border p-2
+    }
+    .btn-success {
+        @apply bg-green-800 text-white p-4 hover:bg-green-900 flex items-center justify-center h-10
+    }
+    .invalid-feedback {
+        @apply text-red-600 text-sm pt-1
+    }
+    .form-label {
+        @apply font-semibold antialiased
+    }
+    .text-input {
+        @apply p-2 border border-gray-300 outline-slate-900 bg-gray-100
+    }
+    .text-input-invalid {
+        @apply p-2 border border-red-600 outline-red-900 bg-gray-100
+    }
+    .input-select {
+        @apply py-2 pl-3 pr-10 border border-gray-300 outline-slate-900 bg-gray-100
+    }
+    .input-select-invalid {
+        @apply py-2 pl-3 pr-10 border border-gray-300 outline-slate-900 bg-gray-100
+    }
+    .breadcrumb-link {
+        @apply bg-slate-100 p-3 rounded-lg hover:text-white hover:bg-red-900 text-black
+    }
+    .bashboard-button {
+        @apply w-full sm:w-full md:w-1/2 lg:w-1/6 bg-slate-50 lg:max-w-xs hover:bg-slate-500  hover:text-white border-b-red-900  border-b-8 text-red-900
+    }
+    .dashboard-button-link {
+        @apply flex flex-col space-y-8 p-8 justify-center items-center
+    }
+    .dashboard-button-icon {
+        @apply w-full flex justify-center items-center
+    }
+    .badge-primary {
+        @apply bg-red-900 text-white p-2 flex w-fit rounded-3xl text-xs
+    }
+    .badge-secondary {
+        @apply bg-slate-900 text-white p-2 flex w-fit rounded-3xl text-xs
+    }
+    .badge-info {
+        @apply bg-slate-500 text-white p-2 flex w-fit rounded-3xl text-xs
+    }
+    .badge-success {
+        @apply bg-green-700 text-white p-2 flex w-fit rounded-3xl text-xs
+    }
+    .badge-danger {
+        @apply bg-red-600 text-white p-2 flex w-fit rounded-3xl text-xs
+    }
 }
