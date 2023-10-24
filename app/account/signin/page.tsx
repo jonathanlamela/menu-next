@@ -12,25 +12,19 @@ import TopbarRight from "@/components/TopbarRight";
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
 import LoginForm from "@/components/LoginForm";
-import { login } from "@/src/services/accountService";
 
 export async function generateMetadata({ params }: any) {
   return {
-    title: "Login",
+    title: "Signin",
   }
 }
 
 const onSubmit = async (data: FormData) => {
   'use server';
-  await login({
-    email: `${data.get('email')?.valueOf()}`,
-    password: `${data.get('password')?.valueOf()}`,
-    backUrl: `${data.get('backUrl')?.valueOf()}`,
-  });
+
 }
 
-export default async function Login({ searchParams }: any) {
-  const backUrl = searchParams.backUrl ?? null;
+export default async function Signin({ searchParams }: any) {
 
   return (
     <main className="flex flex-col flex-grow">
@@ -53,14 +47,13 @@ export default async function Login({ searchParams }: any) {
             </BreadcrumbLink>
           </li>
           <li>::</li>
-          <li>Accedi</li>
+          <li>Crea account</li>
         </ol>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <LoginForm backUrl={backUrl} formSubmit={onSubmit} ></LoginForm>
       </div>
     </main >
   );

@@ -9,7 +9,7 @@ export async function getSettings() {
   if (cachedSettings) {
     return cachedSettings;
   } else {
-    var settings = prisma.setting.findMany();
+    var settings = prisma.setting.findFirst();
 
     cache.put("settings", settings, 30 * 1000);
 

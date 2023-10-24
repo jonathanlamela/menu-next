@@ -1,5 +1,5 @@
 import { prisma } from "@/src/lib/prisma";
-import { Paginated, Sorted } from "@/src/types/globalTypes";
+import { Paginated, Sorted } from "@/src/types";
 
 export async function searchFoods(
   args:

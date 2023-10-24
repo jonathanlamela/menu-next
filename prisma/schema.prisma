@@ -44,14 +44,21 @@ model user {
 
 model setting {
   id Int @id @default(autoincrement())
-  name String @unique
-  value String
+  site_title String
+  site_subtitle String
+  shipping_costs Decimal
+  order_state_paid_id Int? @unique
+  order_state_created_id Int? @unique
+  order_state_paid order_state?  @relation("order_state_paid_relation",fields: [order_state_paid_id],references: [id])
+  order_state_created order_state? @relation("order_state_created_relation",fields: [order_state_created_id],references: [id])
 }
 model order_state {
   id Int @id @default(autoincrement())
   name String
   css_badge_class String?
   orders order[]
+  setting_order_state_paid setting? @relation("order_state_paid_relation")
+  setting_order_state_created setting? @relation("order_state_created_relation")
 }
 
 model order {

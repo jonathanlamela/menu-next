@@ -8,7 +8,7 @@ import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
 import { searchFoods } from "@/src/services/foodService";
-import { SearchFields } from "@/src/types/globalTypes";
+import { SearchFields } from "@/src/types";
 import { redirect } from "next/navigation";
 
 

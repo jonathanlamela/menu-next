@@ -1,13 +1,10 @@
 "use server";
-import { getProviders, signIn } from "next-auth/react";
 
-import { LoginFields } from "@/src/types/globalTypes";
+import { LoginFields } from "@/src/types";
 
 export async function login(data: LoginFields) {
-  console.log(data);
+}
 
-  signIn("email", {
-    email: data.email,
-    password: data.password,
-  });
+export async function getUser() {
+  return null;
 }

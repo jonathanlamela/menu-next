@@ -1,6 +1,6 @@
 
 import { getCart } from "@/src/services/cartService"
-import { CartState } from "@/src/types/globalTypes";
+import { CartState } from "@/src/types";
 import Link from "next/link"
 
 

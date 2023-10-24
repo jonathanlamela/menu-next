@@ -1,18 +1,14 @@
 "use server";
 
-import {
-  CartItem,
-  CartState,
-  TipologiaConsegna,
-} from "@/src/types/globalTypes";
+import { CartItem, CartState, DeliveryType } from "@/src/types";
 import { cookies } from "next/headers";
 
 const emptyCart: CartState = {
-  indirizzo: "",
+  delivery_address: "",
+  delivery_time: "",
+  delivery_type: DeliveryType.ASPORTO,
   items: {},
   note: "",
-  orario: "",
-  tipologia_consegna: TipologiaConsegna.ASPORTO,
   total: 0,
 };
 
@@ -56,21 +52,21 @@ export const decreaseQty = async (item: CartItem) => {
   storeCart(cart);
 };
 
-export const updateCartTipologiaConsegna = async (item: TipologiaConsegna) => {
+export const updateCartTipologiaConsegna = async (item: DeliveryType) => {
   const cart = await getCart();
 
-  cart.tipologia_consegna = item;
+  cart.delivery_type = item;
 
   storeCart(cart);
 };
 
 export const updateCartInformazioniConsegna = async (
-  item: { indirizzo: string; orario: string },
+  item: { delivery_address: string; delivery_time: string },
 ) => {
   const cart = await getCart();
 
-  cart.indirizzo = item.indirizzo;
-  cart.orario = item.orario;
+  cart.delivery_address = item.delivery_address;
+  cart.delivery_time = item.delivery_time;
 
   storeCart(emptyCart);
 };

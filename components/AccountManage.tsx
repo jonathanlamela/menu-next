@@ -1,14 +1,13 @@
 
-import { authOptions } from "@/src/lib/auth";
-import { getServerSession } from "next-auth";
+import { getUser } from "@/src/services/accountService";
 import Link from "next/link";
 
 
 export default async function AccountManage() {
 
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
 
-    if (session?.user) {
+    if (user) {
         return <>
             <Link className="text-white flex flex-row p-2 items-center hover:bg-slate-800 justify-center space-x-2"
                 href="/account">

@@ -1,13 +1,12 @@
-import { authOptions } from "@/src/lib/auth";
+import { getUser } from "@/src/services/accountService";
 import { getCart } from "@/src/services/cartService";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 
 export default async function CheckoutButton() {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
 
-    if (session?.user) {
+    if (user) {
         return <>
             <Link className="bg-green-800 text-white p-4 hover:bg-green-900" href="/checkout/tipologia-consegna">Vai alla cassa</Link>
         </>

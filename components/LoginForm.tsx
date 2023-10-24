@@ -1,9 +1,9 @@
 'use client'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import loginValidator from "@/src/validators/loginValidator";
-import { LoginFields } from "@/src/types/globalTypes";
 import Link from "next/link";
+import { loginValidator } from "@/src/validators";
+import { LoginFields } from "@/src/types";
 
 export default function LoginForm({ backUrl, formSubmit }: any) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginFields>({
