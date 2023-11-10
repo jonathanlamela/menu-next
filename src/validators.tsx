@@ -1,3 +1,4 @@
+import axiosIstance from "@/src/lib/axiosIstance";
 import {
   ChangePasswordFields,
   CreateCategoryFields,
@@ -159,31 +160,32 @@ export const resetPasswordValidator = yup.object().shape<SchemaObject<ResetPassw
 }).required();
 
 export const settingValidator = yup.object().shape<SchemaObject<Settings>>({
-  site_title: yup.string().required("Il campo nome del sito è obbligatorio"),
-  site_subtitle: yup.string().nullable(),
-  shipping_costs: yup.number().typeError("Inserisci un numero valido").min(
+  siteTitle: yup.string().required("Il campo nome del sito è obbligatorio"),
+  siteSubtitle: yup.string().nullable(),
+  shippingCosts: yup.number().typeError("Inserisci un numero valido").min(
     0.01,
     "Il prezzo deve essere maggiore di 0",
   ),
-  order_created_state_id: yup.string().required("Seleziona uno stato valido"),
-  order_paid_state_id: yup.string().required("Seleziona uno stato valido"),
+  orderCreatedStateId: yup.string().required("Seleziona uno stato valido"),
+  orderPaidStateId: yup.string().required("Seleziona uno stato valido"),
 });
 
 const verifyEmail = async (value: string, values: yup.TestContext<any>) => {
   if (value.length > 0) {
-    /*
 
-    TODO
+    var response = await axiosIstance.get("/api/account/verifyEmailBusy", {
+      params: {
+        email: value
+      }
+    });
 
-    var response =
-      await (await fetch(route("api.email_exists", { "email": value }))).json();
-    if (response.result == true) {
+    const { result } = response.data;
+
+    if (result == true) {
       values.createError({ path: "email" });
     }
 
-    return !response.result;*/
-
-    return true;
+    return !result;
   } else {
     return false;
   }
@@ -202,7 +204,7 @@ export const signinValidator = yup.object().shape<SchemaObject<SigninFields>>({
     RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"),
     "La password deve essere lunga almeno 8 caratteri e contenere: 1 numero, 1 carattere speciale e una lettera maiuscola",
   ).required("Il campo password è obbligatorio"),
-  password_confirmation: yup.string().required(
+  passwordConfirmation: yup.string().required(
     "Il campo conferma password è obbligatorio",
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();

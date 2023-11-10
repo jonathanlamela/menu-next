@@ -1,7 +1,7 @@
 import axios from "axios";
 
 var axiosIstance = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.SERVER_URL,
   withCredentials: true,
 });
 

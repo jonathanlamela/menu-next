@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime/library";
+
 export type CartItem = {
   id: number;
   name?: string;
@@ -13,6 +15,17 @@ export type CategoryFields = {
   name: string;
   imageFile: FileList;
   image: string;
+};
+
+export enum MessageType {
+  INFO = "INFO",
+  SUCCESS = "SUCCESS",
+  ERROR = "ERROR",
+}
+
+export type Message = {
+  text: string;
+  type: MessageType;
 };
 
 export type CreateCategoryFields = CategoryFields;
@@ -52,7 +65,7 @@ export type ResetPasswordTokenFields = {
 export type SigninFields = {
   email: string;
   password: string;
-  password_confirmation: string;
+  passwordConfirmation: string;
   firstname: string;
   lastname: string;
 };
@@ -119,17 +132,12 @@ export type MessagesState = {
   message?: Message | null;
 };
 
-export type Message = {
-  type: string;
-  text: string;
-};
-
 export type Settings = {
-  site_title: string;
-  site_subtitle: string;
-  shipping_costs: number;
-  order_created_state_id: number;
-  order_paid_state_id: number;
+  siteTitle?: string;
+  siteSubtitle?: string;
+  shippingCosts?: number;
+  orderCreatedStateId?: number;
+  orderPaidStateId?: number;
 };
 
 export type CurrentUser = {

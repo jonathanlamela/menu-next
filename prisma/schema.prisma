@@ -11,22 +11,22 @@ datasource db {
 }
 
 
-model category {
+model Category {
   id Int @id @default(autoincrement())
   name String
   slug String?
-  image_url String?
-  foods food[]
+  imageUrl String?
+  foods Food[]
 }
 
-model food {
+model Food {
   id Int @id @default(autoincrement())
   name String
   ingredients String?
   price Decimal
-  category_id Int?
-  category category? @relation(references: [id],fields: [category_id])
-  order_details order_detail[]
+  categoryId Int?
+  category Category? @relation(references: [id],fields: [categoryId])
+  orderDetails order_detail[]
 }
 
 model user {
@@ -35,43 +35,43 @@ model user {
   lastname String
   email String @unique
   verified Boolean @default(false)
-  activation_token String?
-  reset_token String?
-  password_hash String
+  activationToken String?
+  resetToken String?
+  passwordHash String
   role String @default("customer")
   orders order[]
 }
 
 model setting {
   id Int @id @default(autoincrement())
-  site_title String
-  site_subtitle String
-  shipping_costs Decimal
-  order_state_paid_id Int? @unique
-  order_state_created_id Int? @unique
-  order_state_paid order_state?  @relation("order_state_paid_relation",fields: [order_state_paid_id],references: [id])
-  order_state_created order_state? @relation("order_state_created_relation",fields: [order_state_created_id],references: [id])
+  siteTitle String
+  siteSubtitle String
+  shippingCosts Decimal
+  orderStatePaidId Int? @unique
+  orderStateCreatedId Int? @unique
+  orderStatePaid order_state?  @relation("order_state_paid_relation",fields: [orderStatePaidId],references: [id])
+  orderStateCreated order_state? @relation("order_state_created_relation",fields: [orderStateCreatedId],references: [id])
 }
 model order_state {
   id Int @id @default(autoincrement())
   name String
-  css_badge_class String?
+  cssBadgeClass String?
   orders order[]
-  setting_order_state_paid setting? @relation("order_state_paid_relation")
-  setting_order_state_created setting? @relation("order_state_created_relation")
+  settingOrderStatePaid setting? @relation("order_state_paid_relation")
+  settingOrderStateCreated setting? @relation("order_state_created_relation")
 }
 
 model order {
   id Int @id @default(autoincrement())
-  order_state_id Int?
-  order_state order_state? @relation(fields: [order_state_id],references: [id])
-  user_id Int
-  user user @relation(fields: [user_id],references: [id])
-  is_paid Boolean @default(false)
-  shipping_required Boolean @default(false)
-  shipping_costs Decimal @default(0.00)
-  shipping_address String?
-  shipping_delivery_time String?
+  orderStateId Int?
+  orderState order_state? @relation(fields: [orderStateId],references: [id])
+  userId Int
+  user user @relation(fields: [userId],references: [id])
+  isPaid Boolean @default(false)
+  shippingReequired Boolean @default(false)
+  shippingCosts Decimal @default(0.00)
+  shippingAddress String?
+  shippingDeliveryTime String?
   notes String?
   details order_detail[]
   total Decimal @default(0.00)
@@ -79,11 +79,11 @@ model order {
 
 model order_detail {
   id Int @id @default(autoincrement())
-  order_id Int
-  order order @relation(fields: [order_id],references: [id],onDelete: Cascade)
-  food_id Int?
-  food food? @relation(fields: [food_id],references: [id],onDelete: SetNull)
+  orderId Int
+  order order @relation(fields: [orderId],references: [id],onDelete: Cascade)
+  foodId Int?
+  food Food? @relation(fields: [foodId],references: [id],onDelete: SetNull)
   quantity Int
-  unit_price Decimal
+  unitPrice Decimal
   name String
 }

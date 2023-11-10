@@ -1,37 +1,37 @@
+'use server'
+import { ClearMessage } from "@/components/ClearMessage";
+import { Message, MessageType } from "@/src/types";
+import { clear } from "console";
+import { cookies } from "next/headers";
+
+
+export async function getMessage(): Promise<Message | null> {
+    const cookiesList = cookies();
+
+    if (cookiesList.has("message")) {
+        let buff = Buffer.from(cookiesList.get("message")!.value, "base64");
+        let string_decoded = buff.toString("utf-8");
+
+
+        return JSON.parse(string_decoded);
+    } else {
+        return null;
+    }
+}
 
 
 
-export default function Messages() {
-
-    /*const location = useLocation();
-
-    const messagesState = useAppSelector((state) => state.messages);
-    var [message, setMessage] = useState(null);
-
-
-    useEffect(() => {
-
-        if (messagesState.message != null) {
-            setMessage(messagesState.message as any);
-        } else if (location.state?.message != null) {
-            setMessage(location.state.message);
-        }
-
-        return () => {
-            window.history.replaceState({}, "")
-
-            storeDispatch(resetMessages());
-        }
-
-    }, [messagesState.message, location.state])
+export default async function Messages() {
+    const message = await getMessage();
 
     if (message != null) {
 
-        const { tag, text } = message;
+        const { type, text } = message;
 
-        switch (tag) {
-            case "success":
+        switch (type) {
+            case MessageType.SUCCESS:
                 return <>
+                    <ClearMessage></ClearMessage>
                     <div className="pb-4">
                         <div className="bg-lime-700/25 border-l-lime-700 border-l-8 p-4 text-green-900">
                             <span>{text}</span>
@@ -39,16 +39,20 @@ export default function Messages() {
                     </div>
                 </>
 
-            case "error":
+            case MessageType.ERROR:
                 return <>
+                    <ClearMessage></ClearMessage>
+
                     <div className="pb-4">
                         <div className="bg-red-700/25 border-l-red-700 border-l-8 p-4 text-red-900">
                             <span>{text}</span>
                         </div>
                     </div>
                 </>
-            case "info":
+            case MessageType.INFO:
                 return <>
+                    <ClearMessage></ClearMessage>
+
                     <div className="pb-4">
                         <div className="bg-gray-400/25 border-l-gray-700 border-l-8 p-4 text-gray-900">
                             <span>{text}</span>
@@ -56,12 +60,8 @@ export default function Messages() {
                     </div>
                 </>
         }
-    }*/
-
-    return null;
-
-
-
-
+    } else {
+        return <></>
+    }
 
 }

@@ -1,18 +1,17 @@
 import { prisma } from "@/src/lib/prisma";
-var cache = require("memory-cache");
+import { Settings } from "@/src/types";
+import { Prisma } from "@prisma/client";
 
-export async function getSettings() {
-  var cachedSettings = cache.get(
-    "settings",
-  );
+export async function getSettings(): Promise<any> {
+  var settings = await prisma.setting.findFirst({
+    select: {
+      siteTitle: true,
+      siteSubtitle: true,
+      shippingCosts: true,
+      orderStateCreated: true,
+      orderStatePaid: true,
+    },
+  });
 
-  if (cachedSettings) {
-    return cachedSettings;
-  } else {
-    var settings = prisma.setting.findFirst();
-
-    cache.put("settings", settings, 30 * 1000);
-
-    return settings;
-  }
+  return settings;
 }
