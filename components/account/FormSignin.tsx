@@ -1,8 +1,10 @@
 'use client';
-import { SigninFields } from "@/src/types";
+import { MessageType, SigninFields } from "@/src/types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinValidator } from "@/src/validators";
+import { pushMessage } from "@/src/services/messageService";
+import submitSignin from "@/app/actions";
 
 export default function FormSignin() {
 
@@ -13,7 +15,7 @@ export default function FormSignin() {
     });
 
     return <>
-        <form className="w-full p-8 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" method='post' action="/api/account/postSignin" encType="application/json">
+        <form action={submitSignin} className="w-full p-8 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" method='post' encType="application/json">
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Nome</label>
                 <input type="text"

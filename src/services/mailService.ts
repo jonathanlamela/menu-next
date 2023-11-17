@@ -4,8 +4,13 @@ import { nodemailerMjmlPlugin } from "nodemailer-mjml";
 var transport: any = null;
 
 const initService = () => {
-  const { MAIL_HOST, MAIL_PORT, MAIL_SECURE, MAIL_USERNAME, MAIL_PASSWORD } =
-    process.env;
+  const {
+    MAIL_HOST,
+    MAIL_PORT,
+    MAIL_SECURE,
+    MAIL_USERNAME,
+    MAIL_PASSWORD,
+  } = process.env;
   transport = createTransport({
     host: MAIL_HOST as string,
     port: parseInt(MAIL_PORT!),
@@ -20,9 +25,9 @@ const initService = () => {
   transport.use(
     "compile",
     nodemailerMjmlPlugin({
-      templateFolder: "/src/templates/emails",
+      templateFolder: "./src/templates/emails",
       minifyHtmlOutput: true,
-    }),
+    })
   );
 };
 
@@ -33,7 +38,7 @@ const sendActivateAccountCode = async (email: string, link: string) => {
     templateData: {
       link: link,
     },
-    templateName: "web/accountActivationCode",
+    templateName: "accountActivationCode",
   });
 };
 
@@ -44,7 +49,7 @@ const sendResetPassword = async (email: string, link: string) => {
     templateData: {
       link: link,
     },
-    templateName: "web/accountResetPassword",
+    templateName: "accountResetPassword",
   });
 };
 

@@ -1,17 +1,18 @@
+"use server";
+
 import { createUser } from "@/src/services/accountService";
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
 import { signinValidator } from "@/src/validators";
-import { NextRequest, NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
-export async function POST(request: NextRequest) {
-  const data = await request.formData();
+export default async function submitSignin(formData: FormData) {
+  console.log(formData);
 
   var object: any = {};
-  data.forEach((value, key) => object[key] = value);
+  formData.forEach((value, key) => (object[key] = value));
 
-  //Validate the body
   var validationResult = await signinValidator.isValid(object);
 
   if (validationResult) {
@@ -24,16 +25,14 @@ export async function POST(request: NextRequest) {
     });
 
     if (user) {
-      var activationUrl =
-        `${process.env.SERVER_URL}account/verifica-account/token?token=${user.activationToken}`;
+      var activationUrl = `${process.env.SERVER_URL}account/verifica-account/token?token=${user.activationToken}`;
+      mailService.initService();
       await mailService.sendActivateAccountCode(user.email, activationUrl);
 
       pushMessage({
         text: "Account creato con successo verifica la tua casella di posta",
         type: MessageType.SUCCESS,
       });
-
-      return NextResponse.redirect(`${process.env.SERVER_URL}/account/login`);
     }
   } else {
     pushMessage({
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
         "Si è verificato un errore durante la creazione dell'account, contatta l'amministratore",
       type: MessageType.ERROR,
     });
-
-    return NextResponse.redirect(`${process.env.SERVER_URL}/account/login`);
   }
+
+  redirect(`/account/login`);
 }
