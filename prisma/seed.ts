@@ -57,6 +57,7 @@ async function main() {
     create: {
       id: 1,
       name: "Pizze",
+      slug: "pizze",
     },
     update: {},
     where: {
@@ -67,6 +68,7 @@ async function main() {
     create: {
       id: 2,
       name: "Panini",
+      slug: "panini",
     },
     update: {},
     where: {
@@ -77,6 +79,7 @@ async function main() {
     create: {
       id: 3,
       name: "Contorni",
+      slug: "contorni",
     },
     update: {},
     where: {
@@ -87,6 +90,7 @@ async function main() {
     create: {
       id: 4,
       name: "Bibite e bevande",
+      slug: "bibite-e-bevande",
     },
     update: {},
     where: {
@@ -97,6 +101,7 @@ async function main() {
     create: {
       id: 5,
       name: "Dolci e dessert",
+      slug: "dolci-e-dessert",
     },
     update: {},
     where: {
