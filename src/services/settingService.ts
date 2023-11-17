@@ -7,9 +7,9 @@ export async function getSettings(): Promise<any> {
     select: {
       siteTitle: true,
       siteSubtitle: true,
-      shippingCosts: true,
       orderStateCreated: true,
       orderStatePaid: true,
+      orderStateDeleted: true,
     },
   });
 
