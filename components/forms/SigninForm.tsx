@@ -3,7 +3,7 @@ import { MessageType, SigninFields } from "@/src/types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinValidator } from "@/src/validators";
-import { submitSignin } from "@/app/actions";
+import { submitSignin } from "@/src/actions";
 
 export default function FormSignin() {
 

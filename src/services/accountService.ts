@@ -41,6 +41,24 @@ export async function generateNewActivationToken(email: string) {
   return token;
 }
 
+export async function generateResetPasswordToken(email: string) {
+  var token = generator.generate({
+    length: 20,
+    numbers: true,
+  });
+
+  await prisma.user.update({
+    data: {
+      resetToken: token,
+    },
+    where: {
+      email: email,
+    },
+  });
+
+  return token;
+}
+
 export async function validateUserLogin(data: {
   email: string;
   password: string;
@@ -84,4 +102,29 @@ export async function activateAccount(email: string, token: string) {
       activationToken: token,
     },
   });
+}
+
+export async function updatePasswordByToken(password: string, token: string) {
+  var passwordHash = bcrypt.hashSync(password, 10);
+
+  var user = await prisma.user.findFirst({
+    where: {
+      resetToken: token,
+    },
+  });
+
+  if (user) {
+    await prisma.user.update({
+      data: {
+        passwordHash: passwordHash,
+        resetToken: null,
+      },
+      where: {
+        id: user.id,
+      },
+    });
+    return true;
+  } else {
+    return false;
+  }
 }

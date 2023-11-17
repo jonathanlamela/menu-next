@@ -59,7 +59,6 @@ export type ResetPasswordTokenFields = {
   token: string;
   password: string;
   confirmPassword: string;
-  email: string;
 };
 
 export type SigninFields = {

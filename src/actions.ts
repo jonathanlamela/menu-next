@@ -3,7 +3,9 @@
 import {
   createUser,
   generateNewActivationToken,
+  generateResetPasswordToken,
   getUserByEmail,
+  updatePasswordByToken,
 } from "@/src/services/accountService";
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
@@ -74,5 +76,59 @@ export async function submitVerificaAccount(formData: FormData) {
       type: MessageType.ERROR,
     });
   }
+  redirect(`/auth/login`);
+}
+
+export async function submitResetPasswordRequest(formData: FormData) {
+  var object: any = {};
+  formData.forEach((value, key) => (object[key] = value));
+
+  var { email } = object;
+
+  if (email) {
+    var user = await getUserByEmail(email);
+
+    if (user) {
+      var token = await generateResetPasswordToken(email);
+      mailService.initService();
+      await mailService.sendResetPassword(
+        user.email,
+        `${process.env.SERVER_URL}/auth/reset-password/token?token=${token}`
+      );
+    }
+
+    pushMessage({
+      text: "Controlla la tua email per resettare la tua password",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta non valida",
+      type: MessageType.ERROR,
+    });
+  }
+  redirect(`/auth/login`);
+}
+
+export async function submitResetPasswordByToken(formData: FormData) {
+  var object: any = {};
+  formData.forEach((value, key) => (object[key] = value));
+
+  var { password, token } = object;
+
+  var result = await updatePasswordByToken(password, token);
+
+  if (result) {
+    pushMessage({
+      text: "Password cambiata con successo",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta fallita",
+      type: MessageType.ERROR,
+    });
+  }
+
   redirect(`/auth/login`);
 }

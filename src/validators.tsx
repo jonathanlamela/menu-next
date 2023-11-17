@@ -150,7 +150,6 @@ export const resetPasswordTokenValidator = yup.object({
   confirmPassword: yup.string().required(
     "Il campo conferma password è obbligatorio",
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
-  email: yup.string().required(),
 }).required();
 
 export const resetPasswordValidator = yup.object().shape<SchemaObject<ResetPasswordFields>>({

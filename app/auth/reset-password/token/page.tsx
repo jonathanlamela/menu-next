@@ -11,20 +11,26 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import FormSignin from "@/components/forms/SigninForm";
-
-export const revalidate = false
-
-
+import ResetPasswordUpdateForm from "@/components/forms/ResetPasswordUpdateForm";
+import { redirect, useRouter } from "next/navigation";
+import { pushMessage } from "@/src/services/messageService";
+import { MessageType } from "@/src/types";
 
 export async function generateMetadata({ params }: any) {
   return {
-    title: "Signin",
+    title: "Reset password",
   }
 }
-export default async function Signin({ searchParams }: any) {
 
+async function validateRequest(searchParams: any) {
+  if (!searchParams.token) {
+    redirect("/auth/login");
+  }
+}
 
+export default async function ResetPassword({ searchParams }: any) {
+
+  await validateRequest(searchParams);
 
   return (
     <main className="flex flex-col flex-grow">
@@ -47,14 +53,14 @@ export default async function Signin({ searchParams }: any) {
             </BreadcrumbLink>
           </li>
           <li>::</li>
-          <li>Crea account</li>
+          <li>Reset password</li>
         </ol>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>
       </div>
-      <div className='flex flex-grow justify-center items-start md:items-center'>
-        <FormSignin></FormSignin>
+      <div className='flex flex-grow flex-col justify-center items-center'>
+        <ResetPasswordUpdateForm />
       </div>
     </main>
   );

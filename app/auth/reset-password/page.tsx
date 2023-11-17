@@ -11,19 +11,20 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import FormSignin from "@/components/forms/SigninForm";
-
-export const revalidate = false
-
-
+import LoginForm from "@/components/forms/LoginForm";
+import VerificaAccount from "@/components/forms/VerificaAccountForm";
+import VerificaAccountForm from "@/components/forms/VerificaAccountForm";
+import ResetPasswordRequireForm from "@/components/forms/ResetPasswordRequireForm";
 
 export async function generateMetadata({ params }: any) {
   return {
-    title: "Signin",
+    title: "Reset password",
   }
 }
-export default async function Signin({ searchParams }: any) {
 
+
+
+export default async function ResetPassword({ searchParams }: any) {
 
 
   return (
@@ -47,14 +48,14 @@ export default async function Signin({ searchParams }: any) {
             </BreadcrumbLink>
           </li>
           <li>::</li>
-          <li>Crea account</li>
+          <li>Reset password</li>
         </ol>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>
       </div>
-      <div className='flex flex-grow justify-center items-start md:items-center'>
-        <FormSignin></FormSignin>
+      <div className='flex flex-grow flex-col justify-center items-center'>
+        <ResetPasswordRequireForm />
       </div>
     </main>
   );
