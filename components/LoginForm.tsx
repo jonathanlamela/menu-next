@@ -4,15 +4,38 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Link from "next/link";
 import { loginValidator } from "@/src/validators";
 import { LoginFields } from "@/src/types";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export default function LoginForm({ backUrl, formSubmit }: any) {
+export default function LoginForm({ callbackUrl, csrfToken }: any) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginFields>({
         resolver: yupResolver(loginValidator)
     });
 
+    const router = useRouter();
+
+    const formSubmit = async (data: { email: string, password: string }) => {
+        const res = await signIn("credentials", {
+            redirect: false,
+            email: data.email,
+            password: data.password,
+            callbackUrl,
+        });
+
+        if (res?.error) {
+            router.refresh();
+        }
+
+        if (res?.ok) {
+            router.push(res!.url!);
+        }
+
+    }
+
     return <>
-        <form className="w-full p-16 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" action={formSubmit}>
-            {backUrl ? <input type="hidden" {...register("backUrl")} name="backUrl" value={backUrl} /> : null}
+        <form onSubmit={handleSubmit(formSubmit)} className="w-full p-16 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" >
+
+            {callbackUrl ? <input type="hidden" {...register("backUrl")} name="callbackUrl" value={callbackUrl} /> : null}
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Email</label>
                 <input type="text"

@@ -1,11 +1,10 @@
 
-import { getUser } from "@/src/services/accountService";
 import Link from "next/link";
 
 
 export default async function AccountManage() {
 
-    const user = await getUser();
+    const user = null;;
 
     if (user) {
         return <>

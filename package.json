@@ -26,6 +26,7 @@
     "generate-password": "^1.7.1",
     "memory-cache": "^0.2.0",
     "next": "^14.0.2",
+    "next-auth": "^4.24.5",
     "nodemailer": "^6.9.7",
     "nodemailer-mjml": "^1.2.45",
     "postcss": "8.4.24",

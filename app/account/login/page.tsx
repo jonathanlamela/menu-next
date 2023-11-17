@@ -12,7 +12,6 @@ import TopbarRight from "@/components/TopbarRight";
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
 import LoginForm from "@/components/LoginForm";
-import { login } from "@/src/services/accountService";
 
 export async function generateMetadata({ params }: any) {
   return {
@@ -20,17 +19,12 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
-const onSubmit = async (data: FormData) => {
-  'use server';
-  await login({
-    email: `${data.get('email')?.valueOf()}`,
-    password: `${data.get('password')?.valueOf()}`,
-    backUrl: `${data.get('backUrl')?.valueOf()}`,
-  });
-}
+import { getCsrfToken } from "next-auth/react"
+
 
 export default async function Login({ searchParams }: any) {
-  const backUrl = searchParams.backUrl ?? null;
+
+  var csrfToken = await getCsrfToken();
 
   return (
     <main className="flex flex-col flex-grow">
@@ -60,7 +54,7 @@ export default async function Login({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <LoginForm backUrl={backUrl} formSubmit={onSubmit} ></LoginForm>
+        <LoginForm callbackUrl={searchParams.callbackUrl ?? "/account"} csrfToken={csrfToken} ></LoginForm>
       </div>
     </main >
   );
