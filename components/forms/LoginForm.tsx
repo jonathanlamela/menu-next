@@ -6,30 +6,21 @@ import { loginValidator } from "@/src/validators";
 import { LoginFields } from "@/src/types";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { pushMessage } from "@/src/services/messageService";
 
 export default function LoginForm({ callbackUrl, csrfToken }: any) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginFields>({
         resolver: yupResolver(loginValidator)
     });
 
-    const router = useRouter();
 
     const formSubmit = async (data: { email: string, password: string }) => {
-        const res = await signIn("credentials", {
-            redirect: false,
+        await signIn("credentials", {
+            redirect: true,
             email: data.email,
             password: data.password,
             callbackUrl,
         });
-
-        if (res?.error) {
-            router.refresh();
-        }
-
-        if (res?.ok) {
-            router.push(res!.url!);
-        }
-
     }
 
     return <>
@@ -55,10 +46,10 @@ export default function LoginForm({ callbackUrl, csrfToken }: any) {
                 </div>
             </div>
             <div className="flex flex-col space-y-0.5">
-                <Link href="/account/reset-password" className="hover:text-red-900">
+                <Link href="/auth/reset-password" className="hover:text-red-900">
                     Ho dimenticato la password
                 </Link>
-                <Link href="/account/verifica-account" className="hover:text-red-900">
+                <Link href="/auth/verifica-account" className="hover:text-red-900">
                     Il mio account non è attivo
                 </Link>
             </div>
@@ -66,7 +57,7 @@ export default function LoginForm({ callbackUrl, csrfToken }: any) {
                 <button disabled={!isValid} type="submit" className="btn-primary">
                     Accedi
                 </button>
-                <Link href="/account/signin" className="btn-secondary-outlined">
+                <Link href="/auth/signin" className="btn-secondary-outlined">
                     Crea account
                 </Link>
             </div>

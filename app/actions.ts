@@ -1,15 +1,18 @@
 "use server";
 
-import { createUser } from "@/src/services/accountService";
+import {
+  createUser,
+  generateNewActivationToken,
+  getUserByEmail,
+} from "@/src/services/accountService";
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
 import { signinValidator } from "@/src/validators";
+import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-export default async function submitSignin(formData: FormData) {
-  console.log(formData);
-
+export async function submitSignin(formData: FormData) {
   var object: any = {};
   formData.forEach((value, key) => (object[key] = value));
 
@@ -25,7 +28,7 @@ export default async function submitSignin(formData: FormData) {
     });
 
     if (user) {
-      var activationUrl = `${process.env.SERVER_URL}account/verifica-account/token?token=${user.activationToken}`;
+      var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${user.activationToken}&email=${email}`;
       mailService.initService();
       await mailService.sendActivateAccountCode(user.email, activationUrl);
 
@@ -42,5 +45,34 @@ export default async function submitSignin(formData: FormData) {
     });
   }
 
-  redirect(`/account/login`);
+  redirect(`/auth/login`);
+}
+
+export async function submitVerificaAccount(formData: FormData) {
+  var object: any = {};
+  formData.forEach((value, key) => (object[key] = value));
+
+  var { email } = object;
+
+  if (email) {
+    var user = await getUserByEmail(email);
+
+    if (user) {
+      var token = await generateNewActivationToken(email);
+      var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${token}&email=${email}`;
+      mailService.initService();
+      await mailService.sendActivateAccountCode(user.email, activationUrl);
+    }
+
+    pushMessage({
+      text: "Controlla la tua email per attivare il tuo account",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta non valida",
+      type: MessageType.ERROR,
+    });
+  }
+  redirect(`/auth/login`);
 }

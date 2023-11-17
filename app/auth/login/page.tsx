@@ -11,20 +11,20 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import FormSignin from "@/components/account/FormSignin";
-
-export const revalidate = false
-
-
+import LoginForm from "@/components/forms/LoginForm";
 
 export async function generateMetadata({ params }: any) {
   return {
-    title: "Signin",
+    title: "Login",
   }
 }
-export default async function Signin({ searchParams }: any) {
+
+import { getCsrfToken } from "next-auth/react"
 
 
+export default async function Login({ searchParams }: any) {
+
+  var csrfToken = await getCsrfToken();
 
   return (
     <main className="flex flex-col flex-grow">
@@ -42,21 +42,21 @@ export default async function Signin({ searchParams }: any) {
       <HeaderMenu>
         <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
           <li>
-            <BreadcrumbLink href="/account/login">
+            <BreadcrumbLink href="/auth/login">
               Profilo
             </BreadcrumbLink>
           </li>
           <li>::</li>
-          <li>Crea account</li>
+          <li>Accedi</li>
         </ol>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>
       </div>
-      <div className='flex flex-grow justify-center items-start md:items-center'>
-        <FormSignin></FormSignin>
+      <div className='flex flex-grow flex-col justify-center items-center'>
+        <LoginForm callbackUrl={searchParams.callbackUrl ?? "/account"} csrfToken={csrfToken} ></LoginForm>
       </div>
-    </main>
+    </main >
   );
 }
 

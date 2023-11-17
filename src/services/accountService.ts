@@ -23,6 +23,24 @@ export async function createUser(data: Prisma.userCreateInput) {
   }
 }
 
+export async function generateNewActivationToken(email: string) {
+  var token = generator.generate({
+    length: 20,
+    numbers: true,
+  });
+
+  await prisma.user.update({
+    data: {
+      activationToken: token,
+    },
+    where: {
+      email: email,
+    },
+  });
+
+  return token;
+}
+
 export async function validateUserLogin(data: {
   email: string;
   password: string;
@@ -51,6 +69,19 @@ export async function getUserByEmail(email: string) {
       role: true,
       verified: true,
       email: true,
+    },
+  });
+}
+
+export async function activateAccount(email: string, token: string) {
+  return await prisma.user.update({
+    data: {
+      activationToken: null,
+      verified: true,
+    },
+    where: {
+      email: email,
+      activationToken: token,
     },
   });
 }

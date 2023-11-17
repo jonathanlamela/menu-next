@@ -1,10 +1,10 @@
-import { getUser } from "@/src/services/accountService";
 import { getCart } from "@/src/services/cartService";
 import Link from "next/link";
 
 
 export default async function CheckoutButton() {
-    const user = await getUser();
+
+    const user = null;
 
     if (user) {
         return <>
