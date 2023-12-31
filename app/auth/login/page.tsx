@@ -20,6 +20,9 @@ export async function generateMetadata({ params }: any) {
 }
 
 import { getCsrfToken } from "next-auth/react"
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 
 export default async function Login({ searchParams }: any) {
@@ -40,15 +43,13 @@ export default async function Login({ searchParams }: any) {
 
       <Header></Header>
       <HeaderMenu>
-        <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-          <li>
-            <BreadcrumbLink href="/auth/login">
-              Profilo
-            </BreadcrumbLink>
-          </li>
-          <li>::</li>
-          <li>Accedi</li>
-        </ol>
+        <BreadcrumbContainer>
+          <BreadcrumbLink href="/auth/login">
+            Profilo
+          </BreadcrumbLink>
+          <BreadcrumbDivider></BreadcrumbDivider>
+          <BreadcrumbText>Accedi</BreadcrumbText>
+        </BreadcrumbContainer>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>

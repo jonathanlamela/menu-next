@@ -6,7 +6,7 @@ export async function GET(request: Request) {
 
   if (cookiesList.get("cart")) {
     let buff = Buffer.from(cookiesList.get("cart")!.value, "base64");
-    let string_decoded = buff.toString("utf-8");
+    let string_decoded = buff.toString("utf8");
     return NextResponse.json({ cart: JSON.parse(string_decoded) });
   } else {
     return NextResponse.json({});

@@ -10,7 +10,7 @@ export async function getMessage(): Promise<Message | null> {
 
     if (cookiesList.has("message")) {
         let buff = Buffer.from(cookiesList.get("message")!.value, "base64");
-        let string_decoded = buff.toString("utf-8");
+        let string_decoded = buff.toString("utf8");
 
 
         return JSON.parse(string_decoded);

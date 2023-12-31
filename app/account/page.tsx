@@ -14,6 +14,9 @@ import Messages from "@/components/Messages";
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import authOptions from "@/src/authOptions";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -41,15 +44,13 @@ export default async function IlMioProfilo({ searchParams }: any) {
 
             <Header></Header>
             <HeaderMenu>
-                <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-                    <li>
-                        <BreadcrumbLink href="/account">
-                            Profilo
-                        </BreadcrumbLink>
-                    </li>
-                    <li>::</li>
-                    <li>Il mio profilo</li>
-                </ol>
+                <BreadcrumbContainer>
+                    <BreadcrumbLink href="/account">
+                        Profilo
+                    </BreadcrumbLink>
+                    <BreadcrumbDivider></BreadcrumbDivider>
+                    <BreadcrumbText>Il mio profilo</BreadcrumbText>
+                </BreadcrumbContainer>
             </HeaderMenu>
             <div className="px-8 pt-8">
                 <Messages></Messages>

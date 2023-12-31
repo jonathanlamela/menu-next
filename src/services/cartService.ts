@@ -60,9 +60,10 @@ export const updateCartTipologiaConsegna = async (item: DeliveryType) => {
   storeCart(cart);
 };
 
-export const updateCartInformazioniConsegna = async (
-  item: { delivery_address: string; delivery_time: string },
-) => {
+export const updateCartInformazioniConsegna = async (item: {
+  delivery_address: string;
+  delivery_time: string;
+}) => {
   const cart = await getCart();
 
   cart.delivery_address = item.delivery_address;
@@ -88,7 +89,7 @@ export async function getCart(): Promise<CartState> {
 
   if (cookiesList.get("cart")) {
     let buff = Buffer.from(cookiesList.get("cart")!.value, "base64");
-    let string_decoded = buff.toString("utf-8");
+    let string_decoded = buff.toString("utf8");
     return JSON.parse(string_decoded);
   } else {
     return emptyCart;
@@ -102,8 +103,7 @@ export async function storeCart(cart: CartState) {
     //Update the total
     cart.total = 0;
     Object.values(cart.items).forEach((row: any) => {
-      cart.total += row.item.price! *
-        row.quantity;
+      cart.total += row.item.price! * row.quantity;
     });
 
     let buff = Buffer.from(JSON.stringify(cart), "utf8");

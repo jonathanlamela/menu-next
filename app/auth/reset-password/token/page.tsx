@@ -15,6 +15,9 @@ import ResetPasswordUpdateForm from "@/components/forms/ResetPasswordUpdateForm"
 import { redirect, useRouter } from "next/navigation";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 export async function generateMetadata({ params }: any) {
   return {
@@ -46,15 +49,13 @@ export default async function ResetPassword({ searchParams }: any) {
 
       <Header></Header>
       <HeaderMenu>
-        <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-          <li>
-            <BreadcrumbLink href="/auth/login">
-              Profilo
-            </BreadcrumbLink>
-          </li>
-          <li>::</li>
-          <li>Reset password</li>
-        </ol>
+        <BreadcrumbContainer>
+          <BreadcrumbLink href="/auth/login">
+            Profilo
+          </BreadcrumbLink>
+          <BreadcrumbDivider></BreadcrumbDivider>
+          <BreadcrumbText>Reset password</BreadcrumbText>
+        </BreadcrumbContainer>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>

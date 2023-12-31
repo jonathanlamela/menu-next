@@ -12,6 +12,9 @@ import TopbarRight from "@/components/TopbarRight";
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
 import FormSignin from "@/components/forms/SigninForm";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 export const revalidate = false
 
@@ -40,15 +43,13 @@ export default async function Signin({ searchParams }: any) {
 
       <Header></Header>
       <HeaderMenu>
-        <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-          <li>
-            <BreadcrumbLink href="/auth/login">
-              Profilo
-            </BreadcrumbLink>
-          </li>
-          <li>::</li>
-          <li>Crea account</li>
-        </ol>
+        <BreadcrumbContainer>
+          <BreadcrumbLink href="/auth/login">
+            Profilo
+          </BreadcrumbLink>
+          <BreadcrumbDivider></BreadcrumbDivider>
+          <BreadcrumbText>Crea account</BreadcrumbText>
+        </BreadcrumbContainer>
       </HeaderMenu>
       <div className="px-8 pt-8">
         <Messages></Messages>

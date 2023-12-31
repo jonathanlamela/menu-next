@@ -1,4 +1,8 @@
 import AccountManage from "@/components/AccountManage";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbLink from "@/components/BreadcrumbLink";
+import BreadcrumbText from "@/components/BreadcrumbText";
 import CartButton from "@/components/CartButton";
 import FoodItemWithCategory from "@/components/FoodItemWithCategory";
 import Header from "@/components/Header";
@@ -70,13 +74,13 @@ export default async function Cerca(props: any) {
       </Topbar>
       <Header></Header>
       <HeaderMenu>
-        <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-          <li>
+        <BreadcrumbContainer>
+          <BreadcrumbLink href="/">
             Home
-          </li>
-          <li>::</li>
-          <li>Ricerca</li>
-        </ol>
+          </BreadcrumbLink>
+          <BreadcrumbDivider></BreadcrumbDivider>
+          <BreadcrumbText>Ricerca</BreadcrumbText>
+        </BreadcrumbContainer>
       </HeaderMenu>
       {content()}
     </main>

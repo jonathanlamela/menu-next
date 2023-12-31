@@ -11,6 +11,9 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 
 export async function generateMetadata({ params }: any) {
@@ -38,15 +41,13 @@ export default function IlMioProfilo({ searchParams }: any) {
 
             <Header></Header>
             <HeaderMenu>
-                <ol className="flex flex-row space-x-2 items-center pl-8 text-white h-16">
-                    <li>
-                        <BreadcrumbLink href="/account">
-                            Profilo
-                        </BreadcrumbLink>
-                    </li>
-                    <li>::</li>
-                    <li>Accesso negato</li>
-                </ol>
+                <BreadcrumbContainer>
+                    <BreadcrumbLink href="/">
+                        Home
+                    </BreadcrumbLink>
+                    <BreadcrumbDivider></BreadcrumbDivider>
+                    <BreadcrumbText>Accesso negato</BreadcrumbText>
+                </BreadcrumbContainer>
             </HeaderMenu>
             <div className="px-8 pt-8">
                 <Messages></Messages>
