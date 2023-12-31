@@ -11,7 +11,6 @@ import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
 import { signinValidator } from "@/src/validators";
-import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 export async function submitSignin(formData: FormData) {
