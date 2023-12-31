@@ -32,6 +32,7 @@ const options: AuthOptions = {
       var userStatus = await getUserByEmail(token!.email);
 
       session.user = userStatus;
+      //session.user.role = userStatus?.role;
 
       return session;
     },

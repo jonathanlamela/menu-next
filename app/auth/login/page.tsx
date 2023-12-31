@@ -19,7 +19,6 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
-import { getCsrfToken } from "next-auth/react"
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
@@ -27,7 +26,6 @@ import BreadcrumbText from "@/components/BreadcrumbText";
 
 export default async function Login({ searchParams }: any) {
 
-  var csrfToken = await getCsrfToken();
 
   return (
     <main className="flex flex-col flex-grow">
@@ -40,7 +38,6 @@ export default async function Login({ searchParams }: any) {
           <AccountManage></AccountManage>
         </TopbarRight>
       </Topbar>
-
       <Header></Header>
       <HeaderMenu>
         <BreadcrumbContainer>
@@ -55,9 +52,9 @@ export default async function Login({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <LoginForm callbackUrl={searchParams.callbackUrl ?? "/account"} csrfToken={csrfToken} ></LoginForm>
+        <LoginForm callbackUrl={searchParams.callbackUrl ?? "/account"} ></LoginForm>
       </div>
-    </main >
+    </main>
   );
 }
 

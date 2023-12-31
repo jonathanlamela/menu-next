@@ -7,7 +7,7 @@ export default withAuth(
     const token: any = await getToken({ req: req });
 
     if (token) {
-      if (req.nextUrl.pathname.startsWith("/admin")) {
+      if (req.nextUrl.pathname.startsWith("/amministrazione")) {
         if (token.role != "admin") {
           return NextResponse.redirect(new URL("/403", req.url));
         }
@@ -21,4 +21,6 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/account/:path*", "/admin/:path*"] };
+export const config = {
+  matcher: ["/account/:path*", "/amministrazione/:path*"],
+};

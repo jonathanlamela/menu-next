@@ -11,23 +11,17 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import { getServerSession } from "next-auth";
-import authOptions from "@/src/authOptions";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
 
 export async function generateMetadata({ params }: any) {
     return {
-        title: "Categorie",
+        title: "Corrieri",
     }
 }
 
-
-export default async function IlMioProfilo({ searchParams }: any) {
-
-    const data = await getServerSession(authOptions);
-
+export default async function Index({ searchParams }: any) {
 
     return (
         <main className="flex flex-col flex-grow">
@@ -48,7 +42,9 @@ export default async function IlMioProfilo({ searchParams }: any) {
                         Profilo
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Gestione categorie</BreadcrumbText>
+                    <BreadcrumbText>Vendite</BreadcrumbText>
+                    <BreadcrumbDivider></BreadcrumbDivider>
+                    <BreadcrumbText>Corrieri</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
             <div className="px-8 pt-8">
