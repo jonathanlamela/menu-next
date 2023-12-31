@@ -1,12 +1,11 @@
 "use server";
 
-import { CartItem, CartState, DeliveryType } from "@/src/types";
+import { CartItem, CartRow, CartState, DeliveryType } from "@/src/types";
 import { cookies } from "next/headers";
 
 const emptyCart: CartState = {
   delivery_address: "",
   delivery_time: "",
-  delivery_type: DeliveryType.ASPORTO,
   items: {},
   note: "",
   total: 0,
@@ -52,10 +51,10 @@ export const decreaseQty = async (item: CartItem) => {
   storeCart(cart);
 };
 
-export const updateCartTipologiaConsegna = async (item: DeliveryType) => {
+export const updateCartCarrier = async (carrier_id: number) => {
   const cart = await getCart();
 
-  cart.delivery_type = item;
+  cart.carrier_id = carrier_id;
 
   storeCart(cart);
 };
@@ -102,7 +101,7 @@ export async function storeCart(cart: CartState) {
   if (cart) {
     //Update the total
     cart.total = 0;
-    Object.values(cart.items).forEach((row: any) => {
+    Object.values(cart.items).forEach((row: CartRow) => {
       cart.total += row.item.price! * row.quantity;
     });
 

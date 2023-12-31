@@ -121,9 +121,9 @@ export type DeliveryTypeFields = {
 export type CartState = {
   items: { [name: string]: CartRow };
   total: number;
-  delivery_type: DeliveryType;
   delivery_address: string;
   delivery_time: string;
+  carrier_id?: number;
   note: string;
 };
 
