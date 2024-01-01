@@ -1,5 +1,7 @@
 "use server";
 
+import authOptions from "@/src/authOptions";
+import { prisma } from "@/src/lib/prisma";
 import {
   createUser,
   generateNewActivationToken,
@@ -10,7 +12,8 @@ import {
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
-import { signinValidator } from "@/src/validators";
+import { personalInfoValidator, signinValidator } from "@/src/validators";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export async function submitSignin(formData: FormData) {
@@ -47,6 +50,42 @@ export async function submitSignin(formData: FormData) {
   }
 
   redirect(`/auth/login`);
+}
+
+export async function submitPersonalInfo(formData: FormData) {
+  var object: any = {};
+  formData.forEach((value, key) => (object[key] = value));
+
+  var validationResult = await personalInfoValidator.isValid(object);
+
+  const data = await getServerSession(authOptions);
+
+  if (validationResult) {
+    var { firstname, lastname } = object;
+
+    await prisma.user.update({
+      where: {
+        email: data!.user!.email!,
+      },
+      data: {
+        firstname: firstname,
+        lastname: lastname,
+      },
+    });
+
+    pushMessage({
+      text: "Informazioni aggiornate con successo",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text:
+        "Si è verificato un errore durante l'aggiornamento delle informazioni",
+      type: MessageType.ERROR,
+    });
+  }
+
+  redirect(`/account/informazioni-personali`);
 }
 
 export async function submitVerificaAccount(formData: FormData) {
