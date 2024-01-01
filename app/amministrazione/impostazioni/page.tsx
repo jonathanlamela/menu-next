@@ -34,7 +34,6 @@ export default async function Index({ searchParams }: any) {
                     <AccountManage></AccountManage>
                 </TopbarRight>
             </Topbar>
-
             <Header></Header>
             <HeaderMenu>
                 <BreadcrumbContainer>

@@ -12,6 +12,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.1.1",
     "@prisma/client": "^5.5.2",
     "@reduxjs/toolkit": "^1.9.5",
