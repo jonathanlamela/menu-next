@@ -1,9 +1,11 @@
 'use client';
 
+import ButtonCircularProgress from "@/components/ButtonCircularProgress";
 import { submitChangePassword } from "@/src/actions";
 import { ChangePasswordFields } from "@/src/types";
 import { changePasswordValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 
@@ -15,14 +17,19 @@ export default function ChangePasswordForm({ email }: any) {
         mode: "onChange"
     });
 
+    const [isPending, setIsPending] = useState(false);
+
+
     const processForm: SubmitHandler<ChangePasswordFields> = async data => {
+        setIsPending(true);
         const response: { result: string | undefined } = await submitChangePassword(data);
 
         if (response.result == "success") {
             reset();
         }
-    }
 
+        setIsPending(false);
+    }
 
     return <>
         <div className="w-full pb-4">
@@ -62,6 +69,7 @@ export default function ChangePasswordForm({ email }: any) {
 
             <div className="flex flex-row space-x-2">
                 <button disabled={!isValid} type="submit" className="btn-primary">
+                    <ButtonCircularProgress isPending={isPending} />
                     <span>Cambia password</span>
                 </button>
             </div>

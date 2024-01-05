@@ -1,16 +1,18 @@
 'use client'
 
+import ButtonCircularProgress from "@/components/ButtonCircularProgress";
 import { submitPersonalInfo } from "@/src/actions";
 import { PersonalInfoFields } from "@/src/types";
 import { personalInfoValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 export default function PersonalInfoForm({ user }: any) {
 
 
-    const { register, formState: { errors, isValid } } = useForm<PersonalInfoFields>({
+    const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<PersonalInfoFields>({
         resolver: yupResolver(personalInfoValidator),
         reValidateMode: 'onChange',
         mode: 'onChange',
@@ -19,12 +21,24 @@ export default function PersonalInfoForm({ user }: any) {
             lastname: user!.lastname
         }
     });
+    const [isPending, setIsPending] = useState(false);
+
+
+    const processForm = async (data: PersonalInfoFields) => {
+        setIsPending(true);
+        var response = await submitPersonalInfo(data);
+        setIsPending(false);
+
+        if (response.result == "success") {
+            reset();
+        }
+    }
 
     return <>
         <div className="w-full">
             <p className="text-2xl antialiased font-bold">Informazioni personali</p>
         </div>
-        <form className="w-full md:p-0 md:w-1/2 lg:w-1/3 flex flex-col" action={submitPersonalInfo} method='post'>
+        <form className="w-full md:p-0 md:w-1/2 lg:w-1/3 flex flex-col" onSubmit={handleSubmit(processForm)} method='post'>
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Nome</label>
                 <input
@@ -45,6 +59,7 @@ export default function PersonalInfoForm({ user }: any) {
             </div>
             <div className="flex flex-row space-x-2">
                 <button disabled={!isValid} type="submit" className="btn-primary">
+                    <ButtonCircularProgress isPending={isPending} />
                     <span>Aggiorna informazioni</span>
                 </button>
             </div>

@@ -13,7 +13,11 @@ import {
 } from "@/src/services/accountService";
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
-import { ChangePasswordFields, MessageType } from "@/src/types";
+import {
+  ChangePasswordFields,
+  MessageType,
+  PersonalInfoFields,
+} from "@/src/types";
 import {
   changePasswordValidator,
   personalInfoValidator,
@@ -58,35 +62,35 @@ export async function submitSignin(formData: FormData) {
   redirect(`/auth/login`);
 }
 
-export async function submitPersonalInfo(formData: FormData) {
-  var object: any = {};
-  formData.forEach((value, key) => (object[key] = value));
-
+export async function submitPersonalInfo(object: PersonalInfoFields) {
   var validationResult = await personalInfoValidator.isValid(object);
 
   const data = await getServerSession(authOptions);
 
   if (validationResult) {
-    var { firstname, lastname } = object;
-
     updatePersonalInfo(data?.user!.email!, {
-      firstname: firstname,
-      lastname: lastname,
+      firstname: object.firstname,
+      lastname: object.lastname,
     });
 
     pushMessage({
       text: "Informazioni aggiornate con successo",
       type: MessageType.SUCCESS,
     });
+
+    return {
+      result: "success",
+    };
   } else {
     pushMessage({
       text:
         "Si è verificato un errore durante l'aggiornamento delle informazioni",
       type: MessageType.ERROR,
     });
+    return {
+      result: "failed",
+    };
   }
-
-  redirect(`/account/informazioni-personali`);
 }
 
 export async function submitVerificaAccount(formData: FormData) {
