@@ -60,22 +60,6 @@ export async function generateResetPasswordToken(email: string) {
   return token;
 }
 
-export async function validateUserLogin(data: {
-  email: string;
-  password: string;
-}) {
-  var user = await prisma.user.findFirst({
-    select: {
-      passwordHash: true,
-    },
-    where: {
-      email: data.email,
-    },
-  });
-
-  return user != null && bcrypt.compare(data.password, user.passwordHash);
-}
-
 export async function getUserByEmail(email: string) {
   return await prisma.user.findFirst({
     where: {
@@ -91,7 +75,6 @@ export async function getUserByEmail(email: string) {
     },
   });
 }
-
 export async function activateAccount(email: string, token: string) {
   return await prisma.user.update({
     data: {
@@ -145,10 +128,10 @@ export async function updatePersonalInfo(
   });
 }
 
-const validateLogin = async (
+export async function validateLogin(
   email: string,
   password: string
-): Promise<boolean> => {
+): Promise<boolean> {
   var user = await prisma.user.findFirst({
     where: {
       email: email,
@@ -160,7 +143,7 @@ const validateLogin = async (
   } else {
     return false;
   }
-};
+}
 
 export async function updatePassword(
   currentPassword: string,

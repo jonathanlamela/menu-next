@@ -14,10 +14,11 @@ import Messages from "@/components/Messages";
 import ResetPasswordUpdateForm from "@/components/forms/ResetPasswordUpdateForm";
 import { redirect, useRouter } from "next/navigation";
 import { pushMessage } from "@/src/services/messageService";
-import { MessageType } from "@/src/types";
+import { MessageType, ResetPasswordTokenFields } from "@/src/types";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
+import { updatePasswordByToken } from "@/src/services/accountService";
 
 export async function generateMetadata({ params }: any) {
   return {
@@ -29,6 +30,27 @@ async function validateRequest(searchParams: any) {
   if (!searchParams.token) {
     redirect("/auth/login");
   }
+}
+
+async function action(object: ResetPasswordTokenFields) {
+  'use server';
+  var { password, token } = object;
+
+  var result = await updatePasswordByToken(password, token);
+
+  if (result) {
+    pushMessage({
+      text: "Password cambiata con successo",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta fallita",
+      type: MessageType.ERROR,
+    });
+  }
+
+  redirect(`/auth/login`);
 }
 
 export default async function ResetPassword({ searchParams }: any) {
@@ -61,7 +83,7 @@ export default async function ResetPassword({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <ResetPasswordUpdateForm />
+        <ResetPasswordUpdateForm action={action} />
       </div>
     </main>
   );

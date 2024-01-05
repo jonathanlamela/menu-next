@@ -1,17 +1,18 @@
 
 import AccountManage from "@/components/AccountManage";
 import CartButton from "@/components/CartButton";
-
 import Header from "@/components/Header";
 import HeaderMenu from "@/components/HeaderMenu";
 import HomeButton from "@/components/HomeButton";
 import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
-
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
 import LoginForm from "@/components/forms/LoginForm";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import BreadcrumbDivider from "@/components/BreadcrumbDivider";
+import BreadcrumbText from "@/components/BreadcrumbText";
 
 export async function generateMetadata({ params }: any) {
   return {
@@ -19,13 +20,8 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
-import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import BreadcrumbDivider from "@/components/BreadcrumbDivider";
-import BreadcrumbText from "@/components/BreadcrumbText";
-
 
 export default async function Login({ searchParams }: any) {
-
 
   return (
     <main className="flex flex-col flex-grow">

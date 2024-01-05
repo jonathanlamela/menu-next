@@ -1,7 +1,6 @@
 'use client';
 
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { submitChangePassword } from "@/src/actions";
 import { ChangePasswordFields } from "@/src/types";
 import { changePasswordValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +8,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 
-export default function ChangePasswordForm({ email }: any) {
+export default function ChangePasswordForm({ email, action }: any) {
 
     const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<ChangePasswordFields>({
         resolver: yupResolver(changePasswordValidator),
@@ -22,7 +21,7 @@ export default function ChangePasswordForm({ email }: any) {
 
     const processForm: SubmitHandler<ChangePasswordFields> = async data => {
         setIsPending(true);
-        const response: { result: string | undefined } = await submitChangePassword(data);
+        const response: { result: string | undefined } = await action(data);
 
         if (response.result == "success") {
             reset();

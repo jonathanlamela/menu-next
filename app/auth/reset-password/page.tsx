@@ -11,18 +11,50 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import LoginForm from "@/components/forms/LoginForm";
-import VerificaAccount from "@/components/forms/VerificaAccountForm";
-import VerificaAccountForm from "@/components/forms/VerificaAccountForm";
 import ResetPasswordRequireForm from "@/components/forms/ResetPasswordRequireForm";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
+import { generateResetPasswordToken, getUserByEmail } from "@/src/services/accountService";
+import mailService from "@/src/services/mailService";
+import { pushMessage } from "@/src/services/messageService";
+import { MessageType, ResetPasswordFields } from "@/src/types";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params }: any) {
   return {
     title: "Reset password",
   }
+}
+
+async function processForm(object: ResetPasswordFields) {
+  'use server';
+
+  var { email } = object;
+
+  if (email) {
+    var user = await getUserByEmail(email);
+
+    if (user) {
+      var token = await generateResetPasswordToken(email);
+      mailService.initService();
+      await mailService.sendResetPassword(
+        user.email,
+        `${process.env.SERVER_URL}/auth/reset-password/token?token=${token}`
+      );
+    }
+
+    pushMessage({
+      text: "Controlla la tua email per resettare la tua password",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta non valida",
+      type: MessageType.ERROR,
+    });
+  }
+  redirect(`/auth/login`);
 }
 
 
@@ -56,7 +88,7 @@ export default async function ResetPassword({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <ResetPasswordRequireForm />
+        <ResetPasswordRequireForm action={processForm} />
       </div>
     </main>
   );

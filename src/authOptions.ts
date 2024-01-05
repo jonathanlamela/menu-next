@@ -1,7 +1,4 @@
-import {
-  getUserByEmail,
-  validateUserLogin,
-} from "@/src/services/accountService";
+import { getUserByEmail, validateLogin } from "@/src/services/accountService";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
 import { AuthOptions } from "next-auth";
@@ -51,12 +48,7 @@ const options: AuthOptions = {
       },
 
       async authorize(credentials, req) {
-        if (
-          await validateUserLogin({
-            email: credentials!.email,
-            password: credentials!.password,
-          })
-        ) {
+        if (await validateLogin(credentials!.email, credentials!.password)) {
           var userStatus = await getUserByEmail(credentials!.email);
           if (userStatus) {
             if (userStatus.verified) {

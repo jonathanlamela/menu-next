@@ -1,18 +1,19 @@
 'use client';
-import { submitResetPasswordByToken, submitResetPasswordRequest, submitVerificaAccount } from "@/src/actions";
-import { ResetPasswordFields, ResetPasswordTokenFields, VerifyAccountFields } from "@/src/types";
+import ButtonCircularProgress from "@/components/ButtonCircularProgress";
+import { ResetPasswordTokenFields } from "@/src/types";
 import { resetPasswordTokenValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
-export default function ResetPasswordUpdateForm() {
+export default function ResetPasswordUpdateForm({ action }: any) {
 
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
 
-    const { register, formState: { errors, isValid } } = useForm<ResetPasswordTokenFields>({
+    const { register, formState: { errors, isValid }, handleSubmit } = useForm<ResetPasswordTokenFields>({
         resolver: yupResolver(resetPasswordTokenValidator),
         mode: "onChange",
         reValidateMode: "onChange",
@@ -21,8 +22,17 @@ export default function ResetPasswordUpdateForm() {
         },
     });
 
+    const processForm = async (data: ResetPasswordTokenFields) => {
+        setIsPending(true);
+        await action(data);
+        setIsPending(false);
+    }
+
+    const [isPending, setIsPending] = useState(false);
+
+
     return <>
-        <form className="w-full md:w-1/2 lg:w-1/3 flex flex-col space-y-2" action={submitResetPasswordByToken}>
+        <form className="w-full md:w-1/2 lg:w-1/3 flex flex-col space-y-2" onSubmit={handleSubmit(processForm)}>
             <input type="hidden"
                 {...register("token")}
             />
@@ -49,6 +59,7 @@ export default function ResetPasswordUpdateForm() {
             </div>
             <div className="flex flex-row space-x-2">
                 <button disabled={!isValid} type="submit" className="btn-primary">
+                    <ButtonCircularProgress isPending={isPending} />
                     <span>Reset password</span>
                 </button>
             </div>

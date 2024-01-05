@@ -11,7 +11,6 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import authOptions from "@/src/authOptions";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";

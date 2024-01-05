@@ -17,6 +17,10 @@ import BreadcrumbText from "@/components/BreadcrumbText";
 import ChangePasswordForm from "@/components/forms/ChangePasswordForm";
 import { getServerSession } from "next-auth";
 import authOptions from "@/src/authOptions";
+import { pushMessage } from "@/src/services/messageService";
+import { ChangePasswordFields, MessageType } from "@/src/types";
+import { changePasswordValidator } from "@/src/validators";
+import { updatePassword } from "@/src/services/accountService";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -24,6 +28,45 @@ export async function generateMetadata({ params }: any) {
     }
 }
 
+async function performAction(dataObj: ChangePasswordFields) {
+    'use server';
+    const data = await getServerSession(authOptions);
+
+    var validationResult = await changePasswordValidator.isValid(dataObj);
+
+    if (validationResult && data?.user) {
+        var result = await updatePassword(
+            dataObj.current_password,
+            dataObj.password,
+            data?.user?.email!
+        );
+
+        if (result) {
+            pushMessage({
+                text: "Password cambiata con successo",
+                type: MessageType.SUCCESS,
+            });
+
+            return {
+                result: "success",
+            };
+        } else {
+            pushMessage({
+                text:
+                    "Impossibile eseguire l'operazione, la password attuale potrebbe essere errata",
+                type: MessageType.ERROR,
+            });
+
+            return {
+                result: "failed",
+            };
+        }
+    } else {
+        return {
+            result: "failed",
+        };
+    }
+}
 
 export default async function Index() {
 
@@ -51,7 +94,7 @@ export default async function Index() {
             </HeaderMenu>
             <div className="pl-8 pr-8 pt-8 flex flex-col space-y-4 pb-8">
                 <Messages></Messages>
-                <ChangePasswordForm></ChangePasswordForm>
+                <ChangePasswordForm action={performAction}></ChangePasswordForm>
             </div>
         </main>
     );

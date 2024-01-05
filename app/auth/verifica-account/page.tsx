@@ -11,12 +11,15 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import LoginForm from "@/components/forms/LoginForm";
-import VerificaAccount from "@/components/forms/VerificaAccountForm";
 import VerificaAccountForm from "@/components/forms/VerificaAccountForm";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
+import mailService from "@/src/services/mailService";
+import { pushMessage } from "@/src/services/messageService";
+import { VerifyAccountFields, MessageType } from "@/src/types";
+import { redirect } from "next/navigation";
+import { getUserByEmail, generateNewActivationToken } from "@/src/services/accountService";
 
 export async function generateMetadata({ params }: any) {
   return {
@@ -24,9 +27,35 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
+async function action(object: VerifyAccountFields) {
+  'use server';
+  var { email } = object;
+
+  if (email) {
+    var user = await getUserByEmail(email);
+
+    if (user) {
+      var token = await generateNewActivationToken(email);
+      var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${token}&email=${email}`;
+      mailService.initService();
+      await mailService.sendActivateAccountCode(user.email, activationUrl);
+    }
+
+    pushMessage({
+      text: "Controlla la tua email per attivare il tuo account",
+      type: MessageType.SUCCESS,
+    });
+  } else {
+    pushMessage({
+      text: "Richiesta non valida",
+      type: MessageType.ERROR,
+    });
+  }
+  redirect(`/auth/login`);
+}
 
 
-export default async function Login({ searchParams }: any) {
+export default async function Page({ searchParams }: any) {
 
 
   return (
@@ -55,7 +84,7 @@ export default async function Login({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <VerificaAccountForm></VerificaAccountForm>
+        <VerificaAccountForm action={action}></VerificaAccountForm>
       </div>
     </main>
   );
