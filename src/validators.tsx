@@ -82,9 +82,7 @@ export const updateCategoryValidator = yup.object().shape<SchemaObject<UpdateCat
 }).required();
 
 export const changePasswordValidator = yup.object().shape<SchemaObject<ChangePasswordFields>>({
-  email: yup.string().email("Inserisci un indirizzo email valido").required(
-    "Questo campo è obbligatorio",
-  ),
+
   current_password: yup.string().required("La password attuale è obbligatoria"),
   password: yup.string().matches(
     RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"),

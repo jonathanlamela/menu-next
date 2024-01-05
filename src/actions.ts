@@ -7,12 +7,18 @@ import {
   generateNewActivationToken,
   generateResetPasswordToken,
   getUserByEmail,
+  updatePassword,
   updatePasswordByToken,
+  updatePersonalInfo,
 } from "@/src/services/accountService";
 import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
-import { MessageType } from "@/src/types";
-import { personalInfoValidator, signinValidator } from "@/src/validators";
+import { ChangePasswordFields, MessageType } from "@/src/types";
+import {
+  changePasswordValidator,
+  personalInfoValidator,
+  signinValidator,
+} from "@/src/validators";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -63,14 +69,9 @@ export async function submitPersonalInfo(formData: FormData) {
   if (validationResult) {
     var { firstname, lastname } = object;
 
-    await prisma.user.update({
-      where: {
-        email: data!.user!.email!,
-      },
-      data: {
-        firstname: firstname,
-        lastname: lastname,
-      },
+    updatePersonalInfo(data?.user!.email!, {
+      firstname: firstname,
+      lastname: lastname,
     });
 
     pushMessage({
@@ -169,4 +170,43 @@ export async function submitResetPasswordByToken(formData: FormData) {
   }
 
   redirect(`/auth/login`);
+}
+
+export async function submitChangePassword(dataObj: ChangePasswordFields) {
+  const data = await getServerSession(authOptions);
+
+  var validationResult = await changePasswordValidator.isValid(dataObj);
+
+  if (validationResult && data?.user) {
+    var result = await updatePassword(
+      dataObj.current_password,
+      dataObj.password,
+      data?.user?.email!
+    );
+
+    if (result) {
+      pushMessage({
+        text: "Password cambiata con successo",
+        type: MessageType.SUCCESS,
+      });
+
+      return {
+        result: "success",
+      };
+    } else {
+      pushMessage({
+        text:
+          "Impossibile eseguire l'operazione, la password attuale potrebbe essere errata",
+        type: MessageType.ERROR,
+      });
+
+      return {
+        result: "failed",
+      };
+    }
+  } else {
+    return {
+      result: "failed",
+    };
+  }
 }

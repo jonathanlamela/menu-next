@@ -14,6 +14,9 @@ import Messages from "@/components/Messages";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
+import ChangePasswordForm from "@/components/forms/ChangePasswordForm";
+import { getServerSession } from "next-auth";
+import authOptions from "@/src/authOptions";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -22,9 +25,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 
-export default async function Index({ searchParams }: any) {
-
-
+export default async function Index() {
 
     return (
         <main className="flex flex-col flex-grow">
@@ -50,6 +51,7 @@ export default async function Index({ searchParams }: any) {
             </HeaderMenu>
             <div className="pl-8 pr-8 pt-8 flex flex-col space-y-4 pb-8">
                 <Messages></Messages>
+                <ChangePasswordForm></ChangePasswordForm>
             </div>
         </main>
     );

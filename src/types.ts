@@ -34,7 +34,6 @@ export type UpdateCategoryFields = CategoryFields & {
 };
 
 export type ChangePasswordFields = {
-  email: string;
   current_password: string;
   password: string;
   password_confirmation: string;

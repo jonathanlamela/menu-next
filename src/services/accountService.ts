@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/src/lib/prisma";
+import { PersonalInfoFields } from "@/src/types";
 import { Prisma } from "@prisma/client";
 const bcrypt = require("bcrypt");
 var generator = require("generate-password");
@@ -121,6 +122,58 @@ export async function updatePasswordByToken(password: string, token: string) {
       },
       where: {
         id: user.id,
+      },
+    });
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export async function updatePersonalInfo(
+  email: string,
+  data: PersonalInfoFields
+) {
+  return await prisma.user.update({
+    where: {
+      email: email,
+    },
+    data: {
+      firstname: data.firstname,
+      lastname: data.lastname,
+    },
+  });
+}
+
+const validateLogin = async (
+  email: string,
+  password: string
+): Promise<boolean> => {
+  var user = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  if (user) {
+    return bcrypt.compareSync(password, user.passwordHash);
+  } else {
+    return false;
+  }
+};
+
+export async function updatePassword(
+  currentPassword: string,
+  newPassword: string,
+  userEmail: string
+) {
+  if (await validateLogin(userEmail, currentPassword)) {
+    await prisma.user.update({
+      data: {
+        passwordHash: bcrypt.hashSync(newPassword, 10),
+      },
+      where: {
+        email: userEmail,
       },
     });
     return true;
