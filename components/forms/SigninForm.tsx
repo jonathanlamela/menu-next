@@ -1,13 +1,13 @@
 'use client';
-import { MessageType, SigninFields } from "@/src/types";
+import { SigninFields } from "@/src/types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinValidator } from "@/src/validators";
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { isPending } from "@reduxjs/toolkit";
 import { useState } from "react";
+import { signinAction } from "@/src/actions/account";
 
-export default function FormSignin({ action }: any) {
+export default function FormSignin() {
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<SigninFields>({
         resolver: yupResolver(signinValidator),
@@ -20,7 +20,7 @@ export default function FormSignin({ action }: any) {
 
     const processForm = async (data: SigninFields) => {
         setIsPending(true);
-        await action(data);
+        await signinAction(data);
         setIsPending(false);
     }
 

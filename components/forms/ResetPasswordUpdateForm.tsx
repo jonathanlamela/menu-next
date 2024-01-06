@@ -1,5 +1,6 @@
 'use client';
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
+import { resetPasswordTokenAction } from "@/src/actions/account";
 import { ResetPasswordTokenFields } from "@/src/types";
 import { resetPasswordTokenValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,7 +9,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
-export default function ResetPasswordUpdateForm({ action }: any) {
+export default function ResetPasswordUpdateForm() {
 
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
@@ -24,7 +25,7 @@ export default function ResetPasswordUpdateForm({ action }: any) {
 
     const processForm = async (data: ResetPasswordTokenFields) => {
         setIsPending(true);
-        await action(data);
+        await resetPasswordTokenAction(data);
         setIsPending(false);
     }
 

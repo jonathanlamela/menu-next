@@ -99,7 +99,6 @@ export async function storeCart(cart: CartState) {
   const cookiesList = cookies();
 
   if (cart) {
-    //Update the total
     cart.total = 0;
     Object.values(cart.items).forEach((row: CartRow) => {
       cart.total += row.item.price! * row.quantity;

@@ -10,6 +10,7 @@ import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
 import { getCart } from "@/src/services/cartService";
+import { CartState } from "@/src/types";
 
 export const metadata = {
   title: 'Carrello',
@@ -17,7 +18,7 @@ export const metadata = {
 
 export default async function Cart() {
 
-  const cart = await getCart();
+  const cart: CartState = await getCart();
 
   const content = () => {
     if (Object.keys(cart.items).length > 0) {

@@ -1,15 +1,14 @@
 'use client'
 
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
+import { personalInfoAction } from "@/src/actions/account";
 import { PersonalInfoFields } from "@/src/types";
 import { personalInfoValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-
-export default function PersonalInfoForm({ user, action }: any) {
+export default function PersonalInfoForm({ user }: any) {
 
 
     const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<PersonalInfoFields>({
@@ -23,10 +22,9 @@ export default function PersonalInfoForm({ user, action }: any) {
     });
     const [isPending, setIsPending] = useState(false);
 
-
     const processForm = async (data: PersonalInfoFields) => {
         setIsPending(true);
-        await action(data);
+        await personalInfoAction(data);
         setIsPending(false);
     }
 

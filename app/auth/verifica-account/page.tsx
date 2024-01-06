@@ -27,33 +27,6 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
-async function action(object: VerifyAccountFields) {
-  'use server';
-  var { email } = object;
-
-  if (email) {
-    var user = await getUserByEmail(email);
-
-    if (user) {
-      var token = await generateNewActivationToken(email);
-      var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${token}&email=${email}`;
-      mailService.initService();
-      await mailService.sendActivateAccountCode(user.email, activationUrl);
-    }
-
-    pushMessage({
-      text: "Controlla la tua email per attivare il tuo account",
-      type: MessageType.SUCCESS,
-    });
-  } else {
-    pushMessage({
-      text: "Richiesta non valida",
-      type: MessageType.ERROR,
-    });
-  }
-  redirect(`/auth/login`);
-}
-
 
 export default async function Page({ searchParams }: any) {
 
@@ -69,7 +42,6 @@ export default async function Page({ searchParams }: any) {
           <AccountManage></AccountManage>
         </TopbarRight>
       </Topbar>
-
       <Header></Header>
       <HeaderMenu>
         <BreadcrumbContainer>
@@ -84,7 +56,7 @@ export default async function Page({ searchParams }: any) {
         <Messages></Messages>
       </div>
       <div className='flex flex-grow flex-col justify-center items-center'>
-        <VerificaAccountForm action={action}></VerificaAccountForm>
+        <VerificaAccountForm></VerificaAccountForm>
       </div>
     </main>
   );

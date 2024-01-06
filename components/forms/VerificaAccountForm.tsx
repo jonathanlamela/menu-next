@@ -1,5 +1,6 @@
 'use client';
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
+import { verifyAccountAction } from "@/src/actions/account";
 import { VerifyAccountFields } from "@/src/types";
 import { verifyAccountValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,7 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
-export default function VerificaAccountForm({ action }: any) {
+export default function VerificaAccountForm() {
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<VerifyAccountFields>({
         resolver: yupResolver(verifyAccountValidator),
@@ -20,7 +21,7 @@ export default function VerificaAccountForm({ action }: any) {
 
     const processForm = async (data: VerifyAccountFields) => {
         setIsPending(true);
-        await action(data);
+        await verifyAccountAction(data);
         setIsPending(false);
     }
 
