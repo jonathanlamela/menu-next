@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 export default function VerificaAccountForm() {
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<VerifyAccountFields>({
-        resolver: yupResolver(verifyAccountValidator),
+        resolver: yupResolver<VerifyAccountFields>(verifyAccountValidator),
         mode: "onChange",
         reValidateMode: "onChange"
     });

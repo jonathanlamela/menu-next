@@ -8,23 +8,26 @@ import { signIn } from "next-auth/react";
 
 export default function LoginForm({ callbackUrl }: any) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginFields>({
-        resolver: yupResolver(loginValidator)
+        resolver: yupResolver<LoginFields>(loginValidator),
+        mode: "onChange",
+        defaultValues: {
+            callbackUrl: callbackUrl
+        }
     });
 
 
-    const formSubmit = async (data: { email: string, password: string }) => {
+    const formSubmit = async (data: LoginFields) => {
         await signIn("credentials", {
             redirect: true,
             email: data.email,
             password: data.password,
-            callbackUrl,
+            callbackUrl: data.callbackUrl,
         });
     }
 
     return <>
         <form onSubmit={handleSubmit(formSubmit)} className="w-full p-16 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" >
-
-            {callbackUrl ? <input type="hidden" {...register("backUrl")} name="callbackUrl" value={callbackUrl} /> : null}
+            <input type="hidden" {...register("callbackUrl")} name="callbackUrl" value={callbackUrl} />
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Email</label>
                 <input type="text"

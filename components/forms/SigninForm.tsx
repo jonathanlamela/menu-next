@@ -10,7 +10,7 @@ import { signinAction } from "@/src/actions/account";
 export default function FormSignin() {
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<SigninFields>({
-        resolver: yupResolver(signinValidator),
+        resolver: yupResolver<SigninFields>(signinValidator),
         mode: "onChange",
         reValidateMode: "onChange"
     });

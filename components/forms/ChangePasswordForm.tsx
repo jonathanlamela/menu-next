@@ -12,7 +12,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 export default function ChangePasswordForm({ email }: any) {
 
     const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<ChangePasswordFields>({
-        resolver: yupResolver(changePasswordValidator),
+        resolver: yupResolver<ChangePasswordFields>(changePasswordValidator),
         reValidateMode: "onChange",
         mode: "onChange"
     });

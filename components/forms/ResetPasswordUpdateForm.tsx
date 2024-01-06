@@ -15,7 +15,7 @@ export default function ResetPasswordUpdateForm() {
     const token = searchParams.get("token");
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<ResetPasswordTokenFields>({
-        resolver: yupResolver(resetPasswordTokenValidator),
+        resolver: yupResolver<ResetPasswordTokenFields>(resetPasswordTokenValidator),
         mode: "onChange",
         reValidateMode: "onChange",
         defaultValues: {

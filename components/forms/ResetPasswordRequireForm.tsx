@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 export default function ResetPasswordRequireForm() {
 
     const { register, formState: { errors, isValid }, handleSubmit } = useForm<ResetPasswordFields>({
-        resolver: yupResolver(resetPasswordValidator),
+        resolver: yupResolver<ResetPasswordFields>(resetPasswordValidator),
         mode: "onChange",
         reValidateMode: "onChange"
     });

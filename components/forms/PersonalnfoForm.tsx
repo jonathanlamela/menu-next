@@ -7,12 +7,13 @@ import { personalInfoValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { AnyObjectSchema } from "yup";
 
 export default function PersonalInfoForm({ user }: any) {
 
 
     const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<PersonalInfoFields>({
-        resolver: yupResolver(personalInfoValidator),
+        resolver: yupResolver<PersonalInfoFields>(personalInfoValidator),
         reValidateMode: 'onChange',
         mode: 'onChange',
         defaultValues: {
@@ -21,6 +22,7 @@ export default function PersonalInfoForm({ user }: any) {
         }
     });
     const [isPending, setIsPending] = useState(false);
+
 
     const processForm = async (data: PersonalInfoFields) => {
         setIsPending(true);

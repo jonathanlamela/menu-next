@@ -1,5 +1,3 @@
-import { Decimal } from "@prisma/client/runtime/library";
-
 export type CartItem = {
   id: number;
   name?: string;
@@ -42,7 +40,7 @@ export type ChangePasswordFields = {
 export type LoginFields = {
   email: string;
   password: string;
-  backUrl: string;
+  callbackUrl: string;
 };
 
 export type PersonalInfoFields = {
@@ -133,9 +131,9 @@ export type MessagesState = {
 export type Settings = {
   siteTitle?: string;
   siteSubtitle?: string;
-  shippingCosts?: number;
   orderCreatedStateId?: number;
   orderPaidStateId?: number;
+  orderDeletedStateId?: number;
 };
 
 export type CurrentUser = {

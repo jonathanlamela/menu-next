@@ -18,6 +18,8 @@ import BreadcrumbText from "@/components/BreadcrumbText";
 import PersonalInfoForm from "@/components/forms/PersonalnfoForm";
 import { getUserByEmail, updatePersonalInfo } from "@/src/services/accountService";
 
+
+
 export async function generateMetadata({ params }: any) {
     return {
         title: "Informazioni personali",

@@ -1,30 +1,8 @@
 import axiosIstance from "@/src/lib/axiosIstance";
-import {
-  ChangePasswordFields,
-  CreateCategoryFields,
-  CreateFoodFields,
-  CreateOrderStateFields,
-  DeliveryTypeFields,
-  DeliveryInfoFields,
-  LoginFields,
-  OrderState,
-  PersonalInfoFields,
-  ResetPasswordFields,
-  Settings,
-  SigninFields,
-  UpdateCategoryFields,
-  UpdateFoodFields,
-  UpdateOrderStateFields,
-  VerifyAccountFields,
-} from "./types";
+
 import * as yup from "yup";
 
-
-type SchemaObject<T> = {
-  [key in keyof T]: yup.Schema<any>;
-};
-
-export const createCategoryValidator = yup.object().shape<SchemaObject<CreateCategoryFields>>({
+export const createCategoryValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
   image: yup.string().nullable(),
   imageFile: yup.mixed().nullable().test(
@@ -52,7 +30,7 @@ export const createCategoryValidator = yup.object().shape<SchemaObject<CreateCat
     ),
 }).required();
 
-export const updateCategoryValidator = yup.object().shape<SchemaObject<UpdateCategoryFields>>({
+export const updateCategoryValidator = yup.object({
   id: yup.number().required(),
   name: yup.string().required("Il campo nome è obbligatorio"),
   image: yup.string().nullable(),
@@ -81,7 +59,7 @@ export const updateCategoryValidator = yup.object().shape<SchemaObject<UpdateCat
     ).nullable(),
 }).required();
 
-export const changePasswordValidator = yup.object().shape<SchemaObject<ChangePasswordFields>>({
+export const changePasswordValidator = yup.object({
 
   current_password: yup.string().required("La password attuale è obbligatoria"),
   password: yup.string().matches(
@@ -93,7 +71,7 @@ export const changePasswordValidator = yup.object().shape<SchemaObject<ChangePas
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();
 
-export const createFoodValidator = yup.object().shape<SchemaObject<CreateFoodFields>>({
+export const createFoodValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
   price: yup.number().typeError("Inserisci un numero valido").required(
     "Il campo prezzo è obbligatorio",
@@ -105,7 +83,7 @@ export const createFoodValidator = yup.object().shape<SchemaObject<CreateFoodFie
   category_id: yup.number().required("La categoria è obbligatoria"),
 }).required();
 
-export const updateFoodValidator = yup.object().shape<SchemaObject<UpdateFoodFields>>({
+export const updateFoodValidator = yup.object({
   id: yup.number().required(),
   name: yup.string().required("Il campo nome è obbligatorio"),
   price: yup.number().typeError("Inserisci un numero valido").required(
@@ -118,13 +96,13 @@ export const updateFoodValidator = yup.object().shape<SchemaObject<UpdateFoodFie
   category_id: yup.number().required("La categoria è obbligatoria"),
 }).required();
 
-export const deliveryTypeValidator = yup.object().shape<SchemaObject<DeliveryInfoFields>>({
+export const deliveryTypeValidator = yup.object({
   delivery_address: yup.string().required("L'indirizzo è obbligatorio"),
   delivery_time: yup.string().required("L'orario è obbligatorio"),
 }).required();
 
 
-export const loginValidator = yup.object().shape<SchemaObject<LoginFields>>({
+export const loginValidator = yup.object({
   email: yup.string().email("Inserisci un indirizzo email valido").required(
     "Questo campo è obbligatorio",
   ),
@@ -132,7 +110,7 @@ export const loginValidator = yup.object().shape<SchemaObject<LoginFields>>({
   backUrl: yup.string().nullable()
 }).required();
 
-export const personalInfoValidator = yup.object().shape<SchemaObject<PersonalInfoFields>>({
+export const personalInfoValidator = yup.object({
   firstname: yup.string().required("Il campo nome è obbligatorio"),
   lastname: yup.string().required("Il campo cognome è obbligatorio"),
 }).required();
@@ -150,21 +128,19 @@ export const resetPasswordTokenValidator = yup.object({
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();
 
-export const resetPasswordValidator = yup.object().shape<SchemaObject<ResetPasswordFields>>({
+export const resetPasswordValidator = yup.object({
   email: yup.string().email("Inserisci un indirizzo email valido").required(
     "Questo campo è obbligatorio",
   ),
 }).required();
 
-export const settingValidator = yup.object().shape<SchemaObject<Settings>>({
+export const settingValidator = yup.object({
   siteTitle: yup.string().required("Il campo nome del sito è obbligatorio"),
   siteSubtitle: yup.string().nullable(),
-  shippingCosts: yup.number().typeError("Inserisci un numero valido").min(
-    0.01,
-    "Il prezzo deve essere maggiore di 0",
-  ),
   orderCreatedStateId: yup.string().required("Seleziona uno stato valido"),
   orderPaidStateId: yup.string().required("Seleziona uno stato valido"),
+  orderDeletedStateId: yup.string().required("Seleziona uno stato valido"),
+
 });
 
 const verifyEmail = async (value: string, values: yup.TestContext<any>) => {
@@ -188,7 +164,7 @@ const verifyEmail = async (value: string, values: yup.TestContext<any>) => {
   }
 };
 
-export const signinValidator = yup.object().shape<SchemaObject<SigninFields>>({
+export const signinValidator = yup.object({
   firstname: yup.string().required("Il campo nome è obbligatorio"),
   lastname: yup.string().required("Il campo cognome è obbligatorio"),
   email: yup.string().email("Inserisci un indirizzo email valido").required(
@@ -206,32 +182,30 @@ export const signinValidator = yup.object().shape<SchemaObject<SigninFields>>({
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();
 
-export const tipologiaConsegnaValidator = yup.object().shape<SchemaObject<DeliveryTypeFields>>({
-  delivery_type: yup.string().required("La tipologia è obbligatoria"),
-}).required();
 
-export const verifyAccountValidator = yup.object().shape<SchemaObject<VerifyAccountFields>>({
+
+export const verifyAccountValidator = yup.object({
   email: yup.string().email("Inserisci un indirizzo email valido").required(
     "Questo campo è obbligatorio",
   ),
 }).required();
 
-export const createOrderStateValidator = yup.object().shape<SchemaObject<CreateOrderStateFields>>({
+export const createOrderStateValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
   css_badge_class: yup.string().required("Seleziona un elemento dalla lista"),
 }).required();
 
-export const updateOrderStateValidator = yup.object().shape<SchemaObject<UpdateOrderStateFields>>({
+export const updateOrderStateValidator = yup.object({
   id: yup.number().required(),
   name: yup.string().required("Il campo nome è obbligatorio"),
   css_badge_class: yup.string().required("Seleziona un elemento dalla lista"),
 }).required();
 
-export const updateOrderStatusValidator = yup.object().shape<SchemaObject<{ order_state: OrderState }>>({
+export const updateOrderStatusValidator = yup.object({
   order_state: yup.string().required(),
 }).required();
 
 
-export const updateOrderDetailsAddItemValidator = yup.object().shape<SchemaObject<{ id: number }>>({
+export const updateOrderDetailsAddItemValidator = yup.object({
   id: yup.string().required(),
 }).required();
