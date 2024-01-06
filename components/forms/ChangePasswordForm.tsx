@@ -39,11 +39,11 @@ export default function ChangePasswordForm({ email }: any) {
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Password attuale</label>
                 <input type="password"
-                    {...register("current_password")}
+                    {...register("currentPassword")}
                     autoComplete="current-password"
-                    className={"p-2 border border-gray-100" + (errors.current_password ? "border-red-600" : "")} />
+                    className={"p-2 border border-gray-100" + (errors.currentPassword ? "border-red-600" : "")} />
                 <div className="invalid-feedback">
-                    {errors.current_password?.message}
+                    {errors.currentPassword?.message}
                 </div>
             </div>
             <div className="flex flex-col space-y-2">
@@ -60,10 +60,10 @@ export default function ChangePasswordForm({ email }: any) {
                 <label className="form-label">Conferma password</label>
                 <input type="password"
                     autoComplete="new-password"
-                    {...register("password_confirmation")}
-                    className={"p-2 border border-gray-100" + (errors.password_confirmation ? "border-red-600" : "")} />
+                    {...register("passwordConfirmation")}
+                    className={"p-2 border border-gray-100" + (errors.passwordConfirmation ? "border-red-600" : "")} />
                 <div className="invalid-feedback">
-                    {errors.password_confirmation?.message}
+                    {errors.passwordConfirmation?.message}
                 </div>
             </div>
 

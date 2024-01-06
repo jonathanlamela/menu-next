@@ -32,15 +32,9 @@ export type UpdateCategoryFields = CategoryFields & {
 };
 
 export type ChangePasswordFields = {
-  current_password: string;
+  currentPassword: string;
   password: string;
-  password_confirmation: string;
-};
-
-export type LoginFields = {
-  email: string;
-  password: string;
-  callbackUrl: string;
+  passwordConfirmation: string;
 };
 
 export type PersonalInfoFields = {
@@ -56,6 +50,12 @@ export type ResetPasswordTokenFields = {
   token: string;
   password: string;
   confirmPassword: string;
+};
+
+export type LoginFields = {
+  email: string;
+  password: string;
+  callbackUrl?: string | undefined;
 };
 
 export type SigninFields = {
@@ -77,14 +77,14 @@ export type SearchFields = {
 export interface OrderStateFields {
   id: number;
   name: string;
-  css_badge_class?: string;
+  cssBadgeClass?: string;
 }
 
 export type CreateFoodFields = {
   name: string;
   ingredients: string;
   price: number;
-  category_id: number;
+  categoryId: number;
 };
 
 export type UpdateFoodFields = CreateFoodFields & {
@@ -98,8 +98,8 @@ export type Category = {
 };
 
 export type DeliveryInfoFields = {
-  delivery_time: string;
-  delivery_address: string;
+  deliveryTime: string;
+  deliveryAddress: string;
 };
 
 export type RiepilogoOrdineFields = {
@@ -118,9 +118,9 @@ export type DeliveryTypeFields = {
 export type CartState = {
   items: { [name: string]: CartRow };
   total: number;
-  delivery_address: string;
-  delivery_time: string;
-  carrier_id?: number;
+  deliveryAddress: string;
+  deliveryTime: string;
+  carrierId?: number;
   note: string;
 };
 
@@ -147,12 +147,12 @@ export type CurrentUser = {
 export interface OrderState {
   id: number;
   name: string;
-  css_badge_class: string | undefined;
+  cssBadgeClass: string | undefined;
 }
 
 export type CreateOrderStateFields = {
   name: string;
-  css_badge_class: string | undefined;
+  cssBadgeClass: string | undefined;
 };
 
 export type UpdateOrderStateFields = CreateOrderStateFields & {
@@ -164,7 +164,7 @@ export interface OrderDetail {
   id: number;
   name: string | null;
   quantity: number;
-  unit_price: number;
+  unitPrice: number;
 }
 
 export interface OrderDetailRow {
@@ -172,19 +172,18 @@ export interface OrderDetailRow {
   id: number;
   name: string | null;
   quantity: number;
-  unit_price: number;
+  unitPrice: number;
 }
 
 export interface GetOrderDetailResponse {
   id: number;
-  order_state: OrderState | null;
-  is_paid: boolean;
-  is_shipping: boolean;
-  delivery_address: string | null;
-  delivery_time: string | null;
+  orderState: OrderState | null;
+  isPaid: boolean;
+  deliveryAddress: string | null;
+  deliveryTime: string | null;
   note: string | null;
-  shipping_costs: number;
-  order_details: OrderDetail[] | null;
+  shippingCosts: number;
+  orderDetails: OrderDetail[] | null;
   total: number;
 }
 

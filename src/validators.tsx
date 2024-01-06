@@ -60,13 +60,12 @@ export const updateCategoryValidator = yup.object({
 }).required();
 
 export const changePasswordValidator = yup.object({
-
-  current_password: yup.string().required("La password attuale è obbligatoria"),
+  currentPassword: yup.string().required("La password attuale è obbligatoria"),
   password: yup.string().matches(
     RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"),
     "La password deve essere lunga almeno 8 caratteri e contenere: 1 numero, 1 carattere speciale e una lettera maiuscola",
   ).required("Il campo password è obbligatorio"),
-  password_confirmation: yup.string().required(
+  passwordConfirmation: yup.string().required(
     "Il campo conferma password è obbligatorio",
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();
@@ -80,7 +79,7 @@ export const createFoodValidator = yup.object({
     "Il prezzo deve essere maggiore di 0",
   ),
   ingredients: yup.string().nullable(),
-  category_id: yup.number().required("La categoria è obbligatoria"),
+  categoryId: yup.number().required("La categoria è obbligatoria"),
 }).required();
 
 export const updateFoodValidator = yup.object({
@@ -93,12 +92,12 @@ export const updateFoodValidator = yup.object({
     "Il prezzo deve essere maggiore di 0",
   ),
   ingredients: yup.string().nullable(),
-  category_id: yup.number().required("La categoria è obbligatoria"),
+  categoryId: yup.number().required("La categoria è obbligatoria"),
 }).required();
 
 export const deliveryTypeValidator = yup.object({
-  delivery_address: yup.string().required("L'indirizzo è obbligatorio"),
-  delivery_time: yup.string().required("L'orario è obbligatorio"),
+  deliveryAddress: yup.string().required("L'indirizzo è obbligatorio"),
+  deliveryTime: yup.string().required("L'orario è obbligatorio"),
 }).required();
 
 
@@ -107,7 +106,7 @@ export const loginValidator = yup.object({
     "Questo campo è obbligatorio",
   ),
   password: yup.string().required("Il campo password è obbligatorio"),
-  backUrl: yup.string().nullable()
+  callbackUrl: yup.string()
 }).required();
 
 export const personalInfoValidator = yup.object({
@@ -140,7 +139,6 @@ export const settingValidator = yup.object({
   orderCreatedStateId: yup.string().required("Seleziona uno stato valido"),
   orderPaidStateId: yup.string().required("Seleziona uno stato valido"),
   orderDeletedStateId: yup.string().required("Seleziona uno stato valido"),
-
 });
 
 const verifyEmail = async (value: string, values: yup.TestContext<any>) => {
@@ -192,17 +190,17 @@ export const verifyAccountValidator = yup.object({
 
 export const createOrderStateValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
-  css_badge_class: yup.string().required("Seleziona un elemento dalla lista"),
+  cssBadgeClass: yup.string().required("Seleziona un elemento dalla lista"),
 }).required();
 
 export const updateOrderStateValidator = yup.object({
   id: yup.number().required(),
   name: yup.string().required("Il campo nome è obbligatorio"),
-  css_badge_class: yup.string().required("Seleziona un elemento dalla lista"),
+  cssBadgeClass: yup.string().required("Seleziona un elemento dalla lista"),
 }).required();
 
 export const updateOrderStatusValidator = yup.object({
-  order_state: yup.string().required(),
+  orderState: yup.string().required(),
 }).required();
 
 

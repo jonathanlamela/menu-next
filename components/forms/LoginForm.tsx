@@ -1,10 +1,10 @@
 'use client'
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { loginValidator } from "@/src/validators";
 import { LoginFields } from "@/src/types";
 import { signIn } from "next-auth/react";
+import { loginValidator } from "@/src/validators";
 
 export default function LoginForm({ callbackUrl }: any) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginFields>({
@@ -14,7 +14,6 @@ export default function LoginForm({ callbackUrl }: any) {
             callbackUrl: callbackUrl
         }
     });
-
 
     const formSubmit = async (data: LoginFields) => {
         await signIn("credentials", {
@@ -27,7 +26,7 @@ export default function LoginForm({ callbackUrl }: any) {
 
     return <>
         <form onSubmit={handleSubmit(formSubmit)} className="w-full p-16 md:p-0 md:w-1/2 lg:w-1/3 flex flex-col space-y-2" >
-            <input type="hidden" {...register("callbackUrl")} name="callbackUrl" value={callbackUrl} />
+            <input type="hidden" {...register("callbackUrl")} name="callbackUrl" />
             <div className="flex flex-col space-y-2">
                 <label className="form-label">Email</label>
                 <input type="text"
