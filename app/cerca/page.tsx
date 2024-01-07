@@ -25,7 +25,7 @@ async function getResults(searchObject: SearchFields): Promise<{ foods: [], coun
       page: 1,
       perPage: 100,
       orderBy: "id",
-      ascend: true,
+      ascending: true,
       paginated: false
     });
 

@@ -2,10 +2,10 @@ import axiosIstance from "@/src/lib/axiosIstance";
 
 import * as yup from "yup";
 
-export const createCategoryValidator = yup.object({
+export const categoryValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
   image: yup.string().nullable(),
-  imageFile: yup.mixed().nullable().test(
+  imageFile: yup.mixed<FileList>().nullable().test(
     "fileSize",
     "File troppo grande (max 1 mega)",
     (value: any) => {
@@ -28,35 +28,6 @@ export const createCategoryValidator = yup.object({
           );
       },
     ),
-}).required();
-
-export const updateCategoryValidator = yup.object({
-  id: yup.number().required(),
-  name: yup.string().required("Il campo nome è obbligatorio"),
-  image: yup.string().nullable(),
-  imageFile: yup.mixed().test(
-    "fileSize",
-    "File troppo grande (max 1 mega)",
-    (value: any) => {
-      if (value == null || value.length === 0) {
-        return true;
-      }
-      return value.length && value[0].size <= 1000 * 1000;
-    },
-  )
-    .test(
-      "fileFormat",
-      "Formato non accettato",
-      (value: any) => {
-        if (value == null || value.length === 0) {
-          return true;
-        }
-        return value[0] &&
-          ["image/jpg", "image/jpeg", "image/png"].includes(
-            value[0].type,
-          );
-      },
-    ).nullable(),
 }).required();
 
 export const changePasswordValidator = yup.object({

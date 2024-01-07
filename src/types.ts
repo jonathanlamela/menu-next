@@ -11,8 +11,8 @@ export type CartRow = {
 
 export type CategoryFields = {
   name: string;
-  imageFile: FileList;
-  image: string;
+  image?: string | null | undefined;
+  imageFile?: FileList | null | undefined;
 };
 
 export enum MessageType {

@@ -2,34 +2,32 @@ import { prisma } from "@/src/lib/prisma";
 import { Paginated, Sorted } from "@/src/types";
 
 export async function searchFoods(
-  args:
-    & {
-      search?: string;
-    }
-    & Paginated
-    & Sorted,
+  args: {
+    search?: string;
+  } & Paginated &
+    Sorted
 ): Promise<{ foods: any; count: number }> {
   var orderByParams = {};
 
   if (!args.search) {
     return {
-      "foods": [],
-      "count": 0,
+      foods: [],
+      count: 0,
     };
   }
 
   switch (args.orderBy) {
     case "id":
-      orderByParams = { id: args.ascend ? "asc" : "desc" };
+      orderByParams = { id: args.ascending ? "asc" : "desc" };
       break;
     case "name":
-      orderByParams = { name: args.ascend ? "asc" : "desc" };
+      orderByParams = { name: args.ascending ? "asc" : "desc" };
       break;
     case "price":
-      orderByParams = { price: args.ascend ? "asc" : "desc" };
+      orderByParams = { price: args.ascending ? "asc" : "desc" };
       break;
     case "category":
-      orderByParams = { category: { name: args.ascend ? "asc" : "desc" } };
+      orderByParams = { category: { name: args.ascending ? "asc" : "desc" } };
       break;
   }
 
@@ -74,4 +72,15 @@ export async function searchFoods(
       where: query,
     }),
   };
+}
+
+export async function getFoodsByCategorySlug(slug: string) {
+  return prisma.food.findMany({
+    where: {
+      category: {
+        slug: slug,
+        deleted: false,
+      },
+    },
+  });
 }

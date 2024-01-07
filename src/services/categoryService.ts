@@ -1,5 +1,13 @@
 import { prisma } from "@/src/lib/prisma";
-import { Category, CrudType, Paginated, Sorted } from "@/src/types";
+import {
+  Category,
+  CategoryFields,
+  CrudType,
+  Paginated,
+  Sorted,
+} from "@/src/types";
+import { Prisma } from "@prisma/client";
+var slugify = require("slugify");
 
 export async function getCategoriesForPills() {
   return prisma.category.findMany({
@@ -7,6 +15,9 @@ export async function getCategoriesForPills() {
       id: true,
       slug: true,
       name: true,
+    },
+    where: {
+      deleted: false,
     },
   });
 }
@@ -28,13 +39,16 @@ export async function getAllCategories(
       break;
   }
 
-  var whereParams = {};
+  var whereParams: Prisma.categoryWhereInput = {
+    deleted: false,
+  };
 
   if (params.search && params.search != "") {
     whereParams = {
       name: {
         contains: params.search,
       },
+      deleted: false,
     };
   }
 
@@ -71,12 +85,10 @@ export async function getCategoryBySlug(slug: string) {
   });
 }
 
-export async function getFoodsByCategorySlug(slug: string) {
-  return prisma.food.findMany({
+export async function getCategoryById(id: number) {
+  return prisma.category.findFirst({
     where: {
-      category: {
-        slug: slug,
-      },
+      id: id,
     },
   });
 }

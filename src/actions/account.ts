@@ -37,7 +37,7 @@ export async function changePasswordAction(dataObj: ChangePasswordFields) {
 
   if (validationResult && data?.user) {
     var result = await updatePassword(
-      dataObj.current_password,
+      dataObj.currentPassword,
       dataObj.password,
       data?.user?.email!
     );

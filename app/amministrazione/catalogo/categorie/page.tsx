@@ -67,7 +67,6 @@ export default async function Index({ searchParams }: {
         }
 
         return <>
-
             <div className="w-full flex flex-col flex-grow">
                 <div className="hidden lg:flex w-full flex-row">
                     <div className="h-10 w-full flex flex-row items-center font-bold">

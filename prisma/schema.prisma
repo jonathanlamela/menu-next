@@ -16,6 +16,7 @@ model category {
   slug     String?
   imageUrl String?
   foods    food[]
+  deleted  Boolean @default(false)
 }
 
 model food {
@@ -26,6 +27,7 @@ model food {
   categoryId   Int?
   category     category?      @relation(references: [id], fields: [categoryId])
   orderDetails order_detail[]
+  deleted      Boolean        @default(false)
 }
 
 model user {
@@ -64,6 +66,7 @@ model order_state {
   settingOrderStateDeleted setting? @relation("order_state_deleted_relation")
   setting                  setting? @relation(fields: [settingId], references: [id])
   settingId                Int?
+  deleted                  Boolean  @default(false)
 }
 
 model order {
@@ -80,6 +83,7 @@ model order {
   total                Decimal        @default(0.00)
   carrierId            Int?
   carrier              carrier?       @relation(fields: [carrierId], references: [id])
+  deleted              Boolean        @default(false)
 }
 
 model order_detail {
@@ -94,9 +98,9 @@ model order_detail {
 }
 
 model carrier {
-  id    Int     @id @default(autoincrement())
-  name  String
-  costs Decimal
-
-  orders order[]
+  id      Int     @id @default(autoincrement())
+  name    String
+  costs   Decimal
+  orders  order[]
+  deleted Boolean @default(false)
 }
