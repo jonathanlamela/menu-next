@@ -8,26 +8,7 @@ import SearchForm from "@/components/SearchForm";
 import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
-import { prisma } from "@/src/lib/prisma";
-
-
-async function getCategoryBySlug(slug: string) {
-  return prisma.category.findFirst({
-    where: {
-      slug: slug
-    }
-  })
-}
-
-async function getFoodsByCategorySlug(slug: string) {
-  return prisma.food.findMany({
-    where: {
-      category: {
-        slug: slug
-      }
-    }
-  })
-}
+import { getCategoryBySlug, getFoodsByCategorySlug } from "@/src/services/categoryService";
 
 
 export async function generateMetadata({ params }: any) {
@@ -42,11 +23,6 @@ export default async function Categoria({ params }: { params: { slug: string } }
 
   const category = await getCategoryBySlug(params.slug);
   const foods = await getFoodsByCategorySlug(params.slug);
-
-
-  const foodsRender = () => {
-    return foods.map((item: any) => <FoodItem item={item} key={item.id}></FoodItem>);
-  }
 
   return (
     <main>
@@ -69,7 +45,7 @@ export default async function Categoria({ params }: { params: { slug: string } }
         </div>
         <div className="w-full space-y-4">
           {foods.length === 0 ? <p>Non ci sono cibi per questa categoria</p> : null}
-          {foods ? foodsRender() : null}
+          {foods ? foods.map((item: any) => <FoodItem item={item} key={item.id}></FoodItem>) : null}
         </div>
       </div>
     </main>

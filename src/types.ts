@@ -94,7 +94,8 @@ export type UpdateFoodFields = CreateFoodFields & {
 export type Category = {
   id: number;
   name: string;
-  image: string;
+  imageUrl: string | null;
+  slug: string | null;
 };
 
 export type DeliveryInfoFields = {
@@ -201,5 +202,10 @@ export type Paginated = {
 
 export type Sorted = {
   orderBy: string;
-  ascend: boolean;
+  ascending: boolean;
 };
+
+export type CrudType = {
+  search?: string;
+} & Paginated &
+  Sorted;
