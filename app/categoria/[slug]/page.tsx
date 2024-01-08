@@ -8,7 +8,8 @@ import SearchForm from "@/components/SearchForm";
 import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
-import { getCategoryBySlug, getFoodsByCategorySlug } from "@/src/services/categoryService";
+import { getCategoryBySlug } from "@/src/services/categoryService";
+import { getFoodsByCategorySlug } from "@/src/services/foodService";
 
 
 export async function generateMetadata({ params }: any) {

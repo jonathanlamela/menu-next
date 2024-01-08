@@ -1,5 +1,6 @@
 import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
 import AdminEditButton from "@/components/admin/AdminEditButton";
+import { deleteCategory } from "@/src/actions/category";
 import { Category } from "@/src/types";
 
 
@@ -19,9 +20,11 @@ export default function MobileCategoryRow(props: { category: Category }) {
                 <div className="w-1/4 font-bold text-end">Azioni</div>
                 <div className="w-3/4 flex flex-row">
                     <AdminEditButton link={`/amministrazione/catalogo/categorie/modifica/${category.id}`}></AdminEditButton>
-                    <AdminDeleteButton link={`/amministrazione/catalogo/categorie/elimina/${category.id}`}></AdminDeleteButton>
+                    <AdminDeleteButton
+                        action={deleteCategory} id={category.id} question="Operazione rischiosa" text={`Questa operazione eliminerà la categoria "${category.name}" in maniera irreversibile. Sei sicuro di volerlo fare?`}
+                    ></AdminDeleteButton>
                 </div>
             </div>
-        </div>
+        </div >
     </>
 }

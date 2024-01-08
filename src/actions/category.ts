@@ -114,3 +114,19 @@ export default async function updateCategory(data: FormData) {
     type: MessageType.SUCCESS,
   });
 }
+
+export async function deleteCategory(id: number) {
+  await prisma.category.update({
+    data: {
+      deleted: true,
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  pushMessage({
+    text: "Categoria eliminata con successo",
+    type: MessageType.SUCCESS,
+  });
+}
