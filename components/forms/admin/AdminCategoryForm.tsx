@@ -3,10 +3,14 @@ import updateCategory, { createCategory } from "@/src/actions/category";
 import { Category, CategoryFields } from "@/src/types";
 import { categoryValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Image from "next/image";
+import { useState } from "react";
+import ButtonCircularProgress from "@/components/ButtonCircularProgress";
 
-export default function AdminCategoryForm(props: { id?: number, category?: Category }) {
+export default function AdminCategoryForm(props: { category?: Category }) {
+
+    const [isPending, setIsPending] = useState(false);
 
 
     const { register, formState: { errors, isValid, isDirty }, handleSubmit } = useForm<CategoryFields>({
@@ -31,15 +35,28 @@ export default function AdminCategoryForm(props: { id?: number, category?: Categ
         return <></>
     }
 
+    const processForm = async (object: CategoryFields) => {
+        setIsPending(true);
+        var data = new FormData();
+
+        data.set("name", object.name);
+        if (object.imageFile && object.imageFile?.length > 0) {
+            data.set("imageFile", object.imageFile[0]);
+        }
+
+        if (props.category) {
+            data.append("id", `${props.category.id}`);
+            await updateCategory(data);
+
+        } else {
+            await createCategory(data);
+        }
+        setIsPending(false);
+    }
+
     return <>
 
-        <form className="flex-col space-y-2" action={async (data: FormData) => {
-            if (props.category) {
-                await updateCategory(props.category.id, data);
-            } else {
-                await createCategory(data);
-            }
-        }} >
+        <form className="flex-col space-y-2" onSubmit={handleSubmit(processForm)}>
             <div className="w-1/3 flex flex-col space-y-2">
                 <label className="form-label">Nome</label>
                 <input type="text"
@@ -60,7 +77,8 @@ export default function AdminCategoryForm(props: { id?: number, category?: Categ
             </div>
             {currentImage()}
             <div className="w-1/3 flex flex-col space-y-2 items-start">
-                <button disabled={!isValid} type="submit" className="btn-success">
+                <button disabled={!isValid} type="submit" className="btn-success space-x-2">
+                    <ButtonCircularProgress isPending={isPending} />
                     {props.category ? "Modifica" : "Crea"}
                 </button>
             </div>

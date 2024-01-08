@@ -3,6 +3,7 @@ import { prisma } from "@/src/lib/prisma";
 import { pushMessage } from "@/src/services/messageService";
 import { MessageType } from "@/src/types";
 import { writeFile } from "fs/promises";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import path from "path";
 import slugify from "slugify";
@@ -61,7 +62,8 @@ export async function createCategory(data: FormData) {
   }
 }
 
-export default async function updateCategory(id: number, data: FormData) {
+export default async function updateCategory(data: FormData) {
+  var id = parseInt(data.get("id")!.valueOf() as string);
   var name = data.get("name")!.valueOf() as string;
 
   //Update category name
@@ -103,6 +105,8 @@ export default async function updateCategory(id: number, data: FormData) {
         },
       });
     }
+
+    revalidatePath(`/amministrazione/catalogo/categorie/modifica/${id}`);
   }
 
   pushMessage({
