@@ -1,4 +1,5 @@
-import { Decimal } from "@prisma/client/runtime/library";
+import { Prisma } from "@/src/generated/client";
+import { Decimal } from "@/src/generated/client/runtime/library";
 
 export type CartItem = {
   id: number;

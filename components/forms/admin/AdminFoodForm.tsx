@@ -1,21 +1,15 @@
 'use client';
-import updateCategory, { createCategory } from "@/src/actions/category";
-import { CategoryDTO, CategoryFields, FoodDTO, FoodFields } from "@/src/types";
+import { CategoryDTO, FoodDTO, FoodFields } from "@/src/types";
 import { foodValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Image from "next/image";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { getAllCategories } from "@/src/services/categoryService";
-import updateFood, { createFood } from "@/src/actions/food";
+import updateFood, { createFood } from "@/src/services/foodService";
 
-export default function AdminCategoryForm(props: { food?: FoodDTO, categories: CategoryDTO[] }) {
+export default function AdminFoodForm(props: { food?: FoodDTO, categories: CategoryDTO[] }) {
 
     const [isPending, setIsPending] = useState(false);
-
-
-
 
     const { register, formState: { errors, isValid, isDirty }, handleSubmit } = useForm<FoodFields>({
         resolver: yupResolver<FoodFields>(foodValidator),

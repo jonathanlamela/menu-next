@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signinValidator } from "@/src/validators";
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
 import { useState } from "react";
-import { signinAction } from "@/src/actions/account";
+import { signinAction } from "@/src/services/accountService";
 
 export default function FormSignin() {
 

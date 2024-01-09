@@ -1,6 +1,6 @@
 import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
 import AdminEditButton from "@/components/admin/AdminEditButton";
-import { deleteCategory } from "@/src/actions/category";
+import { deleteCategory } from "@/src/services/categoryService";
 import { CategoryDTO } from "@/src/types";
 
 

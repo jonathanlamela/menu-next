@@ -1,7 +1,7 @@
 'use client'
 
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { personalInfoAction } from "@/src/actions/account";
+import { personalInfoAction } from "@/src/services/accountService";
 import { PersonalInfoFields } from "@/src/types";
 import { personalInfoValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";

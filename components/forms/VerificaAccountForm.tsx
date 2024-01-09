@@ -1,6 +1,6 @@
 'use client';
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { verifyAccountAction } from "@/src/actions/account";
+import { verifyAccountAction } from "@/src/services/accountService";
 import { VerifyAccountFields } from "@/src/types";
 import { verifyAccountValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";

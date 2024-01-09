@@ -1,6 +1,6 @@
 import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
 import AdminEditButton from "@/components/admin/AdminEditButton";
-import { deleteFood } from "@/src/actions/food";
+import { deleteFood } from "@/src/services/foodService";
 import { FoodDTO } from "@/src/types";
 
 

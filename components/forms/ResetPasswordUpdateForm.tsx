@@ -1,6 +1,6 @@
 'use client';
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
-import { resetPasswordTokenAction } from "@/src/actions/account";
+import { resetPasswordTokenAction } from "@/src/services/accountService";
 import { ResetPasswordTokenFields } from "@/src/types";
 import { resetPasswordTokenValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
