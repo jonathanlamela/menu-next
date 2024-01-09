@@ -1,6 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 import {
-  Category,
+  CategoryDTO,
   CategoryFields,
   CrudType,
   Paginated,
@@ -25,7 +25,7 @@ export async function getCategoriesForPills() {
 export async function getAllCategories(
   params: CrudType
 ): Promise<{
-  categories: Category[];
+  categories: CategoryDTO[];
   count: number;
 }> {
   var orderByParams = {};
@@ -39,17 +39,18 @@ export async function getAllCategories(
       break;
   }
 
-  var whereParams: Prisma.categoryWhereInput = {
-    deleted: false,
-  };
+  var whereParams: Prisma.categoryWhereInput = {};
 
   if (params.search && params.search != "") {
     whereParams = {
       name: {
         contains: params.search,
       },
-      deleted: false,
     };
+  }
+
+  if (!params.deleted) {
+    whereParams.deleted = false;
   }
 
   if (params.paginated) {

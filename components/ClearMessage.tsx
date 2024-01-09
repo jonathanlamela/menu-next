@@ -8,6 +8,7 @@ export function ClearMessage() {
     useEffect(() => {
 
 
+
         const requestClear = async () => {
             await axiosIstance.get("/api/message/clear");
         }

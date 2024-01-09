@@ -4,7 +4,6 @@ import Link from "next/link"
 
 export default function AdminOrderToggler(props: { label: string, field: string, params: CrudType, className: string, link: string }) {
 
-    console.log(props);
 
     if (props.field == props.params.orderBy) {
 

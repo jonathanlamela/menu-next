@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AdminEditButton(props: { link: string }) {
     return <>
-        <Link href={props.link} className="flex flex-row space-x-2 items-center justify-center p-2 hover:bg-green-700 hover:text-white"
+        <Link href={props.link} className="flex flex-row h-10 space-x-2 items-center justify-center p-2 hover:bg-green-700 hover:text-white"
         ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
             stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round"

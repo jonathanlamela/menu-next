@@ -41,7 +41,7 @@ export const changePasswordValidator = yup.object({
   ).oneOf([yup.ref("password")], "Le due password devono corrispondere"),
 }).required();
 
-export const createFoodValidator = yup.object({
+export const foodValidator = yup.object({
   name: yup.string().required("Il campo nome è obbligatorio"),
   price: yup.number().typeError("Inserisci un numero valido").required(
     "Il campo prezzo è obbligatorio",
@@ -50,21 +50,10 @@ export const createFoodValidator = yup.object({
     "Il prezzo deve essere maggiore di 0",
   ),
   ingredients: yup.string().nullable(),
-  categoryId: yup.number().required("La categoria è obbligatoria"),
+  categoryId: yup.number().nullable().required("La categoria è obbligatoria"),
 }).required();
 
-export const updateFoodValidator = yup.object({
-  id: yup.number().required(),
-  name: yup.string().required("Il campo nome è obbligatorio"),
-  price: yup.number().typeError("Inserisci un numero valido").required(
-    "Il campo prezzo è obbligatorio",
-  ).min(
-    0.01,
-    "Il prezzo deve essere maggiore di 0",
-  ),
-  ingredients: yup.string().nullable(),
-  categoryId: yup.number().required("La categoria è obbligatoria"),
-}).required();
+
 
 export const deliveryTypeValidator = yup.object({
   deliveryAddress: yup.string().required("L'indirizzo è obbligatorio"),

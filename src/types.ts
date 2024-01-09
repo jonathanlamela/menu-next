@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime/library";
+
 export type CartItem = {
   id: number;
   name?: string;
@@ -7,12 +9,6 @@ export type CartItem = {
 export type CartRow = {
   item: CartItem;
   quantity: number;
-};
-
-export type CategoryFields = {
-  name: string;
-  image?: string | null | undefined;
-  imageFile?: FileList | null | undefined;
 };
 
 export enum MessageType {
@@ -80,22 +76,37 @@ export interface OrderStateFields {
   cssBadgeClass?: string;
 }
 
-export type CreateFoodFields = {
+//Forms type
+export type FoodFields = {
   name: string;
-  ingredients: string;
-  price: number;
-  categoryId: number;
+  ingredients?: string | null;
+  price: number | Decimal;
+  categoryId?: number | null | undefined;
 };
 
-export type UpdateFoodFields = CreateFoodFields & {
-  id: number;
+export type CategoryFields = {
+  name: string;
+  image?: string | null | undefined;
+  imageFile?: FileList | null | undefined;
 };
 
-export type Category = {
+// DTO
+export type CategoryDTO = {
   id: number;
   name: string;
   imageUrl: string | null;
   slug: string | null;
+  deleted: boolean;
+};
+
+export type FoodDTO = {
+  id: number;
+  name: string;
+  ingredients?: string | null;
+  price: Decimal;
+  category: CategoryDTO | null;
+  categoryId: number | null | undefined;
+  deleted: boolean;
 };
 
 export type DeliveryInfoFields = {
@@ -207,5 +218,6 @@ export type Sorted = {
 
 export type CrudType = {
   search?: string;
+  deleted: boolean;
 } & Paginated &
   Sorted;

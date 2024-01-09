@@ -10,7 +10,7 @@ import slugify from "slugify";
 const fs = require("fs");
 
 export async function createCategory(data: FormData) {
-  var name = data.get("name")!.valueOf() as string;
+  var name = data.get("name")?.valueOf() as string;
 
   var category = await prisma.category.create({
     data: {
@@ -63,8 +63,8 @@ export async function createCategory(data: FormData) {
 }
 
 export default async function updateCategory(data: FormData) {
-  var id = parseInt(data.get("id")!.valueOf() as string);
-  var name = data.get("name")!.valueOf() as string;
+  var id = parseInt(data.get("id")?.valueOf() as string);
+  var name = data.get("name")?.valueOf() as string;
 
   //Update category name
   var category = await prisma.category.update({

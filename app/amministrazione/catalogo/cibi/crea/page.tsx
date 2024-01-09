@@ -23,7 +23,7 @@ import { getAllCategories } from "@/src/services/categoryService";
 
 export async function generateMetadata({ params }: any) {
     return {
-        title: "Crea categoria",
+        title: "Crea cibo",
     }
 }
 
@@ -62,18 +62,18 @@ export default async function Page({ searchParams }: {
                     <BreadcrumbDivider></BreadcrumbDivider>
                     <BreadcrumbText>Catalogo</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbLink href="/amministrazione/catalogo/categorie">
-                        Categorie
+                    <BreadcrumbLink href="/amministrazione/catalogo/cibi">
+                        Cibi
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Crea categoria</BreadcrumbText>
+                    <BreadcrumbText>Crea cibo</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
 
             <div className="flex flex-col px-8 py-4 flex-grow">
                 <Messages></Messages>
                 <div className="w-full pb-4">
-                    <p className="text-2xl antialiased font-bold">Crea categoria</p>
+                    <p className="text-2xl antialiased font-bold">Crea cibo</p>
                 </div>
                 <AdminFoodForm categories={categoryData.categories}></AdminFoodForm>
 

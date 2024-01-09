@@ -47,7 +47,8 @@ export default async function Index({ searchParams }: {
         orderBy: orderBy,
         page: page,
         perPage: perPage,
-        search: search
+        search: search,
+        deleted: true
     };
 
     const data = await getAllCategories(params);

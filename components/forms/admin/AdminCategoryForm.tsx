@@ -1,6 +1,6 @@
 'use client';
 import updateCategory, { createCategory } from "@/src/actions/category";
-import { Category, CategoryFields } from "@/src/types";
+import { CategoryDTO, CategoryFields } from "@/src/types";
 import { categoryValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useState } from "react";
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
 
-export default function AdminCategoryForm(props: { category?: Category }) {
+export default function AdminCategoryForm(props: { category?: CategoryDTO }) {
 
     const [isPending, setIsPending] = useState(false);
 

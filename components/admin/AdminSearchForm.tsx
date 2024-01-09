@@ -3,12 +3,12 @@ import { CrudType } from "@/src/types";
 
 export default function AdminSearchForm(props: { placeholder: string, params: CrudType }) {
     return <>
-        <form className="m-0 flex space-x-2" method="get">
+        <form className="m-0 flex space-x-2" method="get" >
             <input type="hidden" name="ascend" defaultValue={`${props.params.ascending}`}></input>
             <input type="hidden" name="orderBy" defaultValue={`${props.params.orderBy}`}></input>
             <input type="hidden" name="perPage" defaultValue={`${props.params.perPage}`}></input>
             <input type="hidden" name="page" defaultValue={`1`}></input>
-            <input name="search" type="text" className="text-input bg-white" placeholder={props.placeholder} defaultValue={props.params.search}
+            <input name="search" type="search" autoComplete="off" className="text-input bg-white" placeholder={props.placeholder} defaultValue={props.params.search}
             />
             <button type="submit" className="btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
