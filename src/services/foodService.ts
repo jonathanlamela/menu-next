@@ -37,7 +37,7 @@ export async function searchFoods(
       break;
   }
 
-  var query: Prisma.foodWhereInput = {
+  var query: Prisma.FoodWhereInput = {
     AND: [
       {
         OR: [
@@ -124,7 +124,7 @@ export async function getAllFoods(
       break;
   }
 
-  var whereParams: Prisma.foodWhereInput = {};
+  var whereParams: Prisma.FoodWhereInput = {};
 
   if (params.search && params.search != "") {
     whereParams = {

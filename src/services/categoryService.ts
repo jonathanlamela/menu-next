@@ -42,7 +42,7 @@ export async function getAllCategories(
       break;
   }
 
-  var whereParams: Prisma.categoryWhereInput = {};
+  var whereParams: Prisma.CategoryWhereInput = {};
 
   if (params.search && params.search != "") {
     whereParams = {

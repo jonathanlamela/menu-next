@@ -65,20 +65,6 @@ export type SearchFields = {
   search: string;
 };
 
-export interface OrderStateFields {
-  id: number;
-  name: string;
-  cssBadgeClass?: string;
-}
-
-//Forms type
-export type FoodFields = {
-  name: string;
-  ingredients?: string | null;
-  price: number | Decimal;
-  categoryId?: number | null | undefined;
-};
-
 // DTO
 export type CategoryDTO = {
   id?: number | null | undefined;
@@ -96,8 +82,22 @@ export type FoodDTO = {
   category?: CategoryDTO | null | undefined;
   name: string;
   price: number | Decimal;
-  categoryId: number | null;
+  categoryId?: number | null | undefined;
 };
+
+export type OrderStateDTO = {
+  id?: number | null | undefined;
+  name: string;
+  cssBadgeClass?: string | null | undefined;
+};
+
+export type CarrierDTO = {
+  id?: number | null | undefined;
+  name: string;
+  costs: number | Decimal;
+};
+
+//Form types
 
 export type DeliveryInfoFields = {
   deliveryTime: string;
@@ -126,10 +126,6 @@ export type CartState = {
   note: string;
 };
 
-export type MessagesState = {
-  message?: Message | null;
-};
-
 export type Settings = {
   siteTitle?: string;
   siteSubtitle?: string;
@@ -144,55 +140,6 @@ export type CurrentUser = {
   id: number;
   lastname: string;
   role: string;
-};
-
-export interface OrderState {
-  id: number;
-  name: string;
-  cssBadgeClass: string | undefined;
-}
-
-export type CreateOrderStateFields = {
-  name: string;
-  cssBadgeClass: string | undefined;
-};
-
-export type UpdateOrderStateFields = CreateOrderStateFields & {
-  id: number;
-};
-
-export interface OrderDetail {
-  orderId: number;
-  id: number;
-  name: string | null;
-  quantity: number;
-  unitPrice: number;
-}
-
-export interface OrderDetailRow {
-  orderId: number;
-  id: number;
-  name: string | null;
-  quantity: number;
-  unitPrice: number;
-}
-
-export interface GetOrderDetailResponse {
-  id: number;
-  orderState: OrderState | null;
-  isPaid: boolean;
-  deliveryAddress: string | null;
-  deliveryTime: string | null;
-  note: string | null;
-  shippingCosts: number;
-  orderDetails: OrderDetail[] | null;
-  total: number;
-}
-
-export type OrderCardItem = {
-  id: number;
-  total: number;
-  order_state: OrderState;
 };
 
 export type Paginated = {

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 async function main() {
-  const orderCreatedState = await prisma.order_state.upsert({
+  const orderCreatedState = await prisma.orderState.upsert({
     create: {
       id: 1,
       name: "Ordine creato",
@@ -14,7 +14,7 @@ async function main() {
     },
   });
 
-  const orderPaidState = await prisma.order_state.upsert({
+  const orderPaidState = await prisma.orderState.upsert({
     create: {
       id: 2,
       name: "Ordine pagato",
@@ -26,7 +26,7 @@ async function main() {
     },
   });
 
-  const orderDeletedState = await prisma.order_state.upsert({
+  const orderDeletedState = await prisma.orderState.upsert({
     create: {
       id: 3,
       name: "Ordine cancellato",
