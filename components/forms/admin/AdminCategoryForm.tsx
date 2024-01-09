@@ -1,8 +1,8 @@
 'use client';
-import { CategoryDTO, CategoryFields } from "@/src/types";
+import { CategoryDTO } from "@/src/types";
 import { categoryValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useState } from "react";
 import ButtonCircularProgress from "@/components/ButtonCircularProgress";
@@ -13,8 +13,8 @@ export default function AdminCategoryForm(props: { category?: CategoryDTO }) {
     const [isPending, setIsPending] = useState(false);
 
 
-    const { register, formState: { errors, isValid, isDirty }, handleSubmit } = useForm<CategoryFields>({
-        resolver: yupResolver<CategoryFields>(categoryValidator),
+    const { register, formState: { errors, isValid, isDirty }, handleSubmit } = useForm<CategoryDTO>({
+        resolver: yupResolver<CategoryDTO>(categoryValidator),
         mode: "onChange",
         defaultValues: {
             name: props.category?.name ?? ''
@@ -35,7 +35,7 @@ export default function AdminCategoryForm(props: { category?: CategoryDTO }) {
         return <></>
     }
 
-    const processForm = async (object: CategoryFields) => {
+    const processForm = async (object: CategoryDTO) => {
         setIsPending(true);
         var data = new FormData();
 

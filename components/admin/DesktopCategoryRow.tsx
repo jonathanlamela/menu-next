@@ -11,7 +11,7 @@ export default function DesktopCategoryRow(props: { category: CategoryDTO }) {
         return <>
             <AdminEditButton link={`/amministrazione/catalogo/categorie/modifica/${category.id}`}></AdminEditButton>
             <AdminDeleteButton
-                action={deleteCategory} id={category.id} question="Operazione rischiosa" text={
+                action={deleteCategory} id={category.id!} question="Operazione rischiosa" text={
                     <>
                         <p>Questa operazione eliminerà la categoria &quot;<strong>{category.name}</strong>&quot; in maniera irreversibile. Sei sicuro di volerlo fare?</p>
                     </>}

@@ -11,7 +11,7 @@ export default function MobileCategoryRow(props: { category: CategoryDTO }) {
         return <>
             <AdminEditButton link={`/amministrazione/catalogo/categorie/modifica/${category.id}`}></AdminEditButton>
             <AdminDeleteButton
-                action={deleteCategory} id={category.id} question="Operazione rischiosa" text={`Questa operazione eliminerà la categoria "${category.name}" in maniera irreversibile. Sei sicuro di volerlo fare?`}
+                action={deleteCategory} id={category.id!} question="Operazione rischiosa" text={`Questa operazione eliminerà la categoria "${category.name}" in maniera irreversibile. Sei sicuro di volerlo fare?`}
             ></AdminDeleteButton>
         </>
     }

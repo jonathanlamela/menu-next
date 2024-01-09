@@ -12,11 +12,11 @@ import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
 import { searchFoods } from "@/src/services/foodService";
-import { SearchFields } from "@/src/types";
+import { FoodDTO, SearchFields } from "@/src/types";
 import { redirect } from "next/navigation";
 
 
-async function getResults(searchObject: SearchFields): Promise<{ foods: [], count: number }> {
+async function getResults(searchObject: SearchFields): Promise<{ foods: FoodDTO[], count: number }> {
   if (searchObject.search == null || searchObject.search == "") {
     redirect('/');
   } else {

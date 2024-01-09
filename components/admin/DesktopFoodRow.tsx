@@ -11,7 +11,7 @@ export default function DesktopFoodRow(props: { food: FoodDTO }) {
         return <>
             <AdminEditButton link={`/amministrazione/catalogo/cibi/modifica/${food.id}`}></AdminEditButton>
             <AdminDeleteButton
-                action={deleteFood} id={food.id} question="Operazione rischiosa" text={
+                action={deleteFood} id={food.id!} question="Operazione rischiosa" text={
                     <>
                         <p>Questa operazione eliminerà il cibo &quot;<strong>{food.name}</strong>&quot; in maniera irreversibile. Sei sicuro di volerlo fare?</p>
                     </>

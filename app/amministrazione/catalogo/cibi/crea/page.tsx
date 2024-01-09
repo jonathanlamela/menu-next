@@ -14,9 +14,6 @@ import Messages from "@/components/Messages";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
-import AdminCategoryForm from "@/components/forms/admin/AdminCategoryForm";
-import { CategoryFields } from "@/src/types";
-import { createCategory } from "@/src/actions/category";
 import AdminFoodForm from "@/components/forms/admin/AdminFoodForm";
 import { getAllCategories } from "@/src/services/categoryService";
 

@@ -15,8 +15,6 @@ import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
 import AdminCategoryForm from "@/components/forms/admin/AdminCategoryForm";
-import { CategoryFields } from "@/src/types";
-import { createCategory } from "@/src/actions/category";
 import { getCategoryById } from "@/src/services/categoryService";
 import { redirect } from "next/navigation";
 

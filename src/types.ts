@@ -1,5 +1,4 @@
-import { Prisma } from "@/src/generated/client";
-import { Decimal } from "@/src/generated/client/runtime/library";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export type CartItem = {
   id: number;
@@ -21,11 +20,6 @@ export enum MessageType {
 export type Message = {
   text: string;
   type: MessageType;
-};
-
-export type CreateCategoryFields = CategoryFields;
-export type UpdateCategoryFields = CategoryFields & {
-  id: number;
 };
 
 export type ChangePasswordFields = {
@@ -85,29 +79,24 @@ export type FoodFields = {
   categoryId?: number | null | undefined;
 };
 
-export type CategoryFields = {
+// DTO
+export type CategoryDTO = {
+  id?: number | null | undefined;
   name: string;
-  image?: string | null | undefined;
+  imageUrl?: string | null | undefined;
+  slug?: string | null | undefined;
+  deleted?: boolean | null | undefined;
   imageFile?: FileList | null | undefined;
 };
 
-// DTO
-export type CategoryDTO = {
-  id: number;
-  name: string;
-  imageUrl: string | null;
-  slug: string | null;
-  deleted: boolean;
-};
-
 export type FoodDTO = {
-  id: number;
+  id?: number | null | undefined;
+  ingredients?: string | null | undefined;
+  deleted?: boolean | null | undefined;
+  category?: CategoryDTO | null | undefined;
   name: string;
-  ingredients?: string | null;
-  price: Decimal;
-  category: CategoryDTO | null;
-  categoryId: number | null | undefined;
-  deleted: boolean;
+  price: number | Decimal;
+  categoryId: number | null;
 };
 
 export type DeliveryInfoFields = {

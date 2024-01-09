@@ -12,7 +12,7 @@ export async function searchFoods(
     search?: string;
   } & Paginated &
     Sorted
-): Promise<{ foods: any; count: number }> {
+): Promise<{ foods: FoodDTO[]; count: number }> {
   var orderByParams = {};
 
   if (!args.search) {
@@ -87,8 +87,11 @@ export async function searchFoods(
   };
 }
 
-export async function getFoodsByCategorySlug(slug: string) {
+export async function getFoodsByCategorySlug(slug: string): Promise<FoodDTO[]> {
   return prisma.food.findMany({
+    include: {
+      category: true,
+    },
     where: {
       category: {
         slug: slug,

@@ -1,10 +1,14 @@
 import axiosIstance from "@/src/lib/axiosIstance";
+import { CategoryDTO } from "@/src/types";
 
 import * as yup from "yup";
 
 export const categoryValidator = yup.object({
+  id: yup.number().nullable(),
   name: yup.string().required("Il campo nome è obbligatorio"),
-  image: yup.string().nullable(),
+  imageUrl: yup.string().nullable(),
+  slug: yup.string().nullable(),
+  deleted: yup.boolean().nullable(),
   imageFile: yup.mixed<FileList>().nullable().test(
     "fileSize",
     "File troppo grande (max 1 mega)",
@@ -42,6 +46,7 @@ export const changePasswordValidator = yup.object({
 }).required();
 
 export const foodValidator = yup.object({
+  id: yup.number().nullable(),
   name: yup.string().required("Il campo nome è obbligatorio"),
   price: yup.number().typeError("Inserisci un numero valido").required(
     "Il campo prezzo è obbligatorio",
@@ -51,6 +56,8 @@ export const foodValidator = yup.object({
   ),
   ingredients: yup.string().nullable(),
   categoryId: yup.number().nullable().required("La categoria è obbligatoria"),
+  category: yup.mixed<CategoryDTO>().nullable(),
+  deleted: yup.boolean().nullable(),
 }).required();
 
 

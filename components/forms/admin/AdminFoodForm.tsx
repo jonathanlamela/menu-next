@@ -1,5 +1,5 @@
 'use client';
-import { CategoryDTO, FoodDTO, FoodFields } from "@/src/types";
+import { CategoryDTO, FoodDTO } from "@/src/types";
 import { foodValidator } from "@/src/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -11,8 +11,8 @@ export default function AdminFoodForm(props: { food?: FoodDTO, categories: Categ
 
     const [isPending, setIsPending] = useState(false);
 
-    const { register, formState: { errors, isValid, isDirty }, handleSubmit } = useForm<FoodFields>({
-        resolver: yupResolver<FoodFields>(foodValidator),
+    const { register, formState: { errors, isValid, }, handleSubmit } = useForm<FoodDTO>({
+        resolver: yupResolver<FoodDTO>(foodValidator),
         mode: "onChange",
         defaultValues: {
             name: props.food?.name ?? '',
@@ -22,9 +22,7 @@ export default function AdminFoodForm(props: { food?: FoodDTO, categories: Categ
         }
     });
 
-
-
-    const processForm = async (object: FoodFields) => {
+    const processForm = async (object: FoodDTO) => {
         setIsPending(true);
         var data = new FormData();
 

@@ -4,8 +4,8 @@ import { CartItem, CartRow, CartState, DeliveryType } from "@/src/types";
 import { cookies } from "next/headers";
 
 const emptyCart: CartState = {
-  delivery_address: "",
-  delivery_time: "",
+  deliveryAddress: "",
+  deliveryTime: "",
   items: {},
   note: "",
   total: 0,
@@ -54,7 +54,7 @@ export const decreaseQty = async (item: CartItem) => {
 export const updateCartCarrier = async (carrier_id: number) => {
   const cart = await getCart();
 
-  cart.carrier_id = carrier_id;
+  cart.carrierId = carrier_id;
 
   storeCart(cart);
 };
@@ -65,8 +65,8 @@ export const updateCartInformazioniConsegna = async (item: {
 }) => {
   const cart = await getCart();
 
-  cart.delivery_address = item.delivery_address;
-  cart.delivery_time = item.delivery_time;
+  cart.deliveryAddress = item.delivery_address;
+  cart.deliveryTime = item.delivery_time;
 
   storeCart(emptyCart);
 };
