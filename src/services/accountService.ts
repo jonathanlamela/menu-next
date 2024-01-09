@@ -25,7 +25,7 @@ import {
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export async function createUser(data: Prisma.userCreateInput) {
+export async function createUser(data: Prisma.UserCreateInput) {
   data.passwordHash = bcrypt.hashSync(data.passwordHash, 10);
   data.activationToken = generator.generate({
     length: 20,
