@@ -21,8 +21,7 @@ import { CrudType } from "@/src/types";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPerPage from "@/components/admin/AdminPerPage";
 import AdminSearchForm from "@/components/admin/AdminSearchForm";
-import DesktopCategoryRow from "@/components/admin/DesktopCategoryRow";
-import MobileCategoryRow from "@/components/admin/MobileCategoryRow";
+import CategoryRow from "@/components/admin/CategoryRow";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -74,7 +73,6 @@ export default async function Index({ searchParams }: {
                         <div className="w-1/12 text-center">
                             <AdminOrderToggler
                                 className="flex w-full flex-row space-x-1 justify-center"
-                                link="/amministrazione/catalogo/categorie"
                                 field="id"
                                 label="Id"
                                 params={params} />
@@ -82,7 +80,6 @@ export default async function Index({ searchParams }: {
                         <div className="w-8/12 text-left">
                             <AdminOrderToggler
                                 className="flex w-full flex-row space-x-1 justify-start"
-                                link="/amministrazione/catalogo/categorie"
                                 field="name"
                                 label="Nome"
                                 params={params} />
@@ -94,8 +91,7 @@ export default async function Index({ searchParams }: {
                     {items.map(row => {
                         return <>
                             <div className="w-full odd:bg-gray-100">
-                                <DesktopCategoryRow category={row} key={row.id} />
-                                <MobileCategoryRow category={row} key={row.id} />
+                                <CategoryRow category={row} key={row.id} />
                             </div>
                         </>
                     })}
@@ -104,7 +100,7 @@ export default async function Index({ searchParams }: {
                     <AdminPerPage params={params}></AdminPerPage>
                 </div>
                 <div className="w-full flex px-4 py-4 bg-gray-100">
-                    <AdminPagination params={params} count={count} link={"/amministrazione/catalogo/categorie"}></AdminPagination>
+                    <AdminPagination params={params} count={count} ></AdminPagination>
                 </div>
             </div>
         </>
@@ -144,7 +140,7 @@ export default async function Index({ searchParams }: {
                 <div className="flex w-full bg-gray-100 p-2">
                     <div className="w-1/2">
                         <div className="flex">
-                            <Link href="/amministrazione/catalogo/categorie/crea" className="btn-primary">Crea</Link>
+                            <Link href="categorie/crea" className="btn-primary">Crea</Link>
                         </div>
                     </div>
                     <div className="w-1/2 flex justify-end">

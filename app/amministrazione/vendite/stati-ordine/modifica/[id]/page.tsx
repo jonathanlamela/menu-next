@@ -14,23 +14,29 @@ import Messages from "@/components/Messages";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
-import AdminCategoryForm from "@/components/forms/admin/AdminCategoryForm";
-import AdminFoodForm from "@/components/forms/admin/AdminFoodForm";
-import { getAllCategories } from "@/src/services/categoryService";
+import { redirect } from "next/navigation";
+import { getCarrierById } from "@/src/services/carrierService";
+import AdminCarrierForm from "@/components/forms/admin/AdminCarrierForm";
+import { getOrderStateById } from "@/src/services/orderStateService";
+import AdminOrderStateForm from "@/components/forms/admin/AdminOrderStateForm";
 
 
 export async function generateMetadata({ params }: any) {
     return {
-        title: "Crea categoria",
+        title: "Modifica stato ordine",
     }
 }
 
-export default async function Page({ searchParams }: {
-    params: {}
+export default async function Page({ searchParams, params }: {
+    params: any
     searchParams: { [key: string]: string | undefined }
 }) {
 
+    const orderState = await getOrderStateById(parseInt(params["id"]));
 
+    if (!orderState) {
+        redirect(`/`);
+    }
 
     return (
         <main className="flex flex-col flex-grow">
@@ -43,7 +49,6 @@ export default async function Page({ searchParams }: {
                     <AccountManage></AccountManage>
                 </TopbarRight>
             </Topbar>
-
             <Header></Header>
             <HeaderMenu>
                 <BreadcrumbContainer>
@@ -51,25 +56,23 @@ export default async function Page({ searchParams }: {
                         Profilo
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Catalogo</BreadcrumbText>
+                    <BreadcrumbText>Vendite</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
                     <BreadcrumbLink href="../">
-                        Categorie
+                        Stati ordine
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Crea categoria</BreadcrumbText>
+                    <BreadcrumbText>Modifica stato ordine</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
-
             <div className="flex flex-col px-8 py-4 flex-grow">
                 <Messages></Messages>
                 <div className="w-full pb-4">
-                    <p className="text-2xl antialiased font-bold">Crea categoria</p>
+                    <p className="text-2xl antialiased font-bold">Modifica stato ordine</p>
                 </div>
-                <AdminCategoryForm></AdminCategoryForm>
-
+                <AdminOrderStateForm orderState={orderState}></AdminOrderStateForm>
             </div>
-        </main >
+        </main>
     );
 }
 

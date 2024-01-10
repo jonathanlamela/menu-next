@@ -2,7 +2,7 @@ import { CrudType } from "@/src/types";
 import Link from "next/link";
 
 
-export default function AdminPagination(props: { params: CrudType, count: number, link: string }) {
+export default function AdminPagination(props: { params: CrudType, count: number }) {
 
 
     const { count, params } = props;
@@ -14,7 +14,7 @@ export default function AdminPagination(props: { params: CrudType, count: number
             return <>
                 <Link href={
                     {
-                        href: props.link,
+                        href: "./",
                         query: {
                             ...params,
                             page: num
@@ -28,7 +28,7 @@ export default function AdminPagination(props: { params: CrudType, count: number
             return <>
                 <Link href={
                     {
-                        href: props.link,
+                        href: "./",
                         query: {
                             ...params,
                             page: num
@@ -49,7 +49,7 @@ export default function AdminPagination(props: { params: CrudType, count: number
             return <>
                 <Link key={num} href={
                     {
-                        href: props.link,
+                        href: "./",
                         query: {
                             ...params,
                             page: num
@@ -74,7 +74,7 @@ export default function AdminPagination(props: { params: CrudType, count: number
             return <>
                 <Link key={num} href={
                     {
-                        href: props.link,
+                        href: "./",
                         query: {
                             ...params,
                             page: num

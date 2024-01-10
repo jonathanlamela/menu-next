@@ -17,11 +17,13 @@ import BreadcrumbText from "@/components/BreadcrumbText";
 import AdminCategoryForm from "@/components/forms/admin/AdminCategoryForm";
 import AdminFoodForm from "@/components/forms/admin/AdminFoodForm";
 import { getAllCategories } from "@/src/services/categoryService";
+import AdminCarrierForm from "@/components/forms/admin/AdminCarrierForm";
+import AdminOrderStateForm from "@/components/forms/admin/AdminOrderStateForm";
 
 
 export async function generateMetadata({ params }: any) {
     return {
-        title: "Crea categoria",
+        title: "Crea stato ordine",
     }
 }
 
@@ -51,25 +53,24 @@ export default async function Page({ searchParams }: {
                         Profilo
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Catalogo</BreadcrumbText>
+                    <BreadcrumbText>Vendite</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
                     <BreadcrumbLink href="../">
-                        Categorie
+                        Stati ordine
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Crea categoria</BreadcrumbText>
+                    <BreadcrumbText>Crea stato ordine</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
 
             <div className="flex flex-col px-8 py-4 flex-grow">
                 <Messages></Messages>
                 <div className="w-full pb-4">
-                    <p className="text-2xl antialiased font-bold">Crea categoria</p>
+                    <p className="text-2xl antialiased font-bold">Crea stato ordine</p>
                 </div>
-                <AdminCategoryForm></AdminCategoryForm>
-
+                <AdminOrderStateForm></AdminOrderStateForm>
             </div>
-        </main >
+        </main>
     );
 }
 

@@ -2,14 +2,14 @@ import { CrudType } from "@/src/types"
 import Link from "next/link"
 
 
-export default function AdminOrderToggler(props: { label: string, field: string, params: CrudType, className: string, link: string }) {
+export default function AdminOrderToggler(props: { label: string, field: string, params: CrudType, className: string }) {
 
 
     if (props.field == props.params.orderBy) {
 
         return <>
             <Link href={{
-                href: props.link,
+                href: "./",
                 query: {
                     ...props.params,
                     ascending: !props.params.ascending
@@ -29,7 +29,7 @@ export default function AdminOrderToggler(props: { label: string, field: string,
 
     return <>
         <Link href={{
-            href: props.link,
+            href: "./",
             query: {
                 ...props.params,
                 ascending: true,

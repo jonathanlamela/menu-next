@@ -89,6 +89,7 @@ export type OrderStateDTO = {
   id?: number | null | undefined;
   name: string;
   cssBadgeClass?: string | null | undefined;
+  deleted?: boolean | null | undefined;
 };
 
 export type CarrierDTO = {

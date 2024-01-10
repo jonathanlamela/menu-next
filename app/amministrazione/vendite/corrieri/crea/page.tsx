@@ -54,7 +54,7 @@ export default async function Page({ searchParams }: {
                     <BreadcrumbDivider></BreadcrumbDivider>
                     <BreadcrumbText>Vendite</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbLink href="/amministrazione/vendite/corrieri">
+                    <BreadcrumbLink href="../">
                         Corrieri
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>

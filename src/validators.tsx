@@ -72,6 +72,13 @@ export const carrierValidator = yup.object({
   deleted: yup.boolean().nullable(),
 }).required();
 
+export const orderStateValidator = yup.object({
+  id: yup.number().nullable(),
+  name: yup.string().required("Il campo nome è obbligatorio"),
+  cssBadgeClass: yup.string().nullable(),
+  deleted: yup.boolean().nullable(),
+}).required();
+
 
 
 export const deliveryTypeValidator = yup.object({
@@ -167,16 +174,7 @@ export const verifyAccountValidator = yup.object({
   ),
 }).required();
 
-export const createOrderStateValidator = yup.object({
-  name: yup.string().required("Il campo nome è obbligatorio"),
-  cssBadgeClass: yup.string().required("Seleziona un elemento dalla lista"),
-}).required();
 
-export const updateOrderStateValidator = yup.object({
-  id: yup.number().required(),
-  name: yup.string().required("Il campo nome è obbligatorio"),
-  cssBadgeClass: yup.string().required("Seleziona un elemento dalla lista"),
-}).required();
 
 export const updateOrderStatusValidator = yup.object({
   orderState: yup.string().required(),

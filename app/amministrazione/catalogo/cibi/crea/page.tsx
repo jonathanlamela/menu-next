@@ -59,7 +59,7 @@ export default async function Page({ searchParams }: {
                     <BreadcrumbDivider></BreadcrumbDivider>
                     <BreadcrumbText>Catalogo</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbLink href="/amministrazione/catalogo/cibi">
+                    <BreadcrumbLink href="../">
                         Cibi
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>

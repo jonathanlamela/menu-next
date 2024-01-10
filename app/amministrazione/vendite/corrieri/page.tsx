@@ -20,11 +20,8 @@ import { CrudType } from "@/src/types";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPerPage from "@/components/admin/AdminPerPage";
 import AdminSearchForm from "@/components/admin/AdminSearchForm";
-import DesktopCategoryRow from "@/components/admin/DesktopCategoryRow";
-import MobileCategoryRow from "@/components/admin/MobileCategoryRow";
 import { getAllCarriers } from "@/src/services/carrierService";
-import DesktopCarrierRow from "@/components/admin/DesktopCarrierRow";
-import MobileCarrierRow from "@/components/admin/MobileCarrierRow";
+import CarrierRow from "@/components/admin/CarrierRow";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -76,7 +73,6 @@ export default async function Index({ searchParams }: {
                         <div className="w-1/12 text-center">
                             <AdminOrderToggler
                                 className="flex w-full flex-row space-x-1 justify-center"
-                                link="/amministrazione/vendite/corrieri"
                                 field="id"
                                 label="Id"
                                 params={params} />
@@ -84,7 +80,6 @@ export default async function Index({ searchParams }: {
                         <div className="w-7/12 text-left">
                             <AdminOrderToggler
                                 className="flex w-full flex-row space-x-1 justify-start"
-                                link="/amministrazione/vendite/corrieri"
                                 field="name"
                                 label="Nome"
                                 params={params} />
@@ -92,7 +87,6 @@ export default async function Index({ searchParams }: {
                         <div className="w-1/12 text-left">
                             <AdminOrderToggler
                                 className="flex w-full flex-row space-x-1 justify-center"
-                                link="/amministrazione/vendite/corrieri"
                                 field="costs"
                                 label="Costo"
                                 params={params} />
@@ -104,8 +98,7 @@ export default async function Index({ searchParams }: {
                     {items.map(row => {
                         return <>
                             <div className="w-full odd:bg-gray-100">
-                                <DesktopCarrierRow carrier={row} key={row.id} />
-                                <MobileCarrierRow carrier={row} key={row.id} />
+                                <CarrierRow carrier={row} key={row.id} />
                             </div>
                         </>
                     })}
@@ -114,7 +107,7 @@ export default async function Index({ searchParams }: {
                     <AdminPerPage params={params}></AdminPerPage>
                 </div>
                 <div className="w-full flex px-4 py-4 bg-gray-100">
-                    <AdminPagination params={params} count={count} link={"/amministrazione/vendite/corrieri"}></AdminPagination>
+                    <AdminPagination params={params} count={count} ></AdminPagination>
                 </div>
             </div>
         </>
@@ -140,9 +133,9 @@ export default async function Index({ searchParams }: {
                         Profilo
                     </BreadcrumbLink>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Catalogo</BreadcrumbText>
+                    <BreadcrumbText>Vendite</BreadcrumbText>
                     <BreadcrumbDivider></BreadcrumbDivider>
-                    <BreadcrumbText>Categorie</BreadcrumbText>
+                    <BreadcrumbText>Corrieri</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
 
@@ -154,7 +147,7 @@ export default async function Index({ searchParams }: {
                 <div className="flex w-full bg-gray-100 p-2">
                     <div className="w-1/2">
                         <div className="flex">
-                            <Link href="/amministrazione/vendite/corrieri/crea" className="btn-primary">Crea</Link>
+                            <Link href="corrieri/crea" className="btn-primary">Crea</Link>
                         </div>
                     </div>
                     <div className="w-1/2 flex justify-end">
