@@ -47,12 +47,12 @@ model Setting {
   id                  Int          @id @default(autoincrement())
   siteTitle           String
   siteSubtitle        String?
-  orderStatePaidId    Int?         @unique
-  orderStateCreatedId Int?         @unique
-  orderStateDeletedId Int?         @unique
-  orderStatePaid      OrderState?  @relation("order_state_paid_relation", fields: [orderStatePaidId], references: [id])
-  orderStateCreated   OrderState?  @relation("order_state_created_relation", fields: [orderStateCreatedId], references: [id])
-  orderStateDeleted   OrderState?  @relation("order_state_deleted_relation", fields: [orderStateDeletedId], references: [id])
+  orderStatePaidId    Int          @unique
+  orderStateCreatedId Int          @unique
+  orderStateDeletedId Int          @unique
+  orderStatePaid      OrderState   @relation("order_state_paid_relation", fields: [orderStatePaidId], references: [id])
+  orderStateCreated   OrderState   @relation("order_state_created_relation", fields: [orderStateCreatedId], references: [id])
+  orderStateDeleted   OrderState   @relation("order_state_deleted_relation", fields: [orderStateDeletedId], references: [id])
   order_state         OrderState[]
 }
 

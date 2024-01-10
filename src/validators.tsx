@@ -1,5 +1,5 @@
 import axiosIstance from "@/src/lib/axiosIstance";
-import { CategoryDTO } from "@/src/types";
+import { CategoryDTO, OrderStateDTO } from "@/src/types";
 
 import * as yup from "yup";
 
@@ -120,11 +120,15 @@ export const resetPasswordValidator = yup.object({
 }).required();
 
 export const settingValidator = yup.object({
+  id: yup.number().nullable(),
   siteTitle: yup.string().required("Il campo nome del sito è obbligatorio"),
   siteSubtitle: yup.string().nullable(),
-  orderCreatedStateId: yup.string().required("Seleziona uno stato valido"),
-  orderPaidStateId: yup.string().required("Seleziona uno stato valido"),
-  orderDeletedStateId: yup.string().required("Seleziona uno stato valido"),
+  orderStateCreatedId: yup.number().required("Seleziona uno stato valido"),
+  orderStatePaidId: yup.number().required("Seleziona uno stato valido"),
+  orderStateDeletedId: yup.number().required("Seleziona uno stato valido"),
+  orderStateCreated: yup.mixed<OrderStateDTO>().nullable(),
+  orderStatePaid: yup.mixed<OrderStateDTO>().nullable(),
+  orderStateDeleted: yup.mixed<OrderStateDTO>().nullable()
 });
 
 const verifyEmail = async (value: string, values: yup.TestContext<any>) => {

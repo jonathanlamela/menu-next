@@ -100,13 +100,14 @@ export type CarrierDTO = {
 };
 
 export type SettingDTO = {
+  id?: number | null;
   siteTitle: string;
   siteSubtitle?: string | null | undefined;
-  orderStateCreatedId?: number | null | undefined;
+  orderStateCreatedId: number;
   orderStateCreated?: OrderStateDTO | null | undefined;
-  orderStatePaidId?: number | undefined | null;
+  orderStatePaidId: number;
   orderStatePaid?: OrderStateDTO | null | undefined;
-  orderStateDeletedId?: number | undefined | null;
+  orderStateDeletedId: number;
   orderStateDeleted?: OrderStateDTO | null | undefined;
 };
 

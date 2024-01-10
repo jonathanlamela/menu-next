@@ -2,15 +2,21 @@
 import { Metadata } from 'next'
 import './globals.css'
 import { NextAuthProvider } from '@/components/NextAuthProvider'
+import { getSettings } from '@/src/services/settingService'
 
 
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Menu',
-    default: 'Home | Menu'
-  },
+
+export async function generateMetadata({ params }: any) {
+  var settings = await getSettings();
+  return {
+    title: {
+      template: `%s :: ${settings?.siteTitle}`,
+      default: `Home :: ${settings?.siteTitle}`
+    },
+  }
 }
+
 
 export default function RootLayout({
   children,
