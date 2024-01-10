@@ -3,7 +3,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { pushMessage } from "@/src/services/messageService";
 import { CrudType, MessageType, CarrierDTO, CrudResults } from "@/src/types";
-import { Prisma } from "@prisma/client";
+import { Carrier, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -63,7 +63,9 @@ export async function getAllCarriers(
   }
 }
 
-export async function getCarrierById(id: number) {
+export async function getCarrierById(
+  id: number
+): Promise<CarrierDTO | undefined | null> {
   return prisma.carrier.findFirst({
     where: {
       id: id,

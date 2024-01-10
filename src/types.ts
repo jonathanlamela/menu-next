@@ -115,7 +115,7 @@ export type SettingDTO = {
 
 export type DeliveryInfoFields = {
   deliveryTime: string;
-  deliveryAddress: string;
+  deliveryAddress?: string | null | undefined;
 };
 
 export type RiepilogoOrdineFields = {
@@ -127,16 +127,16 @@ export enum DeliveryType {
   DOMICILIO = "DOMICILIO",
 }
 
-export type DeliveryTypeFields = {
-  delivery_type: DeliveryType;
+export type PickDeliveryTypeFields = {
+  carrierId: number;
 };
 
 export type CartState = {
   items: { [name: string]: CartRow };
   total: number;
-  deliveryAddress: string;
+  deliveryAddress?: string | null | undefined;
   deliveryTime: string;
-  carrierId?: number;
+  carrierId: number;
   note: string;
 };
 

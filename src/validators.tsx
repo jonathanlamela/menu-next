@@ -81,8 +81,8 @@ export const orderStateValidator = yup.object({
 
 
 
-export const deliveryTypeValidator = yup.object({
-  deliveryAddress: yup.string().required("L'indirizzo è obbligatorio"),
+export const deliveryInfoValidator = yup.object({
+  deliveryAddress: yup.string(),
   deliveryTime: yup.string().required("L'orario è obbligatorio"),
 }).required();
 
@@ -187,4 +187,8 @@ export const updateOrderStatusValidator = yup.object({
 
 export const updateOrderDetailsAddItemValidator = yup.object({
   id: yup.string().required(),
+}).required();
+
+export const pickDeliveryMethodValidator = yup.object({
+  carrierId: yup.number().required("Seleziona un metodo di consegna"),
 }).required();

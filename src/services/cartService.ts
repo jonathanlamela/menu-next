@@ -2,6 +2,7 @@
 
 import { CartItem, CartRow, CartState, DeliveryType } from "@/src/types";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const emptyCart: CartState = {
   deliveryAddress: "",
@@ -107,4 +108,32 @@ export async function storeCart(cart: CartState) {
     let buff = Buffer.from(JSON.stringify(cart), "utf8");
     cookiesList.set("cart", buff.toString("base64"));
   }
+}
+
+export async function updateDeliveryType(carrierId: number) {
+  var cart = await getCart();
+  cart.carrierId = carrierId;
+
+  await storeCart(cart);
+
+  redirect("2");
+}
+
+export async function updateDeliveryInfo(form: FormData) {
+  var cart = await getCart();
+
+  var deliveryAddress = form.get("deliveryAddress");
+  var deliveryTime = form.get("deliveryTime");
+
+  if (deliveryAddress) {
+    cart.deliveryAddress = deliveryAddress.valueOf() as string;
+  } else {
+    cart.deliveryAddress = "";
+  }
+
+  cart.deliveryTime = deliveryTime as string;
+
+  await storeCart(cart);
+
+  redirect("3");
 }
