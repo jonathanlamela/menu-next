@@ -53,7 +53,7 @@ export default async function Index({ searchParams }: {
 
     const data = await getAllCategories(params);
 
-    const { categories, count } = data;
+    const { items, count } = data;
 
     const content = () => {
 
@@ -91,7 +91,7 @@ export default async function Index({ searchParams }: {
                     </div>
                 </div>
                 <div className="w-full flex-col flex-grow">
-                    {categories.map(row => {
+                    {items.map(row => {
                         return <>
                             <div className="w-full odd:bg-gray-100">
                                 <DesktopCategoryRow category={row} key={row.id} />

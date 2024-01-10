@@ -95,6 +95,18 @@ export type CarrierDTO = {
   id?: number | null | undefined;
   name: string;
   costs: number | Decimal;
+  deleted?: boolean | null | undefined;
+};
+
+export type SettingDTO = {
+  siteTitle: string;
+  siteSubtitle?: string | null | undefined;
+  orderStateCreatedId?: number | null | undefined;
+  orderStateCreated?: OrderStateDTO | null | undefined;
+  orderStatePaidId?: number | undefined | null;
+  orderStatePaid?: OrderStateDTO | null | undefined;
+  orderStateDeletedId?: number | undefined | null;
+  orderStateDeleted?: OrderStateDTO | null | undefined;
 };
 
 //Form types
@@ -126,14 +138,6 @@ export type CartState = {
   note: string;
 };
 
-export type Settings = {
-  siteTitle?: string;
-  siteSubtitle?: string;
-  orderCreatedStateId?: number;
-  orderPaidStateId?: number;
-  orderDeletedStateId?: number;
-};
-
 export type CurrentUser = {
   email: string;
   firstname: string;
@@ -158,3 +162,8 @@ export type CrudType = {
   deleted: boolean;
 } & Paginated &
   Sorted;
+
+export type CrudResults<T> = {
+  items: T[];
+  count: number;
+};

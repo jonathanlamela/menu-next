@@ -46,7 +46,7 @@ model User {
 model Setting {
   id                  Int          @id @default(autoincrement())
   siteTitle           String
-  siteSubtitle        String
+  siteSubtitle        String?
   orderStatePaidId    Int?         @unique
   orderStateCreatedId Int?         @unique
   orderStateDeletedId Int?         @unique

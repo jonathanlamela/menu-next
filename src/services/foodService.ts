@@ -2,7 +2,14 @@
 
 import { prisma } from "@/src/lib/prisma";
 import { pushMessage } from "@/src/services/messageService";
-import { CrudType, FoodDTO, MessageType, Paginated, Sorted } from "@/src/types";
+import {
+  CrudResults,
+  CrudType,
+  FoodDTO,
+  MessageType,
+  Paginated,
+  Sorted,
+} from "@/src/types";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -12,12 +19,12 @@ export async function searchFoods(
     search?: string;
   } & Paginated &
     Sorted
-): Promise<{ foods: FoodDTO[]; count: number }> {
+): Promise<CrudResults<FoodDTO>> {
   var orderByParams = {};
 
   if (!args.search) {
     return {
-      foods: [],
+      items: [],
       count: 0,
     };
   }
@@ -67,7 +74,7 @@ export async function searchFoods(
   };
 
   return {
-    foods: await prisma.food.findMany({
+    items: await prisma.food.findMany({
       skip: args.perPage * (args.page - 1),
       take: args.perPage,
       orderBy: orderByParams,
@@ -103,10 +110,7 @@ export async function getFoodsByCategorySlug(slug: string): Promise<FoodDTO[]> {
 
 export async function getAllFoods(
   params: CrudType
-): Promise<{
-  foods: FoodDTO[];
-  count: number;
-}> {
+): Promise<CrudResults<FoodDTO>> {
   var orderByParams = {};
 
   switch (params.orderBy) {
@@ -156,7 +160,7 @@ export async function getAllFoods(
 
   if (params.paginated) {
     return {
-      foods: await prisma.food.findMany({
+      items: await prisma.food.findMany({
         skip: params.perPage * (params.page - 1),
         take: params.perPage,
         orderBy: orderByParams,
@@ -171,7 +175,7 @@ export async function getAllFoods(
     };
   } else {
     return {
-      foods: await prisma.food.findMany({
+      items: await prisma.food.findMany({
         orderBy: orderByParams,
         where: whereParams,
         include: {

@@ -2,17 +2,14 @@
 
 import { prisma } from "@/src/lib/prisma";
 import { pushMessage } from "@/src/services/messageService";
-import { CrudType, MessageType, OrderStateDTO } from "@/src/types";
+import { CrudResults, CrudType, MessageType, OrderStateDTO } from "@/src/types";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getAllOrderStates(
   params: CrudType
-): Promise<{
-  orderStates: OrderStateDTO[];
-  count: number;
-}> {
+): Promise<CrudResults<OrderStateDTO>> {
   var orderByParams = {};
 
   switch (params.orderBy) {
@@ -40,7 +37,7 @@ export async function getAllOrderStates(
 
   if (params.paginated) {
     return {
-      orderStates: await prisma.orderState.findMany({
+      items: await prisma.orderState.findMany({
         skip: params.perPage * (params.page - 1),
         take: params.perPage,
         orderBy: orderByParams,
@@ -52,7 +49,7 @@ export async function getAllOrderStates(
     };
   } else {
     return {
-      orderStates: await prisma.orderState.findMany({
+      items: await prisma.orderState.findMany({
         orderBy: orderByParams,
         where: whereParams,
       }),

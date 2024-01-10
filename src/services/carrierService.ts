@@ -2,18 +2,15 @@
 
 import { prisma } from "@/src/lib/prisma";
 import { pushMessage } from "@/src/services/messageService";
-import { CrudType, MessageType, CarrierDTO } from "@/src/types";
+import { CrudType, MessageType, CarrierDTO, CrudResults } from "@/src/types";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getAllCarriers(
   params: CrudType
-): Promise<{
-  carriers: CarrierDTO[];
-  count: number;
-}> {
-  var orderByParams = {};
+): Promise<CrudResults<CarrierDTO>> {
+  var orderByParams: Prisma.CarrierOrderByWithAggregationInput = {};
 
   switch (params.orderBy) {
     case "id":
@@ -21,6 +18,9 @@ export async function getAllCarriers(
       break;
     case "name":
       orderByParams = { name: params.ascending ? "asc" : "desc" };
+      break;
+    case "costs":
+      orderByParams = { costs: params.ascending ? "asc" : "desc" };
       break;
   }
 
@@ -40,7 +40,7 @@ export async function getAllCarriers(
 
   if (params.paginated) {
     return {
-      carriers: await prisma.carrier.findMany({
+      items: await prisma.carrier.findMany({
         skip: params.perPage * (params.page - 1),
         take: params.perPage,
         orderBy: orderByParams,
@@ -52,7 +52,7 @@ export async function getAllCarriers(
     };
   } else {
     return {
-      carriers: await prisma.carrier.findMany({
+      items: await prisma.carrier.findMany({
         orderBy: orderByParams,
         where: whereParams,
       }),

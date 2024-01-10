@@ -12,11 +12,11 @@ import Topbar from "@/components/Topbar";
 import TopbarLeft from "@/components/TopbarLeft";
 import TopbarRight from "@/components/TopbarRight";
 import { searchFoods } from "@/src/services/foodService";
-import { FoodDTO, SearchFields } from "@/src/types";
+import { CrudResults, FoodDTO, SearchFields } from "@/src/types";
 import { redirect } from "next/navigation";
 
 
-async function getResults(searchObject: SearchFields): Promise<{ foods: FoodDTO[], count: number }> {
+async function getResults(searchObject: SearchFields): Promise<CrudResults<FoodDTO>> {
   if (searchObject.search == null || searchObject.search == "") {
     redirect('/');
   } else {
@@ -38,7 +38,7 @@ export default async function Cerca(props: any) {
   const searchParams = props.searchParams;
   const value = searchParams.chiave ?? null;
 
-  const { foods, count } = await getResults({
+  const { items, count } = await getResults({
     search: searchParams.chiave ?? null
   });
 
@@ -59,7 +59,7 @@ export default async function Cerca(props: any) {
   };
 
   const searchResultsRender = () => {
-    return foods.map((item: any) => <FoodItemWithCategory item={item} key={item.id}></FoodItemWithCategory>);
+    return items.map((item: FoodDTO) => <FoodItemWithCategory item={item} key={item.id}></FoodItemWithCategory>);
   }
   return (
     <main>

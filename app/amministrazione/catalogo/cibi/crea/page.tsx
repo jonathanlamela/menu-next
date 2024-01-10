@@ -72,7 +72,7 @@ export default async function Page({ searchParams }: {
                 <div className="w-full pb-4">
                     <p className="text-2xl antialiased font-bold">Crea cibo</p>
                 </div>
-                <AdminFoodForm categories={categoryData.categories}></AdminFoodForm>
+                <AdminFoodForm categories={categoryData.items}></AdminFoodForm>
 
             </div>
         </main>

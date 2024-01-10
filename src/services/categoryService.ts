@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/src/lib/prisma";
-import { CategoryDTO, CrudType } from "@/src/types";
+import { CategoryDTO, CrudResults, CrudType } from "@/src/types";
 import { Prisma } from "@prisma/client";
 
 import { pushMessage } from "@/src/services/messageService";
@@ -27,10 +27,7 @@ export async function getCategoriesForPills() {
 
 export async function getAllCategories(
   params: CrudType
-): Promise<{
-  categories: CategoryDTO[];
-  count: number;
-}> {
+): Promise<CrudResults<CategoryDTO>> {
   var orderByParams = {};
 
   switch (params.orderBy) {
@@ -58,7 +55,7 @@ export async function getAllCategories(
 
   if (params.paginated) {
     return {
-      categories: await prisma.category.findMany({
+      items: await prisma.category.findMany({
         skip: params.perPage * (params.page - 1),
         take: params.perPage,
         orderBy: orderByParams,
@@ -70,7 +67,7 @@ export async function getAllCategories(
     };
   } else {
     return {
-      categories: await prisma.category.findMany({
+      items: await prisma.category.findMany({
         orderBy: orderByParams,
         where: whereParams,
       }),

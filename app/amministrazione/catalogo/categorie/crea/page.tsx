@@ -30,14 +30,7 @@ export default async function Page({ searchParams }: {
     searchParams: { [key: string]: string | undefined }
 }) {
 
-    const categoryData = await getAllCategories({
-        ascending: true,
-        orderBy: "id",
-        deleted: false,
-        paginated: false,
-        page: 1,
-        perPage: 100
-    })
+
 
     return (
         <main className="flex flex-col flex-grow">
@@ -73,10 +66,10 @@ export default async function Page({ searchParams }: {
                 <div className="w-full pb-4">
                     <p className="text-2xl antialiased font-bold">Crea categoria</p>
                 </div>
-                <AdminFoodForm categories={categoryData.categories}></AdminFoodForm>
+                <AdminCategoryForm></AdminCategoryForm>
 
             </div>
-        </main>
+        </main >
     );
 }
 

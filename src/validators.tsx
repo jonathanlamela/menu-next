@@ -60,6 +60,18 @@ export const foodValidator = yup.object({
   deleted: yup.boolean().nullable(),
 }).required();
 
+export const carrierValidator = yup.object({
+  id: yup.number().nullable(),
+  name: yup.string().required("Il campo nome è obbligatorio"),
+  costs: yup.number().typeError("Inserisci un numero valido").required(
+    "Il campo prezzo è obbligatorio",
+  ).min(
+    0.00,
+    "Il prezzo maggiore o uguale a 0",
+  ),
+  deleted: yup.boolean().nullable(),
+}).required();
+
 
 
 export const deliveryTypeValidator = yup.object({

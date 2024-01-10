@@ -1,13 +1,13 @@
+"use server";
 import { prisma } from "@/src/lib/prisma";
+import { SettingDTO } from "@/src/types";
 
-export async function getSettings(): Promise<any> {
+export async function getSettings(): Promise<SettingDTO | undefined | null> {
   var settings = await prisma.setting.findFirst({
-    select: {
-      siteTitle: true,
-      siteSubtitle: true,
+    include: {
       orderStateCreated: true,
-      orderStatePaid: true,
       orderStateDeleted: true,
+      orderStatePaid: true,
     },
   });
 
