@@ -20,7 +20,7 @@ export default async function Page() {
 
     var cart = await getCart();
 
-    var carrier = await getCarrierById(cart.carrierId);
+    var carrier = await getCarrierById(cart.carrierId!);
 
     return <>
         <main>

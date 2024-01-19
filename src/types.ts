@@ -2,8 +2,8 @@ import { Decimal } from "@prisma/client/runtime/library";
 
 export type CartItem = {
   id: number;
-  name?: string;
-  price?: number;
+  name: string;
+  price: number;
 };
 
 export type CartRow = {
@@ -131,12 +131,20 @@ export type PickDeliveryTypeFields = {
   carrierId: number;
 };
 
+export const emptyCart: CartState = {
+  deliveryAddress: "",
+  deliveryTime: "",
+  items: {},
+  note: "",
+  total: 0,
+};
+
 export type CartState = {
   items: { [name: string]: CartRow };
   total: number;
   deliveryAddress?: string | null | undefined;
   deliveryTime: string;
-  carrierId: number;
+  carrierId?: number;
   note: string;
 };
 

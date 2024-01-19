@@ -1,4 +1,5 @@
 'use client';
+import { createOrder } from "@/src/services/orderService";
 import { CarrierDTO, CartState, RiepilogoOrdineFields } from "@/src/types";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +15,9 @@ export default function OrderSummaryForm(props: { cart: CartState, carrier: Carr
     });
 
     const processForm = async (data: RiepilogoOrdineFields) => {
-
+        var formData = new FormData();
+        formData.set("note", data.note);
+        await createOrder(formData);
     }
 
     return <>

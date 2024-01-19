@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev-email":"email dev -d ./src/templates/emails"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -15,6 +16,7 @@
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.1.1",
     "@prisma/client": "^5.5.2",
+    "@react-email/components": "0.0.14",
     "@reduxjs/toolkit": "^1.9.5",
     "@tailwindcss/forms": "^0.5.3",
     "@types/react": "18.2.14",
@@ -36,6 +38,7 @@
     "prisma-yup-generator": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-email": "2.0.0",
     "react-hook-form": "^7.45.1",
     "react-redux": "^8.1.1",
     "slugify": "^1.6.6",

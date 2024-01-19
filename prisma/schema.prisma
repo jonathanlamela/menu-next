@@ -20,14 +20,13 @@ model Category {
 }
 
 model Food {
-  id           Int           @id @default(autoincrement())
-  name         String
-  ingredients  String?
-  price        Decimal
-  categoryId   Int?
-  category     Category?     @relation(references: [id], fields: [categoryId])
-  orderDetails OrderDetail[]
-  deleted      Boolean       @default(false)
+  id          Int       @id @default(autoincrement())
+  name        String
+  ingredients String?
+  price       Decimal
+  categoryId  Int?
+  category    Category? @relation(references: [id], fields: [categoryId])
+  deleted     Boolean   @default(false)
 }
 
 model User {
@@ -90,8 +89,6 @@ model OrderDetail {
   id        Int     @id @default(autoincrement())
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  foodId    Int?
-  food      Food?   @relation(fields: [foodId], references: [id], onDelete: SetNull)
   quantity  Int
   unitPrice Decimal
   name      String

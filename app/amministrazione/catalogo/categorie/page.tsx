@@ -22,6 +22,8 @@ import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPerPage from "@/components/admin/AdminPerPage";
 import AdminSearchForm from "@/components/admin/AdminSearchForm";
 import CategoryRow from "@/components/admin/CategoryRow";
+import { Suspense } from "react";
+import LoadingContent from "@/components/LoadingContent";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -88,13 +90,15 @@ export default async function Index({ searchParams }: {
                     </div>
                 </div>
                 <div className="w-full flex-col flex-grow">
-                    {items.map(row => {
-                        return <>
-                            <div className="w-full odd:bg-gray-100">
-                                <CategoryRow category={row} key={row.id} />
-                            </div>
-                        </>
-                    })}
+                    <Suspense fallback={<LoadingContent></LoadingContent>}>
+                        {items.map(row => {
+                            return <>
+                                <div className="w-full odd:bg-gray-100">
+                                    <CategoryRow category={row} key={row.id} />
+                                </div>
+                            </>
+                        })}
+                    </Suspense>
                 </div>
                 <div className="w-full flex px-4 py-4">
                     <AdminPerPage params={params}></AdminPerPage>

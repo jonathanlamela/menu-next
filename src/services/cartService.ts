@@ -1,16 +1,14 @@
 "use server";
 
-import { CartItem, CartRow, CartState, DeliveryType } from "@/src/types";
+import {
+  CartItem,
+  CartRow,
+  CartState,
+  DeliveryType,
+  emptyCart,
+} from "@/src/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-const emptyCart: CartState = {
-  deliveryAddress: "",
-  deliveryTime: "",
-  items: {},
-  note: "",
-  total: 0,
-};
 
 export const addToCart = async (item: CartItem) => {
   const cart = await getCart();
