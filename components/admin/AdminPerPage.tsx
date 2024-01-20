@@ -35,7 +35,7 @@ export default function AdminPerPage(props: { params: CrudType }) {
             <input type="hidden" {...register("ascending")}></input>
             <input type="hidden" {...register("orderBy")}></input>
             <input type="hidden" {...register("page")}></input>
-            <input type="hidden" {...register("search")} />
+            {params.search ? <input type="hidden" {...register("search")} /> : null}
             <label className="text-sm">Elementi per pagina</label>
             <select {...register("perPage")} className="input-select" onChange={handleChange}>
                 {[2, 5, 10, 20, 50].map((value) => <option key={value} value={value}>{value}</option>)}

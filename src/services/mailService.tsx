@@ -1,11 +1,9 @@
 import { prisma } from "@/src/lib/prisma";
 import { createTransport } from "nodemailer";
-import { nodemailerMjmlPlugin } from "nodemailer-mjml";
 import { render } from "@react-email/render";
 import AccountResetPassword from "@/src/templates/emails/accountResetPassword";
 import AccountActivationCode from "@/src/templates/emails/accountActivationCode";
 import CustomerOrderCreatedEmail from "@/src/templates/emails/customerOrderCreated";
-import { Tailwind } from "@react-email/components";
 
 var transport: any = null;
 
@@ -33,6 +31,8 @@ const initService = () => {
 
 const sendActivateAccountCode = async (email: string, link: string) => {
 
+  initService();
+
   const htmlMail = render(<AccountActivationCode link={link} />);
 
   await transport.sendMail({
@@ -46,6 +46,8 @@ const sendActivateAccountCode = async (email: string, link: string) => {
 };
 
 const sendResetPassword = async (email: string, link: string) => {
+
+  initService()
 
   const htmlMail = render(<AccountResetPassword link={link} />);
 
@@ -61,6 +63,7 @@ const sendResetPassword = async (email: string, link: string) => {
 };
 
 const sendCustomerOrderCreatedEmail = async (orderId: number) => {
+
   initService();
 
   var order = await prisma.order.findFirst({
@@ -75,17 +78,20 @@ const sendCustomerOrderCreatedEmail = async (orderId: number) => {
     },
   });
 
-  const htmlMail = render(<CustomerOrderCreatedEmail carrier={order?.carrier!} rows={order?.details!} total={order?.total.toNumber()!} />);
+  if (order) {
+    const htmlMail = render(<CustomerOrderCreatedEmail carrier={order?.carrier!} rows={order?.details!} total={order?.total.toNumber()!} />);
 
-  await transport.sendMail({
-    subject: process.env.MAIL_FROM_NAME + " - " + "Ordine creato",
-    to: order?.user.email,
-    html: htmlMail,
-  });
+    await transport.sendMail({
+      subject: process.env.MAIL_FROM_NAME + " - " + "Ordine creato",
+      to: order?.user.email,
+      html: htmlMail,
+    });
+  }
+
+
 };
 
 const mailService = {
-  initService,
   sendActivateAccountCode,
   sendResetPassword,
   sendCustomerOrderCreatedEmail,

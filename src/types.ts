@@ -111,6 +111,20 @@ export type SettingDTO = {
   orderStateDeleted?: OrderStateDTO | null | undefined;
 };
 
+export type OrderDTO = {
+  id: number;
+  orderStateId: number | null;
+  userId: number;
+  isPaid: boolean;
+  shippingAddress: string | null;
+  shippingDeliveryTime: string | null;
+  notes: string | null;
+  total: Decimal;
+  carrierId: number | null;
+  deleted: boolean;
+  orderState?: OrderStateDTO | null | undefined;
+};
+
 //Form types
 
 export type DeliveryInfoFields = {

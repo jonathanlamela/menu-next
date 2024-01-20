@@ -6,9 +6,19 @@ import { getCarrierById } from "@/src/services/carrierService";
 import { getCart, storeCart } from "@/src/services/cartService";
 import mailService from "@/src/services/mailService";
 import { getSettings } from "@/src/services/settingService";
-import { CartRow, CurrentUser, emptyCart } from "@/src/types";
+import {
+  CartRow,
+  CrudResults,
+  CrudType,
+  CurrentUser,
+  OrderDTO,
+  emptyCart,
+} from "@/src/types";
+import { Order } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import Stripe from "stripe";
+import { Prisma } from "@prisma/client";
 
 export async function createOrder(formData: FormData) {
   var cart = await getCart();
@@ -58,12 +68,125 @@ export async function createOrder(formData: FormData) {
 
     await storeCart(emptyCart);
 
-    await mailService.initService();
-
     await mailService.sendCustomerOrderCreatedEmail(order.id);
 
     redirect(`/account/ordini/${order.id}`);
   } else {
     redirect(`/`);
+  }
+}
+
+export async function getOrderById(id: number) {
+  return await prisma.order.findFirst({
+    where: {
+      id: id,
+    },
+    include: {
+      carrier: true,
+      details: {
+        orderBy: {
+          id: "asc",
+        },
+      },
+      orderState: true,
+    },
+  });
+}
+
+export async function payOrder(formData: FormData) {
+  const orderId = formData.get("orderId")?.valueOf() as string;
+
+  const order = await getOrderById(parseInt(orderId));
+
+  if (!order) {
+    redirect("/");
+  }
+
+  const order_items = order.details.map((item) => {
+    return {
+      price_data: {
+        currency: "eur",
+        unit_amount: item.unitPrice.toNumber() * 100,
+        product_data: {
+          name: item.name,
+        },
+      },
+      quantity: item.quantity,
+    };
+  });
+
+  const { STRIPE_SECRET_KEY, SERVER_URL } = process.env;
+
+  if (STRIPE_SECRET_KEY) {
+    const stripe = new Stripe(STRIPE_SECRET_KEY);
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: order_items,
+      mode: "payment",
+      success_url: `${SERVER_URL}/account/ordini/pagamento/successo`,
+      cancel_url: `${SERVER_URL}/account/ordini/${order.id}`,
+      metadata: {
+        order_sku: order.id,
+      },
+    });
+
+    if (session.url) {
+      redirect(session.url);
+    } else {
+      redirect("/");
+    }
+  } else {
+    redirect("/");
+  }
+}
+
+export async function getAllOrderByCustomerId(
+  userId: number,
+  params: CrudType
+): Promise<CrudResults<OrderDTO>> {
+  var orderByParams: Prisma.OrderOrderByWithRelationInput = {};
+
+  switch (params.orderBy) {
+    case "id":
+      orderByParams = { id: params.ascending ? "asc" : "desc" };
+      break;
+    case "total":
+      orderByParams = { total: params.ascending ? "asc" : "desc" };
+      break;
+  }
+
+  var whereParams: Prisma.OrderWhereInput = {};
+
+  whereParams.deleted = false;
+  whereParams.userId = userId;
+
+  if (params.paginated) {
+    return {
+      items: await prisma.order.findMany({
+        skip: params.perPage * (params.page - 1),
+        take: params.perPage,
+        orderBy: orderByParams,
+        where: whereParams,
+        include: {
+          orderState: true,
+        },
+      }),
+      count: await prisma.order.count({
+        where: whereParams,
+      }),
+    };
+  } else {
+    return {
+      items: await prisma.order.findMany({
+        orderBy: orderByParams,
+        where: whereParams,
+        include: {
+          orderState: true,
+        },
+      }),
+      count: await prisma.order.count({
+        where: whereParams,
+      }),
+    };
   }
 }

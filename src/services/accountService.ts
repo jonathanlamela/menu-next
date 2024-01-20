@@ -261,7 +261,6 @@ export async function resetPasswordAction(object: ResetPasswordFields) {
 
     if (user) {
       var token = await generateResetPasswordToken(email);
-      mailService.initService();
       await mailService.sendResetPassword(
         user.email,
         `${process.env.SERVER_URL}/auth/reset-password/token?token=${token}`
@@ -312,7 +311,6 @@ export async function verifyAccountAction(object: VerifyAccountFields) {
     if (user) {
       var token = await generateNewActivationToken(email);
       var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${token}&email=${email}`;
-      mailService.initService();
       await mailService.sendActivateAccountCode(user.email, activationUrl);
     }
 
@@ -343,7 +341,6 @@ export async function signinAction(object: SigninFields) {
 
     if (user) {
       var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${user.activationToken}&email=${email}`;
-      mailService.initService();
       await mailService.sendActivateAccountCode(user.email, activationUrl);
 
       pushMessage({
