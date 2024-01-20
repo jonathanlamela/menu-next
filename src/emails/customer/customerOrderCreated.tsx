@@ -34,13 +34,11 @@ export default function CustomerOrderCreatedEmail(props: { rows?: OrderDetail[],
                     <th>Prezzo unitario</th>
                   </tr>
                   {rows?.map((row) => {
-                    return <>
-                      <tr>
-                        <td>{row.name}</td>
-                        <td className='text-center'>{row.quantity}</td>
-                        <td className='text-center'>{row.unitPrice.toFixed(2)} €</td>
-                      </tr>
-                    </>
+                    return <tr key={row.id}>
+                      <td>{row.name}</td>
+                      <td className='text-center'>{row.quantity}</td>
+                      <td className='text-center'>{row.unitPrice.toFixed(2)} €</td>
+                    </tr>
                   })}
                   <tr>
                     <td></td>

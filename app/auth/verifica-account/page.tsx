@@ -15,11 +15,7 @@ import VerificaAccountForm from "@/components/forms/VerificaAccountForm";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
-import mailService from "@/src/services/mailService";
-import { pushMessage } from "@/src/services/messageService";
-import { VerifyAccountFields, MessageType } from "@/src/types";
-import { redirect } from "next/navigation";
-import { getUserByEmail, generateNewActivationToken } from "@/src/services/accountService";
+
 
 export async function generateMetadata({ params }: any) {
   return {

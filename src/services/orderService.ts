@@ -4,7 +4,6 @@ import authOptions from "@/src/authOptions";
 import { prisma } from "@/src/lib/prisma";
 import { getCarrierById } from "@/src/services/carrierService";
 import { getCart, storeCart } from "@/src/services/cartService";
-import mailService from "@/src/services/mailService";
 import { getSettings } from "@/src/services/settingService";
 import {
   CartRow,
@@ -13,11 +12,11 @@ import {
   OrderDTO,
   emptyCart,
 } from "@/src/types";
-import { Order } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Stripe from "stripe";
 import { Prisma } from "@prisma/client";
+import { sendCustomerOrderCreatedEmail } from "@/src/services/mailService";
 
 export async function createOrder(formData: FormData) {
   var cart = await getCart();
@@ -45,16 +44,20 @@ export async function createOrder(formData: FormData) {
   });
 
   if (order.id) {
-    Object.values(cart.items).forEach(async (row: CartRow) => {
-      await prisma.orderDetail.create({
-        data: {
-          name: row.item.name,
-          quantity: row.quantity,
-          unitPrice: row.item.price,
-          orderId: order.id,
-        },
-      });
-    });
+    const orderDetailPromises = Object.values(cart.items).map(
+      async (row: CartRow) => {
+        return prisma.orderDetail.create({
+          data: {
+            name: row.item.name,
+            quantity: row.quantity,
+            unitPrice: row.item.price,
+            orderId: order.id,
+          },
+        });
+      }
+    );
+
+    await Promise.all(orderDetailPromises);
 
     await prisma.orderDetail.create({
       data: {
@@ -67,7 +70,7 @@ export async function createOrder(formData: FormData) {
 
     await storeCart(emptyCart);
 
-    await mailService.sendCustomerOrderCreatedEmail(order.id);
+    await sendCustomerOrderCreatedEmail(order.id);
 
     redirect(`/account/ordini/${order.id}`);
   } else {
@@ -122,7 +125,7 @@ export async function payOrder(formData: FormData) {
     const session = await stripe.checkout.sessions.create({
       line_items: order_items,
       mode: "payment",
-      success_url: `${SERVER_URL}/account/ordini/pagamento/successo`,
+      success_url: `${SERVER_URL}/account/ordini/pagamento/successo?orderId=${order.id}`,
       cancel_url: `${SERVER_URL}/account/ordini/${order.id}`,
       metadata: {
         order_sku: order.id,

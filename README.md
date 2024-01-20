@@ -1,34 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# next-menu
 
-## Getting Started
+Questa è un applicazione nextjs di prova. Si tratta di un e-commerce per un ristorante che integra un back office e pagamenti con stripe.
 
-First, run the development server:
+### Utils stripe
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Comandi da utili per provare i pagamenti in locale.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Per indirizzare il traffico stripe al webhook locale
+`stripe listen --forward-to http://localhost:3000/stripe`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Per simulare un evento di pagamento (senza il metadata ma solo per verificare che il webhook riesca ad accedere al listener locale)
+`stripe trigger checkout.session.completed`

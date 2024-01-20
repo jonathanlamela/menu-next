@@ -1,9 +1,10 @@
 import { prisma } from "@/src/lib/prisma";
 import { createTransport } from "nodemailer";
 import { render } from "@react-email/render";
-import AccountResetPassword from "@/src/templates/emails/accountResetPassword";
-import AccountActivationCode from "@/src/templates/emails/accountActivationCode";
-import CustomerOrderCreatedEmail from "@/src/templates/emails/customerOrderCreated";
+import AccountResetPassword from "@/src/emails/customer/accountResetPassword";
+import AccountActivationCode from "@/src/emails/customer/accountActivationCode";
+import CustomerOrderCreatedEmail from "@/src/emails/customer/customerOrderCreated";
+import CustomerOrderPaidEmail from "@/src/emails/customer/customerOrderPaid";
 
 var transport: any = null;
 
@@ -29,7 +30,7 @@ const initService = () => {
 
 };
 
-const sendActivateAccountCode = async (email: string, link: string) => {
+export async function sendActivateAccountCodeEmail(email: string, link: string) {
 
   initService();
 
@@ -45,7 +46,7 @@ const sendActivateAccountCode = async (email: string, link: string) => {
   });
 };
 
-const sendResetPassword = async (email: string, link: string) => {
+export async function sendResetPasswordEmail(email: string, link: string) {
 
   initService()
 
@@ -62,7 +63,7 @@ const sendResetPassword = async (email: string, link: string) => {
 
 };
 
-const sendCustomerOrderCreatedEmail = async (orderId: number) => {
+export async function sendCustomerOrderCreatedEmail(orderId: number) {
 
   initService();
 
@@ -87,14 +88,34 @@ const sendCustomerOrderCreatedEmail = async (orderId: number) => {
       html: htmlMail,
     });
   }
-
-
 };
 
-const mailService = {
-  sendActivateAccountCode,
-  sendResetPassword,
-  sendCustomerOrderCreatedEmail,
+export async function sendCustomerOrderPaidEmail(orderId: number) {
+
+  initService();
+
+  var order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      user: true,
+      carrier: true,
+      orderState: true,
+      details: true,
+    },
+  });
+
+  if (order) {
+    const htmlMail = render(<CustomerOrderPaidEmail carrier={order?.carrier!} rows={order?.details!} total={order?.total.toNumber()!} />);
+
+    await transport.sendMail({
+      subject: process.env.MAIL_FROM_NAME + " - " + "Ordine pagato",
+      to: order?.user.email,
+      html: htmlMail,
+    });
+  }
 };
 
-export default mailService;
+
+

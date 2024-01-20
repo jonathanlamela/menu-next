@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 var generator = require("generate-password");
 
 import authOptions from "@/src/authOptions";
-import mailService from "@/src/services/mailService";
 import { pushMessage } from "@/src/services/messageService";
 import {
   ChangePasswordFields,
@@ -24,6 +23,7 @@ import {
 } from "@/src/validators";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { sendActivateAccountCodeEmail } from "@/src/services/mailService";
 
 export async function createUser(data: Prisma.UserCreateInput) {
   data.passwordHash = bcrypt.hashSync(data.passwordHash, 10);
@@ -261,7 +261,7 @@ export async function resetPasswordAction(object: ResetPasswordFields) {
 
     if (user) {
       var token = await generateResetPasswordToken(email);
-      await mailService.sendResetPassword(
+      await sendResetPassword(
         user.email,
         `${process.env.SERVER_URL}/auth/reset-password/token?token=${token}`
       );
@@ -311,7 +311,7 @@ export async function verifyAccountAction(object: VerifyAccountFields) {
     if (user) {
       var token = await generateNewActivationToken(email);
       var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${token}&email=${email}`;
-      await mailService.sendActivateAccountCode(user.email, activationUrl);
+      await sendActivateAccountCodeEmail(user.email, activationUrl);
     }
 
     pushMessage({
@@ -341,7 +341,7 @@ export async function signinAction(object: SigninFields) {
 
     if (user) {
       var activationUrl = `${process.env.SERVER_URL}/auth/verifica-account/token?token=${user.activationToken}&email=${email}`;
-      await mailService.sendActivateAccountCode(user.email, activationUrl);
+      await sendActivateAccountCodeEmail(user.email, activationUrl);
 
       pushMessage({
         text: "Account creato con successo verifica la tua casella di posta",
@@ -357,4 +357,7 @@ export async function signinAction(object: SigninFields) {
   }
 
   redirect(`/auth/login`);
+}
+function sendResetPassword(email: string, arg1: string) {
+  throw new Error("Function not implemented.");
 }
