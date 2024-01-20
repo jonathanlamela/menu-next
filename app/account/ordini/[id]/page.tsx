@@ -11,17 +11,13 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import authOptions from "@/src/authOptions";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
-import mailService from "@/src/services/mailService";
 import { getOrderById, payOrder } from "@/src/services/orderService";
 import { redirect } from "next/navigation";
-import { CurrentUser } from "@/src/types";
-import { headers } from 'next/headers';
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -35,7 +31,7 @@ export default async function IlMioProfilo(props: any) {
     const { params } = props;
     const data = await getServerSession(authOptions);
 
-    const user = data?.user as CurrentUser;
+    const user = data?.user!;
 
     const { id } = params;
 

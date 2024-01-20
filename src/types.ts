@@ -123,10 +123,19 @@ export type OrderDTO = {
   carrierId: number | null;
   deleted: boolean;
   orderState?: OrderStateDTO | null | undefined;
+  details?: OrderDetailDTO[] | null | undefined;
+  carrier?: CarrierDTO | null | undefined;
+};
+
+export type OrderDetailDTO = {
+  id: number;
+  orderId: number;
+  quantity: number;
+  unitPrice: Decimal;
+  name: string;
 };
 
 //Form types
-
 export type DeliveryInfoFields = {
   deliveryTime: string;
   deliveryAddress?: string | null | undefined;
@@ -162,14 +171,6 @@ export type CartState = {
   note: string;
 };
 
-export type CurrentUser = {
-  email: string;
-  firstname: string;
-  id: number;
-  lastname: string;
-  role: string;
-};
-
 export type Paginated = {
   paginated: boolean;
   perPage: number;
@@ -191,3 +192,16 @@ export type CrudResults<T> = {
   items: T[];
   count: number;
 };
+
+//Set session fields
+declare module "next-auth" {
+  interface Session {
+    user: {
+      firstname: string;
+      id: number;
+      lastname: string;
+      role: string;
+      email: string;
+    };
+  }
+}

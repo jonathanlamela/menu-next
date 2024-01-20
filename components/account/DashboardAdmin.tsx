@@ -1,6 +1,5 @@
 import DashboardButton from "@/components/account/DashboardButton";
 import authOptions from "@/src/authOptions";
-import { CurrentUser } from "@/src/types";
 import { getServerSession } from "next-auth";
 import { AdjustmentsHorizontalIcon, TruckIcon, ArrowsRightLeftIcon, CurrencyDollarIcon, BeakerIcon, ArchiveBoxIcon } from '@heroicons/react/24/outline';
 
@@ -8,7 +7,7 @@ import { AdjustmentsHorizontalIcon, TruckIcon, ArrowsRightLeftIcon, CurrencyDoll
 export default async function DashboardAdmin() {
 
     const session = await getServerSession(authOptions);
-    const user = session?.user as CurrentUser;
+    const user = session?.user!;
 
     if (user.role === "admin") {
         return <>

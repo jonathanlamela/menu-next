@@ -11,24 +11,17 @@ import TopbarRight from "@/components/TopbarRight";
 
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import Messages from "@/components/Messages";
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import authOptions from "@/src/authOptions";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
-import DashboardAdmin from "@/components/account/DashboardAdmin";
-import DashboardDefault from "@/components/account/DashboardDefault";
-import { CrudResults, CrudType, CurrentUser } from "@/src/types";
-import { Order } from "@prisma/client";
-import { Prisma } from "@prisma/client";
-import { prisma } from "@/src/lib/prisma";
+import { CrudType } from "@/src/types";
 import { getAllOrderByCustomerId } from "@/src/services/orderService";
 import LoadingContent from "@/components/LoadingContent";
 import AdminOrderToggler from "@/components/admin/AdminOrderToggler";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPerPage from "@/components/admin/AdminPerPage";
-import CategoryRow from "@/components/admin/CategoryRow";
 import { Suspense } from "react";
 import Link from "next/link";
 import { EyeIcon } from "@heroicons/react/24/outline";
@@ -44,7 +37,7 @@ export default async function IlMioProfilo({ searchParams }: any) {
 
     const sessionData = await getServerSession(authOptions);
 
-    const user = sessionData?.user as CurrentUser;
+    const user = sessionData?.user!;
 
     var ascend = (searchParams["ascending"] ?? "true") == 'true';
     var orderBy = searchParams["orderBy"] ?? "id";

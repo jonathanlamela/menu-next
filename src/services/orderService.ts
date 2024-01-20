@@ -10,7 +10,6 @@ import {
   CartRow,
   CrudResults,
   CrudType,
-  CurrentUser,
   OrderDTO,
   emptyCart,
 } from "@/src/types";
@@ -23,7 +22,7 @@ import { Prisma } from "@prisma/client";
 export async function createOrder(formData: FormData) {
   var cart = await getCart();
   const data = await getServerSession(authOptions);
-  var user = data?.user! as CurrentUser;
+  var user = data?.user!;
   var settings = await getSettings();
   var carrier = await getCarrierById(cart.carrierId!);
 
