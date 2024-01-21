@@ -25,9 +25,6 @@ export async function createOrder(formData: FormData) {
   var settings = await getSettings();
   var carrier = await getCarrierById(cart.carrierId!);
 
-  var orderTotal =
-    (parseFloat(`${carrier?.costs}`) || 0) + (parseFloat(`${cart.total}`) || 0);
-
   var order = await prisma.order.create({
     data: {
       carrierId: cart.carrierId,
@@ -36,7 +33,7 @@ export async function createOrder(formData: FormData) {
       shippingDeliveryTime: cart.deliveryTime,
       orderStateId: settings?.orderStateCreatedId,
       notes: (formData.get("note")?.valueOf() as string) ?? "",
-      total: orderTotal,
+      total: cart.total,
     },
     include: {
       details: true,
@@ -58,15 +55,6 @@ export async function createOrder(formData: FormData) {
     );
 
     await Promise.all(orderDetailPromises);
-
-    await prisma.orderDetail.create({
-      data: {
-        name: "Spese di consegna",
-        quantity: 1,
-        unitPrice: carrier?.costs ?? 0,
-        orderId: order.id,
-      },
-    });
 
     await storeCart(emptyCart);
 
@@ -171,6 +159,7 @@ export async function getAllOrderByCustomerId(
         where: whereParams,
         include: {
           orderState: true,
+          carrier: true,
         },
       }),
       count: await prisma.order.count({
@@ -184,6 +173,7 @@ export async function getAllOrderByCustomerId(
         where: whereParams,
         include: {
           orderState: true,
+          carrier: true,
         },
       }),
       count: await prisma.order.count({

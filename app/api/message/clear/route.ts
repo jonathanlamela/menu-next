@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { clearMessages } from "@/src/services/messageService";
 
 export async function GET(request: Request) {
-  const cookiesList = cookies();
-
-  cookiesList.delete("message");
+  await clearMessages();
 
   return NextResponse.json({});
 }

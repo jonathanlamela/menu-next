@@ -18,6 +18,7 @@ import BreadcrumbDivider from "@/components/BreadcrumbDivider";
 import BreadcrumbText from "@/components/BreadcrumbText";
 import { getOrderById, payOrder } from "@/src/services/orderService";
 import { redirect } from "next/navigation";
+import { totalmem } from "os";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -44,6 +45,9 @@ export default async function IlMioProfilo(props: any) {
     if (item && item.userId != user.id) {
         redirect("/403")
     }
+
+    var orderTotal =
+        (parseFloat(`${item.carrier?.costs}`) || 0) + (parseFloat(`${item.total}`) || 0);
 
     return (
         <main className="flex flex-col flex-grow">
@@ -82,6 +86,10 @@ export default async function IlMioProfilo(props: any) {
                     <b>Tipologia di consegna</b>
                     <span>{item?.carrier?.name}</span>
                 </div>
+                <div className="w-full flex flex-col">
+                    <b>Costo consegna</b>
+                    <span>{item?.carrier?.costs.toFixed(2)} €</span>
+                </div>
                 {item?.isPaid ? <></> : <>
                     <div className="w-full flex flex-col items-start">
                         <b>Azioni sull&apos;ordine</b>
@@ -119,7 +127,7 @@ export default async function IlMioProfilo(props: any) {
                                     <td className="text-center">
                                         <b>Totale</b>
                                     </td>
-                                    <td className="text-center">{item.total.toFixed(2)} €</td>
+                                    <td className="text-center">{orderTotal.toFixed(2)} €</td>
                                 </tr>
                             </tfoot>
                         </table>

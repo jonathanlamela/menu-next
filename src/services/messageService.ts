@@ -13,3 +13,9 @@ export async function pushMessage(msg: Message) {
 
   return true;
 }
+
+export async function clearMessages() {
+  const cookiesList = cookies();
+
+  cookiesList.delete("message");
+}

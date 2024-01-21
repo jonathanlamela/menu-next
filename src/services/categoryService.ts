@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import path from "path";
 import slugify from "slugify";
+const fs = require("fs");
 
 export async function getCategoriesForPills() {
   return prisma.category.findMany({
@@ -93,8 +94,6 @@ export async function getCategoryById(id: number) {
     },
   });
 }
-
-const fs = require("fs");
 
 export async function createCategory(data: FormData) {
   var name = data.get("name")?.valueOf() as string;

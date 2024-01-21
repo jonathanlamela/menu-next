@@ -80,7 +80,11 @@ export async function sendCustomerOrderCreatedEmail(orderId: number) {
   });
 
   if (order) {
-    const htmlMail = render(<CustomerOrderCreatedEmail carrier={order?.carrier!} rows={order?.details!} total={order?.total.toNumber()!} />);
+
+    var orderTotal =
+      (parseFloat(`${order.carrier?.costs}`) || 0) + (parseFloat(`${order.total}`) || 0);
+
+    const htmlMail = render(<CustomerOrderCreatedEmail carrier={order?.carrier!} rows={order?.details!} total={orderTotal} />);
 
     await transport.sendMail({
       subject: process.env.MAIL_FROM_NAME + " - " + "Ordine creato",
@@ -107,7 +111,11 @@ export async function sendCustomerOrderPaidEmail(orderId: number) {
   });
 
   if (order) {
-    const htmlMail = render(<CustomerOrderPaidEmail carrier={order?.carrier!} rows={order?.details!} total={order?.total.toNumber()!} />);
+
+    var orderTotal =
+      (parseFloat(`${order.carrier?.costs}`) || 0) + (parseFloat(`${order.total}`) || 0);
+
+    const htmlMail = render(<CustomerOrderPaidEmail carrier={order?.carrier!} rows={order?.details!} total={orderTotal} />);
 
     await transport.sendMail({
       subject: process.env.MAIL_FROM_NAME + " - " + "Ordine pagato",

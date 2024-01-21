@@ -94,6 +94,8 @@ export default async function IlMioProfilo({ searchParams }: any) {
                 <div className="w-full flex-col flex-grow">
                     <Suspense fallback={<LoadingContent></LoadingContent>}>
                         {items.map(row => {
+                            var orderTotal =
+                                (parseFloat(`${row.carrier?.costs}`) || 0) + (parseFloat(`${row.total}`) || 0);
                             return <>
                                 <div className="w-full odd:bg-gray-100">
                                     <div className="hidden lg:flex w-full flex-row flex-grow">
@@ -104,7 +106,7 @@ export default async function IlMioProfilo({ searchParams }: any) {
                                             {row.orderState?.name}
                                         </div>
                                         <div className="w-2/12 text-left flex items-center">
-                                            {row.total.toFixed(2)} €
+                                            {orderTotal.toFixed(2)} €
                                         </div>
                                         <div className="w-3/12 text-center flex flex-row space-x-2 items-center content-center justify-center">
                                             <Link href={`ordini/${row.id}`} className="flex flex-row h-10 space-x-2 items-center justify-center p-2 hover:bg-green-700 hover:text-white"
@@ -121,12 +123,20 @@ export default async function IlMioProfilo({ searchParams }: any) {
                                         </div>
                                         <div className="w-full flex flex-row space-x-4 items-center">
                                             <div className="w-1/4 font-bold text-end">Stato ordine</div>
-                                            <div className="w-3/4"></div>
+                                            <div className="w-3/4">{row.orderState?.name}</div>
+                                        </div>
+                                        <div className="w-full flex flex-row space-x-4 items-center">
+                                            <div className="w-1/4 font-bold text-end">Totale</div>
+                                            <div className="w-3/4">{orderTotal.toFixed(2)} €</div>
                                         </div>
                                         <div className="w-full flex flex-row space-x-4 items-center">
                                             <div className="w-1/4 font-bold text-end">Azioni</div>
                                             <div className="w-3/4 flex flex-row">
-
+                                                <Link href={`ordini/${row.id}`} className="flex flex-row h-10 space-x-2 items-center justify-center p-2 hover:bg-green-700 hover:text-white"
+                                                >
+                                                    <EyeIcon className="w-6 h-6"></EyeIcon>
+                                                    <span className="hidden md:block">Dettagli</span>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div >
