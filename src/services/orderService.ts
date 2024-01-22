@@ -29,8 +29,8 @@ export async function createOrder(formData: FormData) {
     data: {
       carrierId: cart.carrierId,
       userId: user.id,
-      shippingAddress: cart.deliveryAddress,
-      shippingDeliveryTime: cart.deliveryTime,
+      deliveryAddress: cart.deliveryAddress,
+      deliveryTime: cart.deliveryTime,
       orderStateId: settings?.orderStateCreatedId,
       notes: (formData.get("note")?.valueOf() as string) ?? "",
       total: cart.total,
@@ -174,6 +174,92 @@ export async function getAllOrderByCustomerId(
         include: {
           orderState: true,
           carrier: true,
+        },
+      }),
+      count: await prisma.order.count({
+        where: whereParams,
+      }),
+    };
+  }
+}
+
+export async function getAllOrders(
+  params: CrudType
+): Promise<CrudResults<OrderDTO>> {
+  var orderByParams: Prisma.OrderOrderByWithRelationInput = {};
+
+  switch (params.orderBy) {
+    case "id":
+      orderByParams = { id: params.ascending ? "asc" : "desc" };
+      break;
+    case "customer":
+      orderByParams = {
+        user: {
+          lastname: params.ascending ? "asc" : "desc",
+        },
+      };
+      break;
+    case "orderState":
+      orderByParams = {
+        orderState: {
+          name: params.ascending ? "asc" : "desc",
+        },
+      };
+      break;
+    case "total":
+      orderByParams = { total: params.ascending ? "asc" : "desc" };
+      break;
+  }
+
+  var whereParams: Prisma.OrderWhereInput = {};
+
+  if (params.search && params.search != "") {
+    whereParams = {
+      user: {
+        OR: [
+          {
+            firstname: {
+              contains: params.search,
+            },
+          },
+          {
+            lastname: {
+              contains: params.search,
+            },
+          },
+        ],
+      },
+    };
+  }
+
+  if (!params.deleted) {
+    whereParams.deleted = false;
+  }
+
+  if (params.paginated) {
+    return {
+      items: await prisma.order.findMany({
+        skip: params.perPage * (params.page - 1),
+        take: params.perPage,
+        orderBy: orderByParams,
+        where: whereParams,
+        include: {
+          user: true,
+          orderState: true,
+        },
+      }),
+      count: await prisma.order.count({
+        where: whereParams,
+      }),
+    };
+  } else {
+    return {
+      items: await prisma.order.findMany({
+        orderBy: orderByParams,
+        where: whereParams,
+        include: {
+          user: true,
+          orderState: true,
         },
       }),
       count: await prisma.order.count({

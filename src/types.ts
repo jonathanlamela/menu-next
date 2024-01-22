@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export type CartItem = {
@@ -116,8 +117,8 @@ export type OrderDTO = {
   orderStateId: number | null;
   userId: number;
   isPaid: boolean;
-  shippingAddress: string | null;
-  shippingDeliveryTime: string | null;
+  deliveryAddress?: string | null | undefined;
+  deliveryTime: string;
   notes: string | null;
   total: Decimal;
   carrierId: number | null;
@@ -125,6 +126,7 @@ export type OrderDTO = {
   orderState?: OrderStateDTO | null | undefined;
   details?: OrderDetailDTO[] | null | undefined;
   carrier?: CarrierDTO | null | undefined;
+  user?: User | null | undefined;
 };
 
 export type OrderDetailDTO = {
@@ -144,11 +146,6 @@ export type DeliveryInfoFields = {
 export type RiepilogoOrdineFields = {
   note: string;
 };
-
-export enum DeliveryType {
-  ASPORTO = "ASPORTO",
-  DOMICILIO = "DOMICILIO",
-}
 
 export type PickDeliveryTypeFields = {
   carrierId: number;

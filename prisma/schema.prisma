@@ -69,20 +69,20 @@ model OrderState {
 }
 
 model Order {
-  id                   Int           @id @default(autoincrement())
-  orderStateId         Int?
-  orderState           OrderState?   @relation(fields: [orderStateId], references: [id])
-  userId               Int
-  user                 User          @relation(fields: [userId], references: [id])
-  isPaid               Boolean       @default(false)
-  shippingAddress      String?
-  shippingDeliveryTime String?
-  notes                String?
-  details              OrderDetail[]
-  total                Decimal       @default(0.00)
-  carrierId            Int?
-  carrier              Carrier?      @relation(fields: [carrierId], references: [id])
-  deleted              Boolean       @default(false)
+  id              Int           @id @default(autoincrement())
+  orderStateId    Int?
+  orderState      OrderState?   @relation(fields: [orderStateId], references: [id])
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  isPaid          Boolean       @default(false)
+  deliveryAddress String?
+  deliveryTime    String        @default("")
+  notes           String?
+  details         OrderDetail[]
+  total           Decimal       @default(0.00)
+  carrierId       Int?
+  carrier         Carrier?      @relation(fields: [carrierId], references: [id])
+  deleted         Boolean       @default(false)
 }
 
 model OrderDetail {

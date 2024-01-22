@@ -82,7 +82,7 @@ export const orderStateValidator = yup.object({
 
 
 export const deliveryInfoValidator = yup.object({
-  deliveryAddress: yup.string(),
+  deliveryAddress: yup.string().nullable(),
   deliveryTime: yup.string().required("L'orario è obbligatorio"),
 }).required();
 
