@@ -9,14 +9,21 @@ import {
   CartRow,
   CrudResults,
   CrudType,
+  MessageType,
   OrderDTO,
+  OrderDetailDTO,
   emptyCart,
 } from "@/src/types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Stripe from "stripe";
 import { Prisma } from "@prisma/client";
-import { sendCustomerOrderCreatedEmail } from "@/src/services/mailService";
+import {
+  sendCustomerOrderCreatedEmail,
+  sendCustomerOrderStateUpdatedEmail,
+} from "@/src/services/mailService";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { pushMessage } from "@/src/services/messageService";
 
 export async function createOrder(formData: FormData) {
   var cart = await getCart();
@@ -79,6 +86,7 @@ export async function getOrderById(id: number) {
         },
       },
       orderState: true,
+      user: true,
     },
   });
 }
@@ -266,5 +274,216 @@ export async function getAllOrders(
         where: whereParams,
       }),
     };
+  }
+}
+
+export async function updateOrderDeliveryInfo(
+  id: number,
+  deliveryTime: string,
+  deliveryAddress?: string | null | undefined
+) {
+  if (!deliveryTime) {
+    redirect("/");
+  }
+  await prisma.order.update({
+    data: {
+      deliveryAddress: deliveryAddress,
+      deliveryTime: deliveryTime,
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  revalidatePath(`/amministrazione/vendite/ordini/modifica/${id}`);
+
+  pushMessage({
+    text: "Informazioni di consegna aggiornate con successo",
+    type: MessageType.SUCCESS,
+  });
+}
+
+export async function updateOrderCarrier(id: number, carrierId: number) {
+  await prisma.order.update({
+    data: {
+      carrierId: carrierId,
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  revalidatePath(`/amministrazione/vendite/ordini/modifica/${id}`);
+
+  pushMessage({
+    text: "Corriere ordine cambiato con successo",
+    type: MessageType.SUCCESS,
+  });
+}
+
+export async function updateOrderState(id: number, orderStateId: number) {
+  await prisma.order.update({
+    data: {
+      orderStateId: orderStateId,
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  await sendCustomerOrderStateUpdatedEmail(id);
+
+  revalidatePath(`/amministrazione/vendite/ordini/modifica/${id}`);
+
+  pushMessage({
+    text: "Stato ordine cambiato con successo",
+    type: MessageType.SUCCESS,
+  });
+}
+
+export async function increaseItemQty(orderDetailId: number) {
+  var orderDetail = await prisma.orderDetail.findFirst({
+    where: {
+      id: orderDetailId,
+    },
+  });
+
+  if (orderDetail) {
+    await prisma.orderDetail.update({
+      data: {
+        quantity: orderDetail.quantity + 1,
+      },
+      where: {
+        id: orderDetailId,
+      },
+    });
+
+    await updateOrderTotal(orderDetail.orderId);
+
+    revalidatePath(
+      `/amministrazione/vendite/ordini/modifica/${orderDetail.orderId}`
+    );
+  }
+}
+
+export async function decreaseItemQty(orderDetailId: number) {
+  var orderDetail = await prisma.orderDetail.findFirst({
+    where: {
+      id: orderDetailId,
+    },
+  });
+
+  if (orderDetail) {
+    if (orderDetail.quantity > 1) {
+      await prisma.orderDetail.update({
+        data: {
+          quantity: orderDetail.quantity - 1,
+        },
+        where: {
+          id: orderDetailId,
+        },
+      });
+    } else {
+      await prisma.orderDetail.delete({
+        where: {
+          id: orderDetailId,
+        },
+      });
+    }
+
+    await updateOrderTotal(orderDetail.orderId);
+
+    revalidatePath(
+      `/amministrazione/vendite/ordini/modifica/${orderDetail.orderId}`
+    );
+  }
+}
+
+export async function removeItem(orderDetailId: number) {
+  var orderDetail = await prisma.orderDetail.findFirst({
+    where: {
+      id: orderDetailId,
+    },
+  });
+
+  if (orderDetail) {
+    await prisma.orderDetail.delete({
+      where: {
+        id: orderDetailId,
+      },
+    });
+
+    await updateOrderTotal(orderDetail.orderId);
+
+    revalidatePath(
+      `/amministrazione/vendite/ordini/modifica/${orderDetail.orderId}`
+    );
+  }
+}
+
+export async function addOrderItem(
+  orderId: number,
+  name: string,
+  price: number
+) {
+  await prisma.orderDetail.create({
+    data: {
+      name: name,
+      quantity: 1,
+      unitPrice: price,
+      orderId: orderId,
+    },
+  });
+
+  await updateOrderTotal(orderId);
+
+  revalidatePath(`/amministrazione/vendite/ordini/modifica/${orderId}`);
+}
+
+async function updateOrderTotal(orderId: number) {
+  var order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      details: true,
+    },
+  });
+
+  if (order) {
+    var total = 0;
+
+    order.details.forEach((row: OrderDetailDTO) => {
+      total += parseFloat(`${row.unitPrice.toNumber() * row.quantity}`);
+    });
+
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        total: total,
+      },
+    });
+  }
+}
+
+export async function updateOrderNote(orderId: number, notes?: string | null) {
+  var order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+  });
+
+  if (order) {
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        notes: notes,
+      },
+    });
+    revalidatePath(`/amministrazione/vendite/ordini/modifica/${orderId}`);
   }
 }

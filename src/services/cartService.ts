@@ -1,12 +1,6 @@
 "use server";
 
-import {
-  CartItem,
-  CartRow,
-  CartState,
-  DeliveryType,
-  emptyCart,
-} from "@/src/types";
+import { CartItem, CartRow, CartState, emptyCart } from "@/src/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -108,11 +102,13 @@ export async function storeCart(cart: CartState) {
   }
 }
 
-export async function updateDeliveryType(carrierId: number) {
+export async function updateDeliveryType(carrierId: number | null) {
   var cart = await getCart();
-  cart.carrierId = carrierId;
+  if (carrierId) {
+    cart.carrierId = carrierId;
 
-  await storeCart(cart);
+    await storeCart(cart);
+  }
 
   redirect("2");
 }

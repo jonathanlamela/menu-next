@@ -19,6 +19,15 @@ import BreadcrumbText from "@/components/BreadcrumbText";
 import { getOrderById, payOrder } from "@/src/services/orderService";
 import { redirect } from "next/navigation";
 import { totalmem } from "os";
+import AdminUpdateDeliveryInfo from "@/components/admin/AdminUpdateDeliveryInfo";
+import { getAllCarriers } from "@/src/services/carrierService";
+import AdminUpdateDeliveryType from "@/components/admin/AdminUpdateDeliveryType";
+import { getAllOrderStates } from "@/src/services/orderStateService";
+import AdminUpdateOrderState from "@/components/admin/AdminUpdateOrderState";
+import AdminUpdateOrderDetail from "@/components/admin/AdminUpdateOrderDetail";
+import { getAllFoods } from "@/src/services/foodService";
+import AdminUpdateOrderNote from "@/components/admin/AdminUpdaterOrderNote";
+import AdminUpdateOrderSummary from "@/components/admin/AdminUpdateOrderSummary";
 
 export async function generateMetadata({ params }: any) {
     return {
@@ -37,6 +46,33 @@ export default async function IlMioProfilo(props: any) {
     const { id } = params;
 
     var item = await getOrderById(parseInt(id));
+
+    var carriers = await getAllCarriers({
+        ascending: true,
+        orderBy: "id",
+        paginated: false,
+        deleted: true,
+        page: 1,
+        perPage: 100
+    })
+
+    var orderStatesData = await getAllOrderStates({
+        ascending: true,
+        orderBy: "id",
+        paginated: false,
+        deleted: true,
+        page: 1,
+        perPage: 100
+    })
+
+    var foodsData = await getAllFoods({
+        ascending: true,
+        orderBy: "id",
+        paginated: false,
+        deleted: true,
+        page: 1,
+        perPage: 100
+    });
 
     if (!item) {
         redirect("/")
@@ -69,13 +105,54 @@ export default async function IlMioProfilo(props: any) {
                     <BreadcrumbText>Ordine n. {item?.id}</BreadcrumbText>
                 </BreadcrumbContainer>
             </HeaderMenu>
-            <div className="pl-8 pr-8 pt-8 flex flex-col space-y-4 pb-8">
+            <div className="flex flex-col px-8 py-8 flex-grow space-y-2">
                 <Messages></Messages>
-                <div className="w-full">
-                    <p className="text-2xl antialiased font-bold">Dettagli ordine</p>
+                <div className="w-full pb-4">
+                    <p className="text-2xl antialiased font-bold">{`Ordine N. ${item.id}`}</p>
+                </div>
+                <div className="hidden flex-row lg:flex space-x-2">
+                    <div className="w-1/2 flex flex-col space-y-2">
+                        <div className="w-full border border-gray-200 p-2 flex flex-col space-y-2 items-center ">
+                            <AdminUpdateOrderState order={item} orderStates={orderStatesData.items} />
+                        </div>
+                        <div className="w-full border border-gray-200 p-2 flex flex-col space-y-2 items-center ">
+                            <AdminUpdateDeliveryType carriers={carriers.items} order={item} />
+                        </div>
+                    </div>
+                    <div className="w-1/2">
+                        <div className="w-full border border-gray-200 mb-2 p-2 flex flex-col items-center">
+                            <AdminUpdateDeliveryInfo order={item} />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col lg:hidden space-y-2">
+                    <div className="w-full lg:w-1/2 border border-gray-200  p-2 flex flex-col space-y-2 items-center">
+                        <AdminUpdateOrderState order={item} orderStates={orderStatesData.items} />
+                    </div>
+                    <div className="w-full lg:w-1/2 border border-gray-200  p-2 flex flex-col space-y-2 items-center ">
+                        <AdminUpdateDeliveryType carriers={carriers.items} order={item} />
+                    </div>
+                    <div className="w-full lg:w-1/2 border border-gray-200  p-2 flex flex-col space-y-2 items-center">
+                        <AdminUpdateDeliveryInfo order={item} />
+                    </div>
+                </div>
+                <div className="w-full flex">
+                    <div className="w-full border border-gray-200  p-2 flex flex-col space-y-2 items-center">
+                        <AdminUpdateOrderDetail order={item} foods={foodsData.items} />
+                    </div>
+                </div>
+                <div className="w-full flex">
+                    <div className="w-full border border-gray-200  p-2 flex flex-col space-y-2 items-center">
+                        <AdminUpdateOrderNote order={item} />
+                    </div>
+                </div>
+                <div className="w-full flex">
+                    <div className="w-full border border-gray-200  p-2 flex flex-col space-y-2 items-center">
+                        <AdminUpdateOrderSummary order={item} />
+                    </div>
                 </div>
 
-            </div>
+            </div >
         </main>
     );
 }

@@ -181,12 +181,12 @@ export const verifyAccountValidator = yup.object({
 
 
 export const updateOrderStatusValidator = yup.object({
-  orderState: yup.string().required(),
+  orderState: yup.number().required(),
 }).required();
 
 
 export const updateOrderDetailsAddItemValidator = yup.object({
-  id: yup.string().required(),
+  id: yup.number().required(),
 }).required();
 
 export const pickDeliveryMethodValidator = yup.object({

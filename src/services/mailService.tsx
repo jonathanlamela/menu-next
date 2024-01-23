@@ -5,6 +5,7 @@ import AccountResetPassword from "@/src/emails/customer/accountResetPassword";
 import AccountActivationCode from "@/src/emails/customer/accountActivationCode";
 import CustomerOrderCreatedEmail from "@/src/emails/customer/customerOrderCreated";
 import CustomerOrderPaidEmail from "@/src/emails/customer/customerOrderPaid";
+import CustomerOrderStateUpdatedEmail from "@/src/emails/customer/customOrderStateUpdated";
 
 var transport: any = null;
 
@@ -124,6 +125,34 @@ export async function sendCustomerOrderPaidEmail(orderId: number) {
     });
   }
 };
+
+export async function sendCustomerOrderStateUpdatedEmail(orderId: number) {
+
+  initService();
+
+  var order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      user: true,
+      orderState: true,
+      details: true,
+    },
+  });
+
+  if (order) {
+
+    const htmlMail = render(<CustomerOrderStateUpdatedEmail orderState={order.orderState!} />);
+
+    await transport.sendMail({
+      subject: process.env.MAIL_FROM_NAME + " - " + "Stato ordine aggiornato",
+      to: order?.user.email,
+      html: htmlMail,
+    });
+  }
+};
+
 
 
 

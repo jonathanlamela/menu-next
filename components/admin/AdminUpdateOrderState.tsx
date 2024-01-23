@@ -1,32 +1,33 @@
 'use client';
-import { updateOrderDeliveryInfo } from "@/src/services/orderService";
-import { DeliveryInfoFields, OrderDTO } from "@/src/types";
-import { deliveryInfoValidator } from "@/src/validators";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { OrderDTO, OrderStateDTO } from "@/src/types";
+import { updateOrderStatusValidator } from "@/src/validators";
+import { updateOrderState } from "@/src/services/orderService";
 
-
-export default function AdminUpdateDeliveryInfo(props: { order: OrderDTO }) {
-
-    const { order } = props;
+export default function AdminUpdateOrderState(props: { order: OrderDTO, orderStates: OrderStateDTO[] }) {
+    const { order, orderStates } = props;
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm<DeliveryInfoFields>({
-        resolver: yupResolver<DeliveryInfoFields>(deliveryInfoValidator),
-        defaultValues: {
-            deliveryAddress: order.deliveryAddress,
-            deliveryTime: order.deliveryTime
-        }
-    });
+    const [isTransitioning, setIsTransitioning] = useState(false); // Nuovo stato
 
-    const onSubmit = async (data: DeliveryInfoFields) => {
-        await updateOrderDeliveryInfo(order.id, data.deliveryTime, data.deliveryAddress);
+
+    const { register, handleSubmit, formState: { errors } }
+        = useForm<{ orderState: number }>({
+            resolver: yupResolver<{ orderState: number }>(updateOrderStatusValidator),
+            defaultValues: {
+                orderState: order.orderStateId!
+            }
+        });
+
+    const onOrderStatusSubmit = async (data: { orderState: number }) => {
+        await updateOrderState(order.id, data.orderState)
+
         setIsEdit(false);
     }
 
-    const [isTransitioning, setIsTransitioning] = useState(false); // Nuovo stato
     const toggleEdit = () => {
         setIsTransitioning(true);
         setTimeout(() => {
@@ -52,12 +53,10 @@ export default function AdminUpdateDeliveryInfo(props: { order: OrderDTO }) {
             <div className="w-full flex flex-row p-4">
                 <div className="w-full flex flex-col space-y-2">
                     <div className="w-full flex">
-                        <label className="form-label">Informazioni consegna</label>
+                        <label className="form-label">Stato ordine</label>
                     </div>
-                    <div className="w-full flex flex-col">
-                        <p>Nominativo: {order.user?.firstname} {order.user?.lastname}</p>
-                        {order.deliveryAddress ? <p>Indirizzo: {order.deliveryAddress}</p> : null}
-                        <p>Orario di consegna: {order.deliveryTime}</p>
+                    <div className="w-full flex">
+                        <p>{order.orderState?.name}</p>
                     </div>
                 </div>
                 {toggleButton()}
@@ -68,21 +67,21 @@ export default function AdminUpdateDeliveryInfo(props: { order: OrderDTO }) {
     const editForm = () => {
         return <>
             <div className="w-full flex flex-row p-4 space-x-4">
-                <form className="w-full flex flex-col space-y-2" onSubmit={handleSubmit(onSubmit)}>
+                <form className="w-full flex flex-col space-y-2" onSubmit={handleSubmit(onOrderStatusSubmit)}>
                     <div className="w-full flex">
-                        <label className="form-label">Informazioni consegna</label>
+                        <label className="form-label">Stato ordine</label>
                     </div>
-                    <div className="w-full flex flex-col">
-
-                        <label >Indirizzo</label>
-                        <input type="text" {...register("deliveryAddress")} className={errors.deliveryAddress ? "text-input-invalid" : "text-input"} defaultValue={order.deliveryAddress ?? ""}></input>
+                    <div className="w-full flex">
+                        <select {...register("orderState")}
+                            className={errors.orderState ? "w-full text-input-invalid" : "w-full text-input"}>
+                            {orderStates.map((state: OrderStateDTO) => (
+                                <option value={`${state.id}`} key={state.id}>
+                                    {state.name}
+                                </option>
+                            ))}
+                        </select>
                         <div className="invalid-feedback">
-                            {errors.deliveryAddress?.message}
-                        </div>
-                        <label >Orario di consegna</label>
-                        <input type="text" {...register("deliveryTime")} className={errors.deliveryTime ? "text-input-invalid" : "text-input"} defaultValue={order.deliveryTime}></input>
-                        <div className="invalid-feedback">
-                            {errors.deliveryTime?.message}
+                            {errors.orderState?.message}
                         </div>
                     </div>
                     <div className="w-full flex items-center justify-end">
@@ -94,6 +93,8 @@ export default function AdminUpdateDeliveryInfo(props: { order: OrderDTO }) {
                 {toggleButton()}
             </div>
         </>
+
+
     }
 
     return (
